@@ -20,10 +20,11 @@ __global__ void dotprod(float *x, float *dot)
 
     product[threadIdx.x] = x[index] * x[index];
 
-    // if(index==0) *dot = 0; //Ask one thread to set c to zero.
 
     //Make sure every thread has finished
     __syncthreads();
+
+    if(index==0) *dot = 0; //Ask one thread to set c to zero.
 
     //Sum the elements serially to obtain dot product
     if( 0 == threadIdx.x ) //Every block to do c += sum
@@ -31,7 +32,6 @@ __global__ void dotprod(float *x, float *dot)
         int sum = 0;
         for(int j=0; j < THREADS_PER_BLOCK; j++) {
           sum += product[j];
-
         }
         atomicAdd(dot,sum);
     }
