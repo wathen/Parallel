@@ -20,7 +20,7 @@ __global__ void dotprod(float *x, float *dot)
 
     product[threadIdx.x] = x[index] * x[index];
 
-    if(index==0) *dot = 0; //Ask one thread to set c to zero.
+    // if(index==0) *dot = 0; //Ask one thread to set c to zero.
 
     //Make sure every thread has finished
     __syncthreads();
@@ -33,7 +33,7 @@ __global__ void dotprod(float *x, float *dot)
           sum += product[j];
 
         }
-        atomicAdd(*dot,sum);
+        atomicAdd(dot,sum);
     }
 }
 
