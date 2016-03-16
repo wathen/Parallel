@@ -1,0 +1,16 @@
+1. What problem does the paper address?
+
+The problem that the paper addresses is sparsity in GPU parsing. They present results for comparison with natural language processing algorithms.
+
+2. What is the key insight/idea in the paper's solution to this problem?
+
+The key insight to the paper is to exploit sparsity on a GPU by adapting coarse-to-fine pruning to a GPU setting.
+
+3. What did the authors do to demonstrate their claims? (e.g. implement a tool, present a proof, run simulations, etc.)
+
+The authors carefully designed (with respect to the architecture constraints) a parser exploits sparsity that has been developed for more traditional architectures.
+
+4. Is the support for the claims convincing? Why or why not?
+
+They present results that show more a significant speed up for certain applications. There approach (for natural language processing algorithms) process over 190 sentences per second, almost a 6x speedup.
+

@@ -1,0 +1,125 @@
+ %   Journal Article Template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{bm}
+%\usepackage[notref,notcite]{showkeys}
+%\usepackage[dvipdfm]{hyperref}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{subfigure}
+%\usepackage{epsfig,psfig}
+\usepackage{amsfonts,amsmath,latexsym}
+\usepackage{amsbsy}
+\usepackage{nicefrac}
+\usepackage{subcaption}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{sidecap}
+\usepackage{calc}
+\usepackage{enumitem}
+\usepackage{listings}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%s
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\title{CS521 - Assignment 1}
+\author{Michael Wathen}
+\maketitle
+
+\paragraph{Collaborators} ~\\
+Ehsan Kermani helped me with the eunit test file as well as programming the  {\tt{hw1:subtract}} function. Mark Greenstreet helped me understand and implement the {\tt{hw1:search}} function.
+
+
+
+\vspace{1cm}
+
+
+\section*{Question 1:}
+
+To run the tests
+\begin{lstlisting}
+c(hw1).
+c(hw1_test).
+eunit:test(hw1_test).
+\end{lstlisting}
+\subsection*{Part a}
+
+See {\tt nthtail} function given in file hw1.erl
+
+
+
+\subsection*{Part b}
+
+{\tt prefix} function given in file hw1.erl
+
+
+\subsection*{Part c}
+
+
+
+See {\tt prefix} function given in file hw1.erl
+
+
+\section*{Question 2}
+
+\subsection*{Part a}
+
+See {\tt libSubtraction} and {\tt subPrint} functions given in file hw1.erl
+
+\noindent See Table~\ref{tab:results} for the results.
+
+
+
+
+\subsection*{Part b}
+
+From the results in Table~\ref{tab:results}  we see that the values in the time/$(N^2)$ column in the table staysroughly constant. Therefore, the {\tt lists:subtract} library function appears to be quadratic with respect to run time.
+
+Without looking at the source code for {\tt lists:subtract}, this behavior would be expected if every element of {\tt L1} is checked by every element in {\tt L2}. This would account for $N^2$ operations.
+
+\subsection*{Part c}
+
+See {\tt subtract} and {\tt elementCheck} functions given in file hw1.erl
+
+\subsection*{Part d}
+
+The results of my {\tt subtract} function are given in Table~\ref{tab:results}. The timing results seem to be roughly $\mathcal{O}(N \log N)$ from columns time/$(N\log N)$ and time/$N$. We achieve this speed up in the {\tt subtract} function since we order both lists to start with. This enables us to go through them together for comparison.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|cc|ccc|}
+\hline
+\hline\\[-0.35cm]
+  $N$ & \tt{lists:subtract} & time/$(N^2)$& \tt{hw1:subtract} & time/$(N\log N)$& time/$N$\\[0.05cm]
+\hline
+\hline
+
+1000 & 17945 & 1.79e-02 & 128 & 1.85e-02 & 1.28e-01 \\
+2000 & 7446 & 1.86e-03 & 315 & 2.07e-02 & 1.58e-01 \\
+3000 & 17203 & 1.91e-03 & 537 & 2.24e-02 & 1.79e-01 \\
+5000 & 70788 & 2.83e-03 & 672 & 1.58e-02 & 1.34e-01 \\
+10000 & 203369 & 2.03e-03 & 1507 & 1.64e-02 & 1.51e-01 \\
+20000 & 721388 & 1.80e-03 & 2899 & 1.46e-02 & 1.45e-01 \\
+30000 & 1593127 & 1.77e-03 & 5146 & 1.66e-02 & 1.72e-01 \\
+50000 & 4423758 & 1.77e-03 & 6631 & 1.23e-02 & 1.33e-01 \\
+\hline
+\hline
+\end{tabular}
+\caption{Timing table for question 2. {\tt lists:subtract} and {\tt hw1:subtract} denote the elapsed time with the library function and my own (2c), respectively}
+\label{tab:results}
+\end{table}
+
+
+\vspace{1cm}
+
+I'm working hard to try and understand {\tt erlang} and functional programming so I apologise for extra length and poor {\tt erlang} programming customs in this assignment.
+
+\end{document}
+
+
+
+

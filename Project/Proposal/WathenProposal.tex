@@ -1,0 +1,160 @@
+ %   Journal Article Template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{bm}
+%\usepackage[notref,notcite]{showkeys}
+%\usepackage[dvipdfm]{hyperref}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{subfigure}
+%\usepackage{epsfig,psfig}
+\usepackage{amsfonts,amsmath,latexsym}
+\usepackage{amsbsy}
+\usepackage{nicefrac}
+\usepackage{subcaption}
+\usepackage{slashbox}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{sidecap}
+\usepackage{calc}
+\usepackage{enumitem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%s
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% PROOF
+%
+%\newenvironment{rproof}{\addvspace{\medskipamount}\par\noindent{\it Proof:\/}}
+%{\unskip\nobreak\hfill$\Box$\par\addvspace{\medskipamount}}
+%
+% ROMENUM
+%
+\newcounter{bean}
+\newenvironment{romenum}{\begin{list}{{(\roman{bean})}}
+{\usecounter{bean}}}{\end{list}}
+% \newtheorem{remark}[theorem]{Remark}
+%
+% special SYMBOLS
+%
+\newcommand{\uu}[1]{\boldsymbol #1}                     % vector fields
+\newcommand{\uuu}[1]{\underline{#1}}                 % tensor fields
+\newcommand{\jmp}[1]{[\![#1]\!]}                     % jump
+\newcommand{\mvl}[1]{\{\!\!\{#1\}\!\!\}}             % mean value
+%
+% NORMS
+%
+\newcommand{\N}[1]{\|#1\|}                            % norm
+\newcommand{\tn}[1]{|\!|\!|#1|\!|\!|}             % triple norm
+%
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\curl}{\rm curl}
+\newcommand{\dvr}{\rm div}
+\newcommand{\nedelec}{N\'{e}d\'{e}lec }
+\newcommand{\fenics}{{\tt FEniCS} }
+
+\newcommand{\grad}{\ensuremath{\nabla}}
+\newcommand{\RE}[1]{{\bf\textcolor{red}       {#1}}}
+\newcommand{\re}[1]{{\textcolor{red}       {#1}}}
+\newcommand{\orange}[1]{{\textcolor{Orange}       {#1}}}
+\newcommand{\kns}{\mathcal{K}_{\rm NS}}
+\newcommand{\km}{\mathcal{K}_{\rm M}}
+\newcommand{\kc}{\mathcal{K}_{\rm C}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% end: our definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\newenvironment{Pf}{\noindent {\bf Proof:}} {\hfill $\Box$ \medskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{CPSC 521 - Project proposal}
+\author{
+ Michael Wathen\thanks{Department of Computer Science,
+The University of British Columbia, Vancouver, BC, V6T 1Z4, Canada,
+ mwathen@cs.ubc.ca.}
+}
+
+\begin{document}
+
+\maketitle
+
+Incompressible magnetohydrodynamics (MHD)  describes the behavior of electrically conductive incompressible fluids (liquid metals, plasma, salt water, etc.) in an electromagnetic field \cite{davidson2001introduction,le2006mathematical,muller2001magnetofluiddynamics}. The movement of the conductive material induces a magnetic field, which then modifies any existing electromagnetic field, and the magnetic and electric fields generate a mechanical force on the fluid, known as the Lorentz force. The Lorentz force accelerates the fluid particles in the direction normal to both the electric and magnetic fields. These effects couple the electromagnetic field with the fluid dynamics.
+
+Incompressible MHD has a number of important applications within technology and industry, along with geophysical and astrophysical applications. Some such applications are electromagnetic pumping, aluminium electrolysis, the Earth's molten core and solar flares. Many of these applications require a huge 3-dimensional domains, with problems exceeding 100's of million degrees of freedom in size. For such problems, it is necessary to consider large scale parallel computing frameworks.
+
+Given a sufficiently smooth domain $\Omega$, consider the steady-state incompressible magnetohydrodynamics (MHD) model \cite[Ch. 2]{armero1996long}:
+\begin{subequations}
+\label{eq:mhd}
+\begin{alignat}2
+\label{eq:mhd1} - \nu  \, \Delta\uu{u} + (\uu{u} \cdot \nabla)
+\uu{u}+\nabla p - \kappa\,
+(\nabla\times\uu{b})\times\uu{b} &= \uu{f} & \qquad &\mbox{in $\Omega$},\\[.1cm]
+\label{eq:mhd2}
+\nabla\cdot\uu{u} &= 0 & \qquad &\mbox{in $\Omega$},\\[.1cm]
+\label{eq:mhd3}
+\kappa\nu_m  \, \nabla\times( \nabla\times \uu{b})
++ \nabla r
+- \kappa \, \nabla\times(\uu{u}\times \uu{b}) &= \uu{g} & \qquad &\mbox{in $\Omega$},\\[.1cm]
+\label{eq:mhd4} \nabla\cdot\uu{b} &= 0 & \qquad &\mbox{in
+$\Omega$}.
+\end{alignat}
+\end{subequations}
+Here $\uu{u}$ is the velocity, $p$ the hydrodynamic pressure, $\uu{b}$ is a magnetic field,  and  the Lagrange multiplier associated with the divergence constraint on the magnetic field is denoted by $r$. The functions $\uu{f}$ and $\uu{g}$ represent external forcing terms.
+
+We use a finite element discretization designed in \cite{schotzau2004mixed}, which after linearization yields the following 4-by-4 linear system:
+\begin{equation}
+\label{eq:mhd_saddle}
+%\mathcal{K} x \equiv
+\left(
+\begin{array}{cccc}
+F(u) & B^T & C(b)^T & 0\\
+B & 0 & 0 & 0 \\
+-C(b) & 0 & M & D^T\\
+0 & 0 & D & 0
+\end{array}
+\right)
+\,
+\left(
+\begin{array}{c}
+\delta u\\
+\delta p\\
+\delta b\\
+\delta r
+\end{array}
+\right)  =
+\begin{pmatrix}
+r_u \\
+r_p\\
+r_b\\
+r_r
+\end{pmatrix},
+\end{equation}
+with
+\begin{equation} \nonumber
+\begin{array}{rl}
+r_u &= f- F(u) u - C(b)^T b- B^T p,\\
+r_p &=-B u,\\
+r_b &=g-Mu+C(b)b-D^T r,\\
+r_r &=-D b,
+\end{array}
+\end{equation}
+where $F(u) = A+O(u)$. The matrices are: ${F}$ the discrete convection-diffusion operator; ${B}$ a discrete divergence operator; ${M}$ the discrete curl-curl operator; ${D}$ a discrete divergence operator and ${C}$ the discrete coupling terms.
+
+Throughout my Masters and PhD work with Chen, I have been looking at efficient preconditioners for this model. We have been developing a serial based code combining the finite element software \fenics with the linear algebra package {\tt PETSc}. For this course project, I plan to mover my code base from a serial setting to a parallel one using MPI. I will start of by considering the simple Laplace's equation:
+$$\Delta u = f.$$
+Once this has been set up we will then look at the full MHD model with the preconditioning techniques we have been developing. The aim of the project is to have a full parallized code which can either be run on a single computer or over a cluster.
+
+\bibliographystyle{plain}
+\bibliography{ref}
+
+
+
+\end{document}
+
+
+
+
