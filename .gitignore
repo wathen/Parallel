@@ -1,0 +1,59 @@
+# Backup/Autosave files
+*~
+*.asv
+*.swp
+
+# Mac meta files
+.DS_Store
+
+# IntelliJ project files
+.idea/misc.xml
+.idea/workspace.xml
+
+# Eclipse project files
+.metadata
+.cproject
+.project
+.pydevproject
+.settings
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Compiled Python files
+*.pyc
+
+# CMake files
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+
+# For stupid goddamn LaTeX files
+*.aux
+*.synctex.gz
+*.log
+*.out
+*.bbl
+*.blg
+
+# Other VCS files
+.svn/
+.hg/
+
+# Matlab .mat files
+*.mat
+
+
+
