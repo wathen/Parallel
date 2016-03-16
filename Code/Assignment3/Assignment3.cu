@@ -58,7 +58,7 @@ float norm(float * x, int n) {
     dot = (float *) malloc (sizeof (float ) );
     // Copying values
     cudaMemcpy (dev_x , x, size, cudaMemcpyHostToDevice );
-    dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(N, dev_x, dev_dot);
+    dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(dev_x, dev_dot);
     cudaMemcpy ( dot, dev_dot , sizeof (float ) , cudaMemcpyDeviceToHost );
     return sqrt(*dot);
 }
