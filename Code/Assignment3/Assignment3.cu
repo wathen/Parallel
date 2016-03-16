@@ -33,7 +33,7 @@ __global__ void dotprod(float *x, float *dot)
           sum += product[j];
 
         }
-        atomicAdd(dot,sum);
+        atomicAdd(*dot,sum);
     }
 }
 
