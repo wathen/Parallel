@@ -48,38 +48,45 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
 }
 
 float norm(float * x, int n) {
-  float *dot;
-  float *dev_x , *dev_dot;
-  int size = n * sizeof (int );
-
-
-  // Allocating Cuda memory
-  cudaMalloc ( (void **)& dev_x , size );
-  cudaMalloc ( (void **)& dev_dot , sizeof (int ) );
-  // Allocating memory
-  dot = (float *) malloc (sizeof (float ) );
-  // Copying values
-  cudaMemcpy (dev_x , x, size, cudaMemcpyHostToDevice );
-  dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(dev_x, dev_dot);
-  cudaMemcpy ( dot, dev_dot , sizeof (int ) , cudaMemcpyDeviceToHost );
-
-  return sqrt(*dot);
+    float *dot;
+    float *dev_x , *dev_dot;
+    int size = n * sizeof (int );
+    // Allocating Cuda memory
+    cudaMalloc ( (void **)& dev_x , size );
+    cudaMalloc ( (void **)& dev_dot , sizeof (float ) );
+    // Allocating memory
+    dot = (float *) malloc (sizeof (float ) );
+    // Copying values
+    cudaMemcpy (dev_x , x, size, cudaMemcpyHostToDevice );
+    dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(dev_x, dev_dot);
+    cudaMemcpy ( dot, dev_dot , sizeof (float ) , cudaMemcpyDeviceToHost );
+    return sqrt(*dot);
 }
 
+float seq_norm(float *x, int n) {
+    float y = 0.0;
+    for(int i = 0; i<n; i++)
+        y += x[i] * x[i];
+    return sqrt(y);
+}
 
 int main(void) {
-  float *x;
-  float Norm_out;
-  int size = N * sizeof (int );
+    float *x;
+    float p_norm, s_norm;
+    
+    int size = N * sizeof (int );
 
-  x = (float *) malloc ( size );
+    x = (float *) malloc ( size );
 
-  for (int i = 0; i < N; ++i){
-    x[i] = i;
-  }
+    for (int i = 0; i < N; ++i){
+        x[i] = i;
+    }
 
-  Norm_out = norm(x, N);
-  printf("\ndot(a,b) = %f\n", Norm_out);
+    print_vec(x, N, "%5.3f", "y");
+    p_norm = norm(x, N);
+    s_norm = seq_norm(x, N);
+
+    printf("\nParallel = %f, Sequential = %f \n", p_norm, s_norm);
 }
 
 // int main( void ) {
