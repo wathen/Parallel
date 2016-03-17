@@ -12,7 +12,46 @@ __global__ void logistic(unsigned int n, float a, float *x, float *z) {
     z[myId] = a*x[myId]*(1 - x[myId]);
 }
 
-__global__ void dotprod(float *x, float *dot)
+
+__device__ void reduce_sum_dev(unsigned int n, float *x) {
+  unsigned int myId = threadIdx.x;
+  for(unsigned int m = n >> 1; m > 0; m = n >> 1) {
+    n -= m;
+    __syncthreads();
+    if(myId < m)
+      x[myId] += x[myId+n];
+  }
+}
+
+__global__ void reduce_sum(uint n, float *x) {
+  reduce_sum_dev(n, x);
+}
+
+float reduce_sum_ref(uint n, float *x) {
+  float sum = 0.0;
+  for(int i = 0; i < n; i++)
+    sum += x[i];
+  return(sum);
+}
+
+/******************************
+*  dotprod: just like it sounds
+*    Simple version: we only handle one block of threads
+*******************************/
+
+__global__ void dotprod(uint n, float *x, float *z) {
+  uint blockBase = blockDim.x * blockIdx.x;
+  uint myId = blockBase + threadIdx.x;
+  uint m = min(blockDim.x, n - blockBase);
+
+  if(myId < n)
+    x[myId] *= x[myId];
+  reduce_sum_dev(m, &(x[blockBase]));
+  if((myId < n) && (threadIdx.x == 0))
+    z[blockIdx.x] = x[myId];
+}
+
+__global__ void my_dotprod(float *x, float *dot)
 {
     __shared__ int product[THREADS_PER_BLOCK];
 
@@ -58,7 +97,8 @@ float norm(float * x, int n) {
     dot = (float *) malloc (sizeof (float ) );
     // Copying values
     cudaMemcpy (dev_x , x, size, cudaMemcpyHostToDevice );
-    dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(dev_x, dev_dot);
+    dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(N, dev_x, dev_dot);
+    reduce_sum<<<1,N/THREADS_PER_BLOCK>>>(N/THREADS_PER_BLOCK, dev_dot);
     cudaMemcpy ( dot, dev_dot , sizeof (float ) , cudaMemcpyDeviceToHost );
     return sqrt(*dot);
 }
