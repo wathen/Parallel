@@ -92,7 +92,7 @@ float norm(float * x, int n) {
     int size = n * sizeof (int );
     // Allocating Cuda memory
     cudaMalloc ( (void **)& dev_x , size );
-    cudaMalloc ( (void **)& dev_dot , sizeof (float ) );
+    cudaMalloc ( (void **)& dev_dot , size );
     // Allocating memory
     dot = (float *) malloc (sizeof (float ) );
     // Copying values
@@ -112,7 +112,10 @@ float seq_norm(float *x, int n) {
 
 int main(void) {
     float *x;
-    float p_norm, s_norm;
+    float *p_norm, *s_norm;
+
+    p_norm = (float *) malloc (sizeof (float ) );
+    s_norm = (float *) malloc (sizeof (float ) );
 
     int size = N * sizeof (int );
 
@@ -123,8 +126,8 @@ int main(void) {
     }
 
     // print_vec(x, N, "%5.3f", "y");
-    p_norm = norm(x, N);
-    s_norm = seq_norm(x, N);
+    p_norm[0] = norm(x, N);
+    s_norm[0] = seq_norm(x, N);
 
     printf("\nParallel = %f, Sequential = %f \n", p_norm, s_norm);
 }
