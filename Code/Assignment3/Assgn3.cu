@@ -6,14 +6,15 @@
 #define THREADS_PER_BLOCK 128
 
 
-static void HandleError( cudaError_t err, const char *file, int line ) {
-    if (err != cudaSuccess) {
-        printf( "%s in %s at line %d\n", cudaGetErrorString( err ), file, line );
-        exit( EXIT_FAILURE );
+__global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
+  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+  if(myId < n)
+    for (int i = 1; i < m; ++i) {
+      z[myId] = a*x[myId]*(1.0f - x[myId]);
+      x = z;
     }
-}
-#define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
 
+}
 
 struct kernel_arg {
     float *x;
@@ -78,6 +79,20 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   if(n > 10) printf(", ...");
   printf("\n");
 }
+float logistic(float * x, unsigned int a, unsigned int n, unsigned int m) {
+  float *z;
+  float *dev_x, *dev_z;
+  int size = n*sizeof(float);
+  z = (float *) malloc(size);
+
+  cudaMalloc((void**)(&dev_x), size);
+  cudaMalloc((void**)(&dev_z), size);
+  cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+
+  logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
+  cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+  return *z;
+}
 
 float norm(float * x, unsigned int n) {
 
@@ -104,7 +119,9 @@ void do_timing(void *void_arg) {
 
 int main(int argc, char **argv) {
   unsigned int n = N;
+  unsigned int m = 10;
   float *x, *z_ref;
+  float a;
   cudaDeviceProp prop;
   struct kernel_arg argk;
   struct time_it_raw *tr = time_it_create(10);
@@ -130,6 +147,10 @@ int main(int argc, char **argv) {
   time_it_run(tr, do_timing, (void *)(&argk));
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
+
+
+  a = 3.0;
+  float L = logistic(x, a, n, m);
 
   free(x);
   free(z_ref);

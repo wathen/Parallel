@@ -3,7 +3,7 @@
 #include <iostream>
 #define N (512*512)
 #define THREADS_PER_BLOCK 128
-#define A 1
+
 using namespace std;
 
 __global__ void logistic(unsigned int n, float a, float *x, float *z) {
@@ -113,6 +113,8 @@ float seq_norm(float *x, unsigned int n) {
 int main(void) {
     float *x;
     float *p_norm, *s_norm;
+    float a;
+
     int size = N * sizeof(float);
     p_norm = (float *) malloc (size);
     s_norm = (float *) malloc (size);
