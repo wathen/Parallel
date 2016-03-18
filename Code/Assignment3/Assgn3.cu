@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#define N (32*32)
-#define THREADS_PER_BLOCK 32
+#define N (16*16)
+#define THREADS_PER_BLOCK 16
 
 /**************************************************************
  *  reduce_sum: compute the sum of the elements of an array
