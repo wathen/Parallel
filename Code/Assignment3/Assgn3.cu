@@ -161,9 +161,10 @@ int main(int argc, char **argv) {
 
   a = 3.0;
   float L = logistic(x, a, n, m);
-  z = logistic_ref(n, m, a, x, z);
-  print_vec(L, min(10, N), "%5.3f", "z");
+  logistic_ref(n, m, a, x, z);
+
   print_vec(z, min(10, N), "%5.3f", "z");
+  print_vec(L, min(10, N), "%5.3f", "z");
 
   free(x);
   free(z_ref);
