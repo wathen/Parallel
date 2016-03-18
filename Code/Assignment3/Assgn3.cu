@@ -2,8 +2,8 @@
 #include <math.h>
 #include "time_it.h"
 
-#define N (512*512)
-#define THREADS_PER_BLOCK 256
+#define N (4*512*512)
+#define THREADS_PER_BLOCK 128
 
 
 static void HandleError( cudaError_t err, const char *file, int line ) {
@@ -116,7 +116,7 @@ int main(int argc, char **argv) {
 
 
   for(int i = 0; i < n; i++) {
-    x[i] = 1.0*i;
+    x[i] = 0.005*i;
   }
 
   printf("The GPU is a %s\n", prop.name);
