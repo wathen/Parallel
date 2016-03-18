@@ -16,8 +16,8 @@ static void HandleError( cudaError_t err, const char *file, int line ) {
 
 
 struct kernel_arg {
-    uint n, *v;
-    int m, nblks, tpb, warpSize, whichKernel;
+    float *x;
+    unsigned int n;
 };
 
 __device__ void reduce_sum_dev(unsigned int n, float *x) {
@@ -58,7 +58,7 @@ __global__ void dotprod(unsigned int n, float *x, float *z) {
     z[blockIdx.x] = x[myId];
 }
 
-float norm_ref(unsigned int n, float *x) {
+float norm_ref(float *x, unsigned int n) {
   float sum = 0.0;
   for(int i = 0; i < n; i++)
     sum += x[i] * x[i];
@@ -79,8 +79,8 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("\n");
 }
 
-float norm(float * x, int n) {
-    
+float norm(float * x, unsigned int n) {
+
   float *z;
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
@@ -96,12 +96,17 @@ float norm(float * x, int n) {
   return sqrt(z[0]);
 }
 
-
+void do_timing(void *void_arg) {
+  struct kernel_arg *argk = (struct kernel_arg *)(void_arg);
+  norm(argk->x, argk->n);
+  cudaDeviceSynchronize();
+}
 
 int main(int argc, char **argv) {
   unsigned int n = N;
   float *x, *z_ref;
   cudaDeviceProp prop;
+  struct kernel_arg argk;
   struct time_it_raw *tr = time_it_create(10);
   struct time_it_stats stats;
 
@@ -116,12 +121,16 @@ int main(int argc, char **argv) {
 
   printf("The GPU is a %s\n", prop.name);
   printf("Cuda capability %d.%d.\n", prop.major, prop.minor);
-  float p_norm = norm(x,n);
-  z_ref[0] = norm_ref(n, x);
+  float p_norm = norm(x, n);
+  z_ref[0] = norm_ref(x, n);
 
   printf("Parallel = %f, Sequential = %f\n\n", p_norm, z_ref[0]);
+  argk.n = N;
+  argk.x = x;
+  time_it_run(tr, do_timing, (void *)(&argk));
+  time_it_get_stats(tr, &stats);
+  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
-  
   free(x);
   free(z_ref);
   exit(0);
