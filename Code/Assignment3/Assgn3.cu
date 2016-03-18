@@ -6,14 +6,14 @@
 #define THREADS_PER_BLOCK 128
 
 
-static void HandleError( cudaError_t err, const char *file, int line ) {
-    if (err != cudaSuccess) {
-        printf( "%s in %s at line %d\n", cudaGetErrorString( err ), file, line );
-        exit( EXIT_FAILURE );
+__global__ void logistic(unsigned int n, unsigned int m, float a, float *x, float *z) {
+  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+  if(myId < n)
+    for (int i = 1; i < m; ++i) {
+      z[myId] = a*x[myId]*(1 - x[myId]);
+      x = z;
     }
 }
-#define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
-
 
 struct kernel_arg {
     float *x;
