@@ -16,6 +16,15 @@ __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x,
   }
 }
 
+float void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
+  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+  if(myId < n){
+    for (int i = 1; i < m; ++i) {
+      z[myId] = a*x[myId]*(1.0f - x[myId]);
+      x = z;
+    }
+  }
+}
 struct kernel_arg {
     float *x;
     unsigned int n;
@@ -120,7 +129,7 @@ void do_timing(void *void_arg) {
 int main(int argc, char **argv) {
   unsigned int n = N;
   unsigned int m = 10;
-  float *x, *z_ref;
+  float *x, *z, *z_ref;
   float a;
   cudaDeviceProp prop;
   struct kernel_arg argk;
@@ -129,6 +138,7 @@ int main(int argc, char **argv) {
 
   int size = n*sizeof(float);
   x  = (float *)malloc(size);
+  z  = (float *)malloc(size);
   z_ref = (float *)malloc(size);
 
 
@@ -151,6 +161,9 @@ int main(int argc, char **argv) {
 
   a = 3.0;
   float L = logistic(x, a, n, m);
+  z = logistic_ref(n, m, a, x, z);
+  print_vec(L, min(10, N), "%5.3f", "z");
+  print_vec(z, min(10, N), "%5.3f", "z");
 
   free(x);
   free(z_ref);
