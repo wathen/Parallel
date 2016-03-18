@@ -86,7 +86,7 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("\n");
 }
 
-float norm(float * x, int n) {
+float norm(float * x, unsigned int n) {
     float *dot;
     float *dev_x , *dev_dot;
     int size = n * sizeof (int );
@@ -100,24 +100,23 @@ float norm(float * x, int n) {
     dotprod<<< N/THREADS_PER_BLOCK , THREADS_PER_BLOCK >>>(N, dev_x, dev_dot);
     reduce_sum<<<1,N/THREADS_PER_BLOCK>>>(N/THREADS_PER_BLOCK, dev_dot);
     cudaMemcpy ( dot, dev_dot , sizeof (float ) , cudaMemcpyDeviceToHost );
-    return sqrt(*dot);
+    return *dot;
 }
 
-float seq_norm(float *x, int n) {
+float seq_norm(float *x, unsigned int n) {
     float y = 0.0;
     for(int i = 0; i<n; i++)
         y += x[i] * x[i];
-    return sqrt(y);
+    return (y);
 }
 
 int main(void) {
     float *x;
     float *p_norm, *s_norm;
+    int size = N * sizeof(float);
+    p_norm = (float *) malloc (size);
+    s_norm = (float *) malloc (size);
 
-    p_norm = (float *) malloc (sizeof (float ) );
-    s_norm = (float *) malloc (sizeof (float ) );
-
-    int size = N * sizeof (int );
 
     x = (float *) malloc ( size );
 
@@ -125,7 +124,7 @@ int main(void) {
         x[i] = i;
     }
 
-    // print_vec(x, N, "%5.3f", "y");
+    print_vec(x, N, "%5.3f", "y");
     p_norm[0] = norm(x, N);
     s_norm[0] = seq_norm(x, N);
 
