@@ -6,15 +6,37 @@
 #define THREADS_PER_BLOCK 128
 
 
+<<<<<<< HEAD
 __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
   unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
   if(myId < n)
     for (int i = 1; i < m; ++i) {
       z[myId] = a*x[myId]*(1.0f - x[myId]);
       x = z;
+||||||| merged common ancestors
+static void HandleError( cudaError_t err, const char *file, int line ) {
+    if (err != cudaSuccess) {
+        printf( "%s in %s at line %d\n", cudaGetErrorString( err ), file, line );
+        exit( EXIT_FAILURE );
+=======
+__global__ void logistic(unsigned int n, unsigned int m, float a, float *x, float *z) {
+  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+  if(myId < n)
+    for (int i = 1; i < m; ++i) {
+      z[myId] = a*x[myId]*(1 - x[myId]);
+      x = z;
+>>>>>>> 52caa22bf90397de23c3afc9ce542df1e12d1e16
     }
+<<<<<<< HEAD
 
 }
+||||||| merged common ancestors
+}
+#define HANDLE_ERROR( err ) (HandleError( err, __FILE__, __LINE__ ))
+
+=======
+}
+>>>>>>> 52caa22bf90397de23c3afc9ce542df1e12d1e16
 
 struct kernel_arg {
     float *x;
