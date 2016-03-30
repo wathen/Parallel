@@ -162,11 +162,11 @@ int main(int argc, char **argv) {
   float L = logistic(x, a, n, m);
   logistic_ref(n, m, a, x, z);
   for (int i = 0; i < 10; ++i) {
-    // cout<<L[i];
-    printf("%f\n", z[i]);
+    // stdcout<<L[i];
+    printf("%f\n", L[i]);
   }
   // fprintf(z, "%s\n", );
-  // print_vec(z, min(10, N), "%5.3f", "z");
+  print_vec(z, min(10, N), "%5.3f", "z");
   // print_vec(L, min(10, N), "%5.3f", "z");
 
   free(x);
