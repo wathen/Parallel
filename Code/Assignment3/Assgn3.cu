@@ -168,12 +168,12 @@ int main(int argc, char **argv) {
   // float *LL = L;
   logistic_ref(n, m, a, x, z);
   for (int i = 0; i < 10; ++i) {
-    std::cout<<L[i];
-    // fprintf("%f\n", L[i]);
+    //std::cout<<L[i];
+  //  fprintf("%f\n", L[i]);
   }
   // fprintf(z, "%s\n", );
-  // print_vec(z, min(10, N), "%5.3f", "z");
-  // print_vec_(L, min(10, N), "%5.3f", "z");
+  print_vec(z, min(10, N), "%5.3f", "z");
+  print_vec(L, min(10, N), "%5.3f", "z");
 
   free(x);
   free(z_ref);
