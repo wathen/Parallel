@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-#define N (4*512*512)
+#define N (512*512)
 #define THREADS_PER_BLOCK 128
 
 __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
@@ -90,20 +90,16 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("\n");
 }
 
-void logistic(float * x, unsigned int a, unsigned int n, unsigned int m, float *z) {
-  // float *z;
+void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z) {
+
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
-  // z = (float *) malloc(size);
-
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
 
   logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
   cudaMemcpy(z, dev_z, sizeof(size), cudaMemcpyDeviceToHost);
-
-  // return *z;
 }
 
 float norm(float * x, unsigned int n) {
@@ -145,7 +141,7 @@ int main(int argc, char **argv) {
   z_ref = (float *)malloc(size);
 
   for(int i = 0; i < n; i++) {
-    x[i] = 0.005*i;
+    x[i] = i;
   }
 
   printf("The GPU is a %s\n", prop.name);
@@ -165,13 +161,8 @@ int main(int argc, char **argv) {
   float *L;
   L  = (float*)malloc(size);
   logistic(x, a, n, m, L);
-  // float *LL = L;
   logistic_ref(n, m, a, x, z);
-  for (int i = 0; i < 10; ++i) {
-    //std::cout<<L[i];
-  //  fprintf("%f\n", L[i]);
-  }
-  // fprintf(z, "%s\n", );
+
   print_vec(z, min(10, N), "%5.3f", "z");
   print_vec(L, min(10, N), "%5.3f", "z");
 
