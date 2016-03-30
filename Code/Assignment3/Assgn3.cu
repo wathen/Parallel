@@ -19,7 +19,7 @@ __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x,
 
 void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
   for (int j = 1; j < m; ++j) {
-    for(int i = 1; i < n; ++i){
+    for(int i = 0; i < n; ++i){
      z[i] = a*x[i]*(1.0f - x[i]);
      x[i] = z[i];
     }
@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
   z_ref = (float *)malloc(size);
 
   for(int i = 0; i < n; i++) {
-    x[i] = i;
+    x[i] = 0.001*i;
   }
 
   printf("The GPU is a %s\n", prop.name);
@@ -157,7 +157,7 @@ int main(int argc, char **argv) {
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
-  a = 3.0;
+  a = 3.7;
   float *L;
   L  = (float*)malloc(size);
   logistic(x, a, n, m, L);
