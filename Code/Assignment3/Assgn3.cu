@@ -1,27 +1,26 @@
 #include <stdio.h>
 #include <math.h>
 #include "time_it.h"
-
+#include <iostream>
 #define N (4*512*512)
 #define THREADS_PER_BLOCK 128
-
+using namespace std;
 
 __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
   unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
   if(myId < n){
     for (int i = 1; i < m; ++i) {
       z[myId] = a*x[myId]*(1.0f - x[myId]);
-      x = z;
+      x[myId] = z[myId];
     }
   }
 }
 
 float void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
-  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
-  if(myId < n){
-    for (int i = 1; i < m; ++i) {
-      z[myId] = a*x[myId]*(1.0f - x[myId]);
-      x = z;
+  for (int j = 1; j < m; ++j) {
+    for(int i = 1; i < n; ++i){
+     z[i] = a*x[i]*(1.0f - x[i]);
+     x[i] = z[i];
     }
   }
 }
@@ -88,6 +87,8 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   if(n > 10) printf(", ...");
   printf("\n");
 }
+
+
 float logistic(float * x, unsigned int a, unsigned int n, unsigned int m) {
   float *z;
   float *dev_x, *dev_z;
@@ -99,7 +100,8 @@ float logistic(float * x, unsigned int a, unsigned int n, unsigned int m) {
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
 
   logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
-  cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+  cudaMemcpy(z, dev_z, sizeof(size), cudaMemcpyDeviceToHost);
+
   return *z;
 }
 
@@ -141,7 +143,6 @@ int main(int argc, char **argv) {
   z  = (float *)malloc(size);
   z_ref = (float *)malloc(size);
 
-
   for(int i = 0; i < n; i++) {
     x[i] = 0.005*i;
   }
@@ -158,13 +159,16 @@ int main(int argc, char **argv) {
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
-
   a = 3.0;
   float L = logistic(x, a, n, m);
   logistic_ref(n, m, a, x, z);
-
-  print_vec(z, min(10, N), "%5.3f", "z");
-  print_vec(L, min(10, N), "%5.3f", "z");
+  for (int i = 0; i < 10; ++i) {
+    // cout<<L[i];
+    printf("%f\n", z[i]);
+  }
+  // fprintf(z, "%s\n", );
+  // print_vec(z, min(10, N), "%5.3f", "z");
+  // print_vec(L, min(10, N), "%5.3f", "z");
 
   free(x);
   free(z_ref);

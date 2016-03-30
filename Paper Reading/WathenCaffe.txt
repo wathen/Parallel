@@ -1,0 +1,17 @@
+1. What problem does the paper address?
+
+The paper looks at the software Caffe which is a deep learning framework. A key motivation is large-scale visual recognition.
+
+2. What is the key insight/idea in the paper's solution to this problem?
+
+The idea of this paper is to create a software package (Caffe) that handles recognition type problems. They package utilises CUDA on the GPU and has near-complete bindings for Python and MATLAB.
+
+3. What did the authors do to demonstrate their claims? (e.g. implement a tool, present a proof, run simulations, etc.)
+
+The package has been tested on a number of different recognition type problems, namely object classification, learning semantic features and object detection.
+
+4. Is the support for the claims convincing? Why or why not?
+
+In the first six months, Caffe has been used in a number of research projects both at UC Berkeley (where it was developed) and a number of other universities. It has also been used by industrial partners such as Facebook and Adobe.
+
+
