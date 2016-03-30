@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "time_it.h"
+#include <iostream>
+using namespace std;
 
 #define N (4*512*512)
 #define THREADS_PER_BLOCK 128
@@ -22,6 +24,7 @@ void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
      x[i] = z[i];
     }
   }
+
 }
 struct kernel_arg {
     float *x;
@@ -87,12 +90,11 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("\n");
 }
 
-
-float logistic(float * x, unsigned int a, unsigned int n, unsigned int m) {
-  float *z;
+void logistic(float * x, unsigned int a, unsigned int n, unsigned int m, float *z) {
+  // float *z;
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
-  z = (float *) malloc(size);
+  // z = (float *) malloc(size);
 
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
@@ -101,7 +103,7 @@ float logistic(float * x, unsigned int a, unsigned int n, unsigned int m) {
   logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
   cudaMemcpy(z, dev_z, sizeof(size), cudaMemcpyDeviceToHost);
 
-  return *z;
+  // return *z;
 }
 
 float norm(float * x, unsigned int n) {
@@ -151,6 +153,7 @@ int main(int argc, char **argv) {
   float p_norm = norm(x, n);
   z_ref[0] = norm_ref(x, n);
 
+
   printf("Parallel = %f, Sequential = %f\n\n", p_norm, z_ref[0]);
   argk.n = N;
   argk.x = x;
@@ -159,15 +162,18 @@ int main(int argc, char **argv) {
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
   a = 3.0;
-  float L = logistic(x, a, n, m);
+  float *L;
+  L  = (float*)malloc(size);
+  logistic(x, a, n, m, L);
+  // float *LL = L;
   logistic_ref(n, m, a, x, z);
   for (int i = 0; i < 10; ++i) {
-    // stdcout<<L[i];
-    printf("%f\n", L[i]);
+    std::cout<<L[i];
+    // fprintf("%f\n", L[i]);
   }
   // fprintf(z, "%s\n", );
-  print_vec(z, min(10, N), "%5.3f", "z");
-  // print_vec(L, min(10, N), "%5.3f", "z");
+  // print_vec(z, min(10, N), "%5.3f", "z");
+  // print_vec_(L, min(10, N), "%5.3f", "z");
 
   free(x);
   free(z_ref);
