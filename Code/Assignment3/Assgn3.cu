@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 #include "time_it.h"
-#include <iostream>
+
 #define N (4*512*512)
 #define THREADS_PER_BLOCK 128
-using namespace std;
 
 __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
   unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
@@ -16,7 +15,7 @@ __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x,
   }
 }
 
-float void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
+void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
   for (int j = 1; j < m; ++j) {
     for(int i = 1; i < n; ++i){
      z[i] = a*x[i]*(1.0f - x[i]);
