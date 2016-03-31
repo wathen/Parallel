@@ -3,7 +3,6 @@
 #include "time_it.h"
 #include <iostream>
 using namespace std;
-
 #define N (512*512)
 #define THREADS_PER_BLOCK 128
 
@@ -12,6 +11,7 @@ __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x,
   if(myId < n){
     for (int i = 1; i < m; ++i) {
       z[myId] = a*x[myId]*(1.0f - x[myId]);
+      printf("Value is: %f\n", z[myId]);
       x[myId] = z[myId];
     }
   }
