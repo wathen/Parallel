@@ -131,11 +131,11 @@ void do_timing(void *void_arg) {
 
 int main(int argc, char *argv[] ) {
 // dimension, blocksize, a, m
-  unsigned int n = atoi(argv[0]);
-  unsigned int m = atoi(argv[3]);
-  unsigned int blocksize = atoi(argv[1]);
+  unsigned int n = atoi(argv[1]);
+  unsigned int m = atoi(argv[4]);
+  unsigned int blocksize = atoi(argv[2]);
   float *x, *z, *z_ref;
-  float a = atoi(argv[2]);
+  float a = atoi(argv[3]);
   cudaDeviceProp prop;
   struct kernel_arg argk;
   struct time_it_raw *tr = time_it_create(10);
@@ -145,11 +145,10 @@ int main(int argc, char *argv[] ) {
   x  = (float *)malloc(size);
   z  = (float *)malloc(size);
   z_ref = (float *)malloc(size);
-
+  printf("%d\n",n );
   for(int i = 0; i < n; i++) {
     x[i] =  (float)rand() / (float)RAND_MAX;
-    printf("%f\n", x[i]);
-    cout<<x[i];
+
   }
 
   printf("The GPU is a %s\n", prop.name);
@@ -174,9 +173,9 @@ int main(int argc, char *argv[] ) {
   print_vec(z, min(10, N), "%5.3f", "z");
   print_vec(L, min(10, N), "%5.3f", "z");
 
-  for(int i = 0; i < n; i++){
-      printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
-  }
+  // for(int i = 0; i < n; i++){
+  //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
+  // }
   free(x);
   free(z_ref);
   exit(0);
