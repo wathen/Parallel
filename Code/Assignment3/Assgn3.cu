@@ -31,6 +31,7 @@ void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
 struct kernel_arg {
     float *x;
     unsigned int n;
+    unsigned int blocksize;
 };
 
 __device__ void reduce_sum_dev(unsigned int n, float *x) {
@@ -92,7 +93,7 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("\n");
 }
 
-void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z) {
+void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z, unsigned int blocksize) {
 
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
@@ -101,11 +102,11 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
 
-  logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
+  logistic_cuda<<<n/blocksize , blocksize>>>(n, m, a, dev_x, dev_z);
   cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
 }
 
-float norm(float * x, unsigned int n) {
+float norm(float * x, unsigned int n, unsigned int blocksize) {
 
   float *z;
   float *dev_x, *dev_z;
@@ -116,24 +117,25 @@ float norm(float * x, unsigned int n) {
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
 
-  dotprod<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, dev_x, dev_z);
-  reduce_sum<<<1,N/THREADS_PER_BLOCK>>>(N/THREADS_PER_BLOCK, dev_z);
+  dotprod<<<n/blocksize , blocksize>>>(n, dev_x, dev_z);
+  reduce_sum<<<1,n/blocksize>>>(n/THREADS_PER_BLOCK, dev_z);
   cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   return sqrt(z[0]);
 }
 
 void do_timing(void *void_arg) {
   struct kernel_arg *argk = (struct kernel_arg *)(void_arg);
-  norm(argk->x, argk->n);
+  norm(argk->x, argk->n, argk->blocksize);
   cudaDeviceSynchronize();
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char *argv[] ) {
 // dimension, blocksize, a, m
-  unsigned int n = argv[0];
-  unsigned int m = argv[3];
+  unsigned int n = atoi(argv[0]);
+  unsigned int m = atoi(argv[3]);
+  unsigned int blocksize = atoi(argv[1]);
   float *x, *z, *z_ref;
-  float a = argv[2];
+  float a = atoi(argv[2]);
   cudaDeviceProp prop;
   struct kernel_arg argk;
   struct time_it_raw *tr = time_it_create(10);
@@ -146,24 +148,27 @@ int main(int argc, char **argv) {
 
   for(int i = 0; i < n; i++) {
     x[i] =  (float)rand() / (float)RAND_MAX;
+    printf("%f\n", x[i]);
+    cout<<x[i];
   }
 
   printf("The GPU is a %s\n", prop.name);
   printf("Cuda capability %d.%d.\n", prop.major, prop.minor);
-  float p_norm = norm(x, n);
+  float p_norm = norm(x, n, blocksize);
   z_ref[0] = norm_ref(x, n);
 
 
   printf("Parallel = %f, Sequential = %f\n\n", p_norm, z_ref[0]);
   argk.n = N;
   argk.x = x;
+  argk.blocksize = blocksize;
   time_it_run(tr, do_timing, (void *)(&argk));
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
   float *L;
   L  = (float*)malloc(size);
-  logistic(x, a, n, m, L);
+  logistic(x, a, n, m, L, blocksize);
   logistic_ref(n, m, a, x, z);
 
   print_vec(z, min(10, N), "%5.3f", "z");
