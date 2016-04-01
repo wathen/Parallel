@@ -3,17 +3,19 @@
 #include "time_it.h"
 #include <iostream>
 using namespace std;
-#define N (512*512)
-#define THREADS_PER_BLOCK 128
+#define N (16*16)
+#define THREADS_PER_BLOCK 8
 
 __global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
   unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+  float X, Z;
+  X = x[myId];
   if(myId < n){
     for (int i = 1; i < m; ++i) {
-      z[myId] = a*x[myId]*(1.0f - x[myId]);
-      printf("Index %d and values x = %f, z = %f\n",myId, x[myId], z[myId]);
-      x[myId] = z[myId];
+      Z = a*X*(1.0f - X);
+      X = Z;
     }
+    z[myId] = Z;
   }
 }
 
@@ -100,7 +102,7 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
 
   logistic_cuda<<<N/THREADS_PER_BLOCK , THREADS_PER_BLOCK>>>(n, m, a, dev_x, dev_z);
-  cudaMemcpy(z, dev_z, sizeof(size), cudaMemcpyDeviceToHost);
+  cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
 }
 
 float norm(float * x, unsigned int n) {
@@ -127,10 +129,11 @@ void do_timing(void *void_arg) {
 }
 
 int main(int argc, char **argv) {
-  unsigned int n = N;
-  unsigned int m = 10;
+// dimension, blocksize, a, m
+  unsigned int n = argv[0];
+  unsigned int m = argv[3];
   float *x, *z, *z_ref;
-  float a;
+  float a = argv[2];
   cudaDeviceProp prop;
   struct kernel_arg argk;
   struct time_it_raw *tr = time_it_create(10);
@@ -142,7 +145,7 @@ int main(int argc, char **argv) {
   z_ref = (float *)malloc(size);
 
   for(int i = 0; i < n; i++) {
-    x[i] = 0.1*i;
+    x[i] =  (float)rand() / (float)RAND_MAX;
   }
 
   printf("The GPU is a %s\n", prop.name);
@@ -158,7 +161,6 @@ int main(int argc, char **argv) {
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
-  a = 3.7;
   float *L;
   L  = (float*)malloc(size);
   logistic(x, a, n, m, L);
@@ -167,6 +169,9 @@ int main(int argc, char **argv) {
   print_vec(z, min(10, N), "%5.3f", "z");
   print_vec(L, min(10, N), "%5.3f", "z");
 
+  for(int i = 0; i < n; i++){
+      printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
+  }
   free(x);
   free(z_ref);
   exit(0);
