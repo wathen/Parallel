@@ -1,0 +1,15 @@
+1. What problem does the paper address?
+
+The main problem that the paper deals with is the enormous search space Go game presents.
+
+2. What is the key insignt/idea in the paper's solution to this problem?
+
+The idea of the paper is to use two convolutional neural networks. The first one outputs the probability of each legal move and the other one outputs the potential value of each move.
+
+3. What did the authors do to demonstrate their claims? (e.g. implement a tool, present a proof, run simulations, etc.)
+
+They set up these networks and start to train them on data that has been got from expert humans.
+
+4. Is the support for the claims convincing? Why or why not?
+
+With more training both the networks would improve. However, it seems that they are working well.
