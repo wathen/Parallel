@@ -101,8 +101,8 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-
-  logistic_cuda<<<n/blocksize , blocksize>>>(n, m, a, dev_x, dev_z);
+  unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  logistic_cuda<<<nblks , blocksize>>>(n, m, a, dev_x, dev_z);
   cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
 }
 
@@ -116,8 +116,8 @@ float norm(float * x, unsigned int n, unsigned int blocksize) {
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-
-  dotprod<<<n/blocksize , blocksize>>>(n, dev_x, dev_z);
+  unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  dotprod<<<nblks , blocksize>>>(n, dev_x, dev_z);
   reduce_sum<<<1,n/blocksize>>>(n/THREADS_PER_BLOCK, dev_z);
   cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   return sqrt(z[0]);
