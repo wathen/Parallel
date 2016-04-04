@@ -168,13 +168,20 @@ int main(int argc, char *argv[] ) {
 
   }
 
+  int ndev;
+  cudaGetDeviceCount(&ndev);
+  cudaGetDeviceProperties(&prop, 0);
   printf("The GPU is a %s\n", prop.name);
   printf("Cuda capability %d.%d.\n", prop.major, prop.minor);
   float p_norm = norm(x, n, blocksize);
   z_ref[0] = norm_ref(x, n);
 
 
-  printf("Parallel = %f, Sequential = %f\n\n", p_norm, z_ref[0]);
+  
+  printf("Parallel = %f, Sequential = %f\n", p_norm, z_ref[0]);
+  printf("Error = %3.4e\n\n",1.0e-6*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
+
+
   argk_n.n = N;
   argk_n.x = x;
   argk_n.blocksize = blocksize;
