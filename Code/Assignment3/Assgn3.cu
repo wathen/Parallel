@@ -106,7 +106,6 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
 
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
-  print_vec(x,10,"%5.5f","x");
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
@@ -177,7 +176,7 @@ int main(int argc, char *argv[] ) {
   z_ref[0] = norm_ref(x, n);
 
 
-  
+
   printf("Parallel = %f, Sequential = %f\n", p_norm, z_ref[0]);
   printf("Error = %3.4e\n\n",1.0e-6*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
 
