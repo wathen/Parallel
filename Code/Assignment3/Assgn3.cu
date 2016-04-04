@@ -144,7 +144,6 @@ void do_timing_logistic(void *void_arg) {
 }
 
 int main(int argc, char *argv[] ) {
-// dimension, blocksize, a, m
   unsigned int n = atoi(argv[1]);
   unsigned int m = atoi(argv[4]);
   unsigned int blocksize = atoi(argv[2]);
@@ -177,8 +176,7 @@ int main(int argc, char *argv[] ) {
 
 
 
-  printf("Parallel = %f, Sequential = %f\n", p_norm, z_ref[0]);
-  printf("Error = %3.4e\n\n",1.0e-6*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
+  printf("\n Norm error = %3.4e\n\n",1.0e-7*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
 
 
   argk_n.n = N;
@@ -186,7 +184,7 @@ int main(int argc, char *argv[] ) {
   argk_n.blocksize = blocksize;
   time_it_run(tr, do_timing_norm, (void *)(&argk_n));
   time_it_get_stats(tr, &stats_n);
-  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats_n.mean, stats_n.std);
+  printf("Norm: mean(T) = %10.3e, std(T) = %10.3e\n", stats_n.mean, stats_n.std);
 
 
   float *L;
@@ -194,8 +192,6 @@ int main(int argc, char *argv[] ) {
   logistic(x, a, n, m, L, blocksize);
   logistic_ref(n, m, a, x, z);
 
-  print_vec(z, min(10, N), "%5.3f", "z");
-  print_vec(L, min(10, N), "%5.3f", "z");
   argk_l.x = x;
   argk_l.a = a;
   argk_l.n = n;
@@ -204,13 +200,12 @@ int main(int argc, char *argv[] ) {
   argk_l.blocksize = blocksize;
   time_it_run(tr, do_timing_logistic, (void *)(&argk_l));
   time_it_get_stats(tr, &stats_l);
-  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats_l.mean, stats_l.std);
-
-  printf("\n\nLogistic calculations:   # operations = %1.4i   mean time = %1.4e  time per op = %1.4e\n\n", 3*n*m, stats_l.mean, stats_l.mean/(3*n*m));
+  printf("Logistic: mean(T) = %10.3e, std(T) = %10.3e\n", stats_l.mean, stats_l.std);
+  printf("\n\nLogistic calculations:   # operations = %10.4i   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 3*n*m, stats_l.mean, stats_l.mean/(3*n*m), (3*(float)n*(float)m)/(stats_l.mean*pow(10,9)));
   float Left_over_block = roundf((float)blocksize*( (((float)(n))/((float)(blocksize))) - floor(((float)(n))/((float)(blocksize)))));
   float nblocks = floor(((float)(n))/((float)(blocksize)));
 
-  printf("Norm calculations:       # operations = %5.0f   mean time = %1.4e  time per op = %1.4e\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), stats_n.mean, stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)));
+  printf("Norm calculations:       # operations = %10.4f   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), stats_n.mean, stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),pow(stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),-1)/pow(10,9));
 
   // for(int i = 0; i < n; i++){
   //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
