@@ -201,8 +201,10 @@ int main(int argc, char *argv[] ) {
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats_l.mean, stats_l.std);
 
   printf("\n\nLogistic calculations:   # operations = %1.4i   mean time = %1.4e  time per op = %1.4e\n\n", 3*n*m, stats_l.mean, stats_l.mean/(3*n*m));
+  float Left_over_block = roundf((float)blocksize*( (((float)(n))/((float)(blocksize))) - floor(((float)(n))/((float)(blocksize)))));
+  float nblocks = floor(((float)(n))/((float)(blocksize)));
 
-  printf("Norm calculations:       # operations = %1.4i   mean time = %1.4e  time per op = %1.4e\n\n", 2*n, stats_n.mean, stats_n.mean/(3*n*m));
+  printf("Norm calculations:       # operations = %5.0f   mean time = %1.4e  time per op = %1.4e\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), stats_n.mean, stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)));
 
   // for(int i = 0; i < n; i++){
   //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
