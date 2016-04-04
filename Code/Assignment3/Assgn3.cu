@@ -155,7 +155,8 @@ int main(int argc, char *argv[] ) {
   struct kernel_arg_norm argk_n;
   struct kernel_arg_logistic argk_l;
   struct time_it_raw *tr = time_it_create(10);
-  struct time_it_stats stats;
+  struct time_it_stats stats_n;
+  struct time_it_stats stats_l;
 
   int size = n*sizeof(float);
   x  = (float *)malloc(size);
@@ -178,8 +179,9 @@ int main(int argc, char *argv[] ) {
   argk_n.x = x;
   argk_n.blocksize = blocksize;
   time_it_run(tr, do_timing_norm, (void *)(&argk_n));
-  time_it_get_stats(tr, &stats);
-  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
+  time_it_get_stats(tr, &stats_n);
+  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats_n.mean, stats_n.std);
+
 
   float *L;
   L  = (float*)malloc(size);
@@ -195,8 +197,13 @@ int main(int argc, char *argv[] ) {
   argk_l.z = z;
   argk_l.blocksize = blocksize;
   time_it_run(tr, do_timing_logistic, (void *)(&argk_l));
-  time_it_get_stats(tr, &stats);
-  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
+  time_it_get_stats(tr, &stats_l);
+  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats_l.mean, stats_l.std);
+
+  printf("\n\nLogistic calculations:   # operations = %1.4i   mean time = %1.4e  time per op = %1.4e\n\n", 3*n*m, stats_l.mean, stats_l.mean/(3*n*m));
+
+  printf("Norm calculations:       # operations = %1.4i   mean time = %1.4e  time per op = %1.4e\n\n", 2*n, stats_n.mean, stats_n.mean/(3*n*m));
+
   // for(int i = 0; i < n; i++){
   //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
   // }
