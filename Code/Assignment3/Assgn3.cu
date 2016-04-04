@@ -28,10 +28,19 @@ void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
   }
 
 }
-struct kernel_arg {
-    float *x;
-    unsigned int n;
-    unsigned int blocksize;
+struct kernel_arg_norm {
+  float *x;
+  unsigned int n;
+  unsigned int blocksize;
+};
+
+struct kernel_arg_logistic {
+  float *x;
+  unsigned int a;
+  unsigned int n;
+  unsigned int m;
+  float *z;
+  unsigned int blocksize;
 };
 
 __device__ void reduce_sum_dev(unsigned int n, float *x) {
@@ -123,9 +132,15 @@ float norm(float * x, unsigned int n, unsigned int blocksize) {
   return sqrt(z[0]);
 }
 
-void do_timing(void *void_arg) {
-  struct kernel_arg *argk = (struct kernel_arg *)(void_arg);
+void do_timing_norm(void *void_arg) {
+  struct kernel_arg_norm *argk = (struct kernel_arg_norm *)(void_arg);
   norm(argk->x, argk->n, argk->blocksize);
+  cudaDeviceSynchronize();
+}
+
+void do_timing_logistic(void *void_arg) {
+  struct kernel_arg_logistic *argk = (struct kernel_arg_logistic *)(void_arg);
+  logistic(argk->x, argk->a, argk->n, argk->m, argk->z, argk->blocksize);
   cudaDeviceSynchronize();
 }
 
@@ -137,7 +152,8 @@ int main(int argc, char *argv[] ) {
   float *x, *z, *z_ref;
   float a = atoi(argv[3]);
   cudaDeviceProp prop;
-  struct kernel_arg argk;
+  struct kernel_arg_norm argk_n;
+  struct kernel_arg_logistic argk_l;
   struct time_it_raw *tr = time_it_create(10);
   struct time_it_stats stats;
 
@@ -158,10 +174,10 @@ int main(int argc, char *argv[] ) {
 
 
   printf("Parallel = %f, Sequential = %f\n\n", p_norm, z_ref[0]);
-  argk.n = N;
-  argk.x = x;
-  argk.blocksize = blocksize;
-  time_it_run(tr, do_timing, (void *)(&argk));
+  argk_n.n = N;
+  argk_n.x = x;
+  argk_n.blocksize = blocksize;
+  time_it_run(tr, do_timing_norm, (void *)(&argk_n));
   time_it_get_stats(tr, &stats);
   printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
 
@@ -172,7 +188,15 @@ int main(int argc, char *argv[] ) {
 
   print_vec(z, min(10, N), "%5.3f", "z");
   print_vec(L, min(10, N), "%5.3f", "z");
-
+  argk_l.x = x;
+  argk_l.a = a;
+  argk_l.n = n;
+  argk_l.m = m;
+  argk_l.z = z;
+  argk_l.blocksize = blocksize;
+  time_it_run(tr, do_timing_logistic, (void *)(&argk_l));
+  time_it_get_stats(tr, &stats);
+  printf("mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
   // for(int i = 0; i < n; i++){
   //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
   // }
