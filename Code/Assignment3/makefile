@@ -5,6 +5,8 @@ LDFLAGS   =
 OBJ     = time_it.o
 HDRS    = time_it.h
 
+main: Assgn3.o $(OBJ)
+	$(NVCC) $(CFLAGS) Assgn3.o $(OBJ) $(LDFLAGS) -o Assgn3
 q1: Assgn3_q1.o $(OBJ)
 	$(NVCC) $(CFLAGS) Assgn3_q1.o $(OBJ) $(LDFLAGS) -o Assgn3_q1
 q3: Assgn3_q3.o $(OBJ)
