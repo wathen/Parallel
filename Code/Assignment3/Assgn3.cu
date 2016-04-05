@@ -175,7 +175,7 @@ int main(int argc, char *argv[] ) {
   z_ref[0] = norm_ref(x, n);
 
 
-
+  printf("\n Parallel = %5.5f,   Sequential = %5.5f",p_norm,z_ref[0]);
   printf("\n Norm error = %3.4e\n\n",1.0e-7*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
 
 
