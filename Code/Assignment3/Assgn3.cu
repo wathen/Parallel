@@ -126,7 +126,7 @@ float norm(float * x, unsigned int n, unsigned int blocksize) {
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
   dotprod<<<nblks , blocksize>>>(n, dev_x, dev_z);
-  reduce_sum<<<1,n/blocksize>>>(n/THREADS_PER_BLOCK, dev_z);
+  reduce_sum<<<1,nblks>>>(nblks, dev_z);
   cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   return sqrt(z[0]);
 }
@@ -176,7 +176,7 @@ int main(int argc, char *argv[] ) {
 
 
   printf("\n Parallel = %5.5f,   Sequential = %5.5f",p_norm,z_ref[0]);
-  printf("\n Norm error = %3.4e\n\n",1.0e-7*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
+  printf("\n Norm error = %3.4e\n\n",1.0e-6*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
 
 
   argk_n.n = N;
