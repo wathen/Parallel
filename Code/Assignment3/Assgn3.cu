@@ -32,6 +32,7 @@ struct kernel_arg_norm {
   float *x;
   unsigned int n;
   unsigned int blocksize;
+  unsigned int MaxBlks;
 };
 
 struct kernel_arg_logistic {
@@ -114,22 +115,33 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
   cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
 }
 
-float norm(float * x, unsigned int n, unsigned int blocksize) {
+float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBlks) {
 
   float *z, *zOut;
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
   z = (float *) malloc(size);
   zOut = (float *) malloc(sizeof(float));
- 
-  cudaMalloc((void**)(&dev_x), size);
-  cudaMalloc((void**)(&dev_z), size);
-  cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+
+
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  if (n < MaxBlks*MaxBlks) {
+    cudaMalloc((void**)(&dev_x), size);
+    cudaMalloc((void**)(&dev_z), size);
+    cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+    dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
+    reduce_sum<<<1,blocksize>>>(nblks, dev_z);
+  } else {
+    unsigned int vecSplit = ceil((float)n/(float)MaxBlks);
+    for (int i = 0; i < vecSplit; ++i) {
+      X =
+      cudaMalloc((void**)(&dev_x), size);
+      cudaMalloc((void**)(&dev_z), size);
+      cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+    }
+  }
   dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
   cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
-  print_vec(z, 10, "%5.5f","V");
-  printf("\n nblks = %5.0i\n", nblks);
   reduce_sum<<<1,blocksize>>>(nblks, dev_z);
   cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   print_vec(zOut, 10, "%5.5f","V");
@@ -138,7 +150,7 @@ float norm(float * x, unsigned int n, unsigned int blocksize) {
 
 void do_timing_norm(void *void_arg) {
   struct kernel_arg_norm *argk = (struct kernel_arg_norm *)(void_arg);
-  norm(argk->x, argk->n, argk->blocksize);
+  norm(argk->x, argk->n, argk->blocksize, argk->MaxBlks);
   cudaDeviceSynchronize();
 }
 
@@ -176,7 +188,9 @@ int main(int argc, char *argv[] ) {
   cudaGetDeviceProperties(&prop, 0);
   printf("The GPU is a %s\n", prop.name);
   printf("Cuda capability %d.%d.\n", prop.major, prop.minor);
-  float p_norm = norm(x, n, blocksize);
+  unsigned int MaxBlks = prop.maxThreadsPerBlock;
+
+  float p_norm = norm(x, n, blocksize, MaxBlks);
   z_ref[0] = norm_ref(x, n);
 
 
@@ -187,6 +201,7 @@ int main(int argc, char *argv[] ) {
   argk_n.n = N;
   argk_n.x = x;
   argk_n.blocksize = blocksize;
+  argk_n.MaxBlks = MaxBlks;
   time_it_run(tr, do_timing_norm, (void *)(&argk_n));
   time_it_get_stats(tr, &stats_n);
   printf("Norm: mean(T) = %10.3e, std(T) = %10.3e\n", stats_n.mean, stats_n.std);

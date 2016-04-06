@@ -36,7 +36,6 @@ void logistic_ref(unsigned int n, unsigned int m, float a, float *x, float *z) {
      x[i] = z[i];
     }
   }
-
 }
 
 void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
