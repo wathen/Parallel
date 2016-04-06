@@ -69,13 +69,13 @@ float reduce_sum_ref(unsigned int n, float *x) {
 *    Simple version: we only handle one block of threads
 *******************************/
 
-__global__ void dotprod(unsigned int n, float *x, float *z) {
+__global__ void dotprod(unsigned int n, float *x, float *y, float *z) {
   unsigned int blockBase = blockDim.x * blockIdx.x;
   unsigned int myId = blockBase + threadIdx.x;
   unsigned int m = min(blockDim.x, n - blockBase);
 
   if(myId < n)
-    x[myId] *= x[myId];
+    x[myId] *= y[myId];
   reduce_sum_dev(m, &(x[blockBase]));
   if((myId < n) && (threadIdx.x == 0))
     z[blockIdx.x] = x[myId];
@@ -116,19 +116,24 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
 
 float norm(float * x, unsigned int n, unsigned int blocksize) {
 
-  float *z;
+  float *z, *zOut;
   float *dev_x, *dev_z;
   int size = n*sizeof(float);
   z = (float *) malloc(size);
-
+  zOut = (float *) malloc(sizeof(float));
+ 
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-  dotprod<<<nblks , blocksize>>>(n, dev_x, dev_z);
-  reduce_sum<<<1,nblks>>>(nblks, dev_z);
-  cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-  return sqrt(z[0]);
+  dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
+  cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
+  print_vec(z, 10, "%5.5f","V");
+  printf("\n nblks = %5.0i\n", nblks);
+  reduce_sum<<<1,blocksize>>>(nblks, dev_z);
+  cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+  print_vec(zOut, 10, "%5.5f","V");
+  return sqrt(zOut[0]);
 }
 
 void do_timing_norm(void *void_arg) {
