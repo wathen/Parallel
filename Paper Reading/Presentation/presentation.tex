@@ -175,12 +175,23 @@
 
 \begin{frame}{Geometric multigrid (continued)}
 
+General multigrid algorithm
 \begin{description}[align=right]
   \item[Step 1:] smooth error (residual)
   \item[Step 2:] restrict to coarse grid
   \item[Step 3:] Solve on coarse grid
   \item[Step 4:] prolongate and correct
 \end{description}
+
+\end{frame}
+
+
+\begin{frame}{Parallel geometric multigrid}
+Basic idea: split up discretisation grid
+
+\begin{center}
+  \includegraphics[width=.75\textwidth]{PGM.png}
+\end{center}
 
 \end{frame}
 
@@ -196,22 +207,20 @@
 \end{frame}
 
 \section{AMG}
-\begin{frame}{Algebraic Multigrid}
+\begin{frame}{Algebraic multigrid}
 How do we do this in without defining a sequence of grids
 
 \begin{itemize}
   \item Algebraic smoothness
   \item Algebraic restriction (how to define a sequence of grids)
 \end{itemize}
-
-
 \end{frame}
 
 
 
 
 
-\begin{frame}
+\begin{frame}{Algebraic multigrid: smoothness}
 
 \textbf{Smoothness:}
 $$e^{\mbox{\tiny{T}}}Ae = \lambda \ll 1$$
@@ -220,13 +229,190 @@ $$e^{\mbox{\tiny{T}}}Ae = \lambda \ll 1$$
 $$e^{\mbox{\tiny{T}}}Ae = \sum_{i<j} (-a_{ij})(e_i-e_j)^2 \ll 1$$
 
 
+
+\end{frame}
+
+
+\begin{frame}{Algebraic multigrid: grid selection}
+
 \textbf{Strength of Connection}
 $$-a_{ij}\geq \theta \max_{k\neq i} \{-a_{ik}\} \ \ \ \mbox{where } \theta \in (0,1]$$
+
+\begin{itemize}
+  \item[1.] Define strength matrix $A_s$
+  \item[2.] Choose set of fine points based on $A_s$
+  \item[3.] Choose extra points to satisfy interpolation requirements
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+% section section_name (end)
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[trim = 85mm 40mm 85mm  40mm, clip, width=0.48\textwidth]{AMG1.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item select C-pt with maximal measure
+  \item select neighbours as F-pts
+  \item update measures of F-pt neighbours
+
+\end{itemize}
+
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[trim = 85mm 40mm 85mm  40mm, clip, width=0.48\textwidth]{AMG2.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item \re{select C-pt with maximal measure}
+  \item select neighbours as F-pts
+  \item update measures of F-pt neighbours
+
+\end{itemize}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[trim = 85mm 40mm 85mm  40mm, clip, width=0.48\textwidth]{AMG3.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item select C-pt with maximal measure
+  \item \re{select neighbours as F-pts}
+  \item update measures of F-pt neighbours
+
+\end{itemize}
+\end{tabular}
+
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[trim = 85mm 40mm 85mm  40mm, clip, width=0.48\textwidth]{AMG4.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item select C-pt with maximal measure
+  \item select neighbours as F-pts
+  \item \re{update measures of F-pt neighbours}
+
+\end{itemize}
+
+\end{tabular}
+
+\end{frame}
+\begin{frame}{Parallel algebraic multigrid}
+\begin{itemize}
+  \item This process is inherently sequential.....
+  \item Parallel algorithms:
+  \begin{itemize}
+    \item CLJP (Cleary-Luby-Jones-Plassmann) – one-pass approach with random numbers to get concurrency
+    \item Falgout – C-AMG on processor interior, then CLJP to finish
+    \item PMIS – CLJP without the `C'; parallel version of C-AMG first pass
+    \item HMIS – C-AMG on processor interior, then PMIS to finish
+    \item $\ldots$
+  \end{itemize}
+\end{itemize}
+
 
 
 \end{frame}
 
 
+\begin{frame}
+% section section_name (end)
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[width=0.48\textwidth]{PAMG1.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item select C-pts with maximal measure locally
+  \item remove neighbour edges
+  \item update neighbour measures
+
+\end{itemize}
+
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[width=0.48\textwidth]{PAMG2.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item \re{select C-pts with maximal measure locally}
+  \item remove neighbour edges
+  \item update neighbour measures
+
+\end{itemize}
+\end{tabular}
+
+\end{frame}
+
+\begin{frame}
+
+
+\begin{tabular}{ p{0.525\textwidth} p{0.35\textwidth}}
+
+\hspace{5mm} \includegraphics[width=0.48\textwidth]{PAMG3.png} &
+
+\vspace{-1.75in}
+
+\begin{itemize}
+  \item {select C-pts with maximal measure locally}
+  \item \re{remove neighbour edges}
+  \item \re{update neighbour measures}
+
+\end{itemize}
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Summary}
+\begin{itemize}
+  \item Multigrid methods are optimal and have good scaling potential
+  \vspace{1mm}
+  \item GM: relies on a sequence of predetermined geometric grids
+  \item AMG: uses matrix coefficients to determine a sequence of ``grids''
+  \vspace{1mm}
+  \item P-AMG: additional restrictions on AMG algorithmic development
+\end{itemize}
+\pause
+\begin{center}
+  \large{THANK YOU}
+\end{center}
+\end{frame}
 
 
 
