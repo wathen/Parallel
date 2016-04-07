@@ -122,6 +122,7 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   int nUpdate = n;
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
   //z = (float *) malloc(size);
+  z = 0.0;
   if (n < MaxBlks*MaxBlks) {
     int size = n*sizeof(float);
     unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
