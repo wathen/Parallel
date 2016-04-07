@@ -1,0 +1,17 @@
+1. What problem does the paper address?
+
+The problem that this paper addresses is a different approach that allows Recurrent neural network language models (RNNLMs) to be efficiently trained on GPUs.
+
+2. What is the key insight/idea in the paper's solution to this problem?
+
+They us a modified RNNLM architecture with a non-class based, full output layer structure (F-RNNLM).
+
+3. What did the authors do to demonstrate their claims? (e.g. implement a tool, present a proof, run simulations, etc.)
+
+The authors present an efficient GPU implementation of bunch mode RNNLM training is investigated.
+
+4. Is the support for the claims convincing? Why or why not?
+
+They test there GPU implementation on a large vocabulary conversational  telephone  speech  recognition  task, their method has a 27x reduction in the training time over standard CPU-based implementations of a RNNLM toolkit.
+
+
