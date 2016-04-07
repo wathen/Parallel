@@ -120,38 +120,51 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   float *z, *zOut;
   float *dev_x, *dev_z;
   int nUpdate = n;
+  int size = n*sizeof(float);
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  z = (float *) malloc(size);
   if (n < MaxBlks*MaxBlks) {
     int size = n*sizeof(float);
-    z = (float *) malloc(size);
     zOut = (float *) malloc(sizeof(float));
     cudaMalloc((void**)(&dev_x), size);
     cudaMalloc((void**)(&dev_z), size);
     cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
     dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
     reduce_sum<<<1,blocksize>>>(nblks, dev_z);
+    cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+    z[0] = zOut[0];
   } else {
     unsigned int vecSplit = ceil(((float)(n))/((float)(MaxBlks)));
+
     for (int i = 0; i < vecSplit; ++i) {
       if (i < vecSplit-1) {
         nUpdate = nUpdate - MaxBlks*MaxBlks;
-        float *xIn, *xOut;
+        float *xIn;
         int size = MaxBlks*MaxBlks*sizeof(float);
-        // xIn = (float *) malloc(size);
+        xIn = (float *) malloc(size);
         // xOut = (float *) malloc(nUpdate*sizeof(float));
         memcpy(xIn, x, size);
-        memcpy(xOut, &x[MaxBlks*MaxBlks], nUpdate*sizeof(float));
-        free(x);
+        memcpy(x, &x[MaxBlks*MaxBlks], nUpdate*sizeof(float));
 
-        z = (float *) malloc(size);
         zOut = (float *) malloc(sizeof(float));
         cudaMalloc((void**)(&dev_x), size);
         cudaMalloc((void**)(&dev_z), size);
         cudaMemcpy(dev_x, xIn, size, cudaMemcpyHostToDevice);
         dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
         reduce_sum<<<1,blocksize>>>(nblks, dev_z);
+        cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+        z[0] += zOut[0];
       } else {
+        int size = nUpdate*sizeof(float);
 
+        zOut = (float *) malloc(sizeof(float));
+        cudaMalloc((void**)(&dev_x), size);
+        cudaMalloc((void**)(&dev_z), size);
+        cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
+        dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
+        reduce_sum<<<1,blocksize>>>(nblks, dev_z);
+        cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+        z[0] += zOut[0];
       }
       // cudaMalloc((void**)(&dev_x), size);
       // cudaMalloc((void**)(&dev_z), size);
@@ -163,7 +176,7 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   // reduce_sum<<<1,blocksize>>>(nblks, dev_z);
   // cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   // print_vec(zOut, 10, "%5.5f","V");
-  return sqrt(zOut[0]);
+  return sqrt(*z);
 }
 
 void do_timing_norm(void *void_arg) {
