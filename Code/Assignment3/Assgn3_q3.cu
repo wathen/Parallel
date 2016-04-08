@@ -97,6 +97,7 @@ int main(int argc, char *argv[]) {
     printf("Cuda capability %d.%d.\n", prop.major, prop.minor);
     unsigned int MaxBlks = prop.maxThreadsPerBlock;
 
+    print_vec(x, 10, "%f", "x");
     rndm(x, n, MaxBlks, blksize);
     print_vec(x, 10, "%f", "x");
     return 0;

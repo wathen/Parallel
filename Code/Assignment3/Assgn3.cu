@@ -74,14 +74,18 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
   unsigned int blockBase = blockDim.x * blockIdx.x;
   unsigned int myId = blockBase + threadIdx.x;
   uint n_threadsTotal = gridDim.x * blockDim.x;
-
+  unsigned int M = min(blockDim.x, n - blockBase);
   if(myId < n)
+    y[myId] = 0.0;
     for (int j = 0; j < m; ++j) {
-      y[myId] = x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
+        if(n_threadsTotal*j+myId < n){
+            y[myId] += x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
+            printf("%i  %i %f %f \n ", myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],y[myId]);
+        }
     }
-  reduce_sum_dev(m, &(y[blockBase]));
-  if((myId < n) && (threadIdx.x == 0))
-    z[blockIdx.x] = x[myId];
+  reduce_sum_dev(M, &(y[blockBase]));
+  if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
+    z[blockIdx.x] = y[myId];
 }
 
 float norm_ref(float *x, unsigned int n) {
@@ -124,12 +128,12 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   float *zOut;
   float *dev_x, *dev_z, *dev_y;
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-  if (MaxBlks > nblks) {
+  if (MaxBlks < nblks) {
     nblks = MaxBlks;
   }
   int size = n*sizeof(float);
   unsigned int m = ceil((float)(n)/(float)(nblks*blocksize));
-  // y = (float *) malloc(size);
+  
   zOut = (float *) malloc(sizeof(float));
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
@@ -240,7 +244,7 @@ int main(int argc, char *argv[] ) {
   printf("%d\n",n );
   for(int i = 0; i < n; i++) {
     x[i] =  (float)rand() / (float)RAND_MAX;
-
+    //x[i] = 1.0f*i;
   }
 
   int ndev;
@@ -267,8 +271,8 @@ int main(int argc, char *argv[] ) {
   argk_n.x = x;
   argk_n.blocksize = blocksize;
   argk_n.MaxBlks = MaxBlks;
-  time_it_run(tr, do_timing_norm, (void *)(&argk_n));
-  time_it_get_stats(tr, &stats_n);
+  //time_it_run(tr, do_timing_norm, (void *)(&argk_n));
+  //time_it_get_stats(tr, &stats_n);
 
 
   unsigned int vecSplit = ceil(((float)(n))/((float)(MaxBlks*MaxBlks)));
@@ -293,7 +297,7 @@ int main(int argc, char *argv[] ) {
   float Left_over_block = roundf((float)blocksize*( (((float)(n))/((float)(blocksize))) - floor(((float)(n))/((float)(blocksize)))));
   float nblocks = floor(((float)(n))/((float)(blocksize)));
 
-  printf("Norm calculations:       # operations = %10.4f   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), vecSplit*stats_n.mean, vecSplit*stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),pow(stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),-1)/pow(10,9));
+  //printf("Norm calculations:       # operations = %11.4f   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), vecSplit*stats_n.mean, vecSplit*stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),pow(stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),-1)/pow(10,9));
 
   // for(int i = 0; i < n; i++){
   //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
