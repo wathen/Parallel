@@ -95,25 +95,27 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
   //if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
   //  z[blockIdx.x] = y[myId];
 }
-__global__ void dot(unsigned int n, unsigned int m, int *x, int *y, int *c)
-{
+__global__ void dot(unsigned int n, unsigned int m, float *x, float *product, float *c) {
   unsigned int blockBase = blockDim.x * blockIdx.x;
   unsigned int myId = blockBase + threadIdx.x;
   uint n_threadsTotal = gridDim.x * blockDim.x;
   unsigned int M = min(blockDim.x, n - blockBase);
-  __shared__ float product[m];
-  if(n_threadsTotal*(m-1)+myId < n)
+ 
+  product[threadIdx.x] = 0.0;
+  if(n_threadsTotal*(m-1)+myId < n) { 
     for (int j = 0; j < m; ++j) {
-            product[threadIdx.x] = product[threadIdx.x] + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
-            // printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
+        product[threadIdx.x] = product[threadIdx.x] + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
+        // printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
     }
-
-  if(index==0) *c = 0;
+  }
+  if(myId==0) *c = 0.0;
   __syncthreads();
 
   if( 0 == threadIdx.x ) {
-      int sum = 0;
-      for(int j=0; j < THREADS_PER_BLOCK; j++) sum += product[j];
+      float sum = 0.0;
+      for(int j=0; j < M; j++) {
+          sum += product[j];
+      }
       atomicAdd(c,sum);
   }
 }
@@ -170,7 +172,7 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   cudaMalloc((void**)(&dev_z), size);
   cudaMalloc((void**)(&dev_y), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-  dotprod<<<nblks , blocksize>>>(n, m, dev_x, dev_y, dev_z);
+  dot<<<nblks , blocksize>>>(n, m, dev_x, dev_y, dev_z);
   cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   print_vec(z, 10, "%f","z");
   reduce_sum<<<1,blocksize>>>(nblks, dev_z);
