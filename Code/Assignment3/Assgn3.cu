@@ -75,17 +75,25 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
   unsigned int myId = blockBase + threadIdx.x;
   uint n_threadsTotal = gridDim.x * blockDim.x;
   unsigned int M = min(blockDim.x, n - blockBase);
-  if(myId < n)
-    y[myId] = 0.0;
+  float temp = 0.0;
+  if(n_threadsTotal*(m-1)+myId < n)
     for (int j = 0; j < m; ++j) {
-        if(n_threadsTotal*j+myId < n){
-            y[myId] += x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
-            printf("%i  %i %f %f \n ", myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],y[myId]);
-        }
+            temp = temp + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
+            printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
     }
-  reduce_sum_dev(M, &(y[blockBase]));
-  if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
-    z[blockIdx.x] = y[myId];
+    y[myId] = temp;
+  //printf("\n\n fff %f \n\n",y[blockBase]);
+  __syncthreads();
+  z[blockIdx.x] = 0.0;
+  for(int i = 0; i < M; i++){
+    z[blockIdx.x] = z[blockIdx.x] + temp;//y[blockBase+i];
+    printf("\nz = %f, y = %f", z[blockIdx.x], y[blockBase+i]);
+  }
+
+  //reduce_sum_dev(M, &(y[blockBase]));
+  //printf("\n\n ggg %f \n\n",y[myId]);
+  //if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
+  //  z[blockIdx.x] = y[myId];
 }
 
 float norm_ref(float *x, unsigned int n) {
@@ -125,21 +133,25 @@ void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z
 
 float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBlks) {
 
-  float *zOut;
+  float *z, *zOut;
   float *dev_x, *dev_z, *dev_y;
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  printf("nblks = %i, Max = %i\n",nblks,MaxBlks);
   if (MaxBlks < nblks) {
     nblks = MaxBlks;
   }
   int size = n*sizeof(float);
   unsigned int m = ceil((float)(n)/(float)(nblks*blocksize));
-  
+  printf("m = %i\n",m);
   zOut = (float *) malloc(sizeof(float));
+  z = (float *) malloc(size);
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMalloc((void**)(&dev_y), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
   dotprod<<<nblks , blocksize>>>(n, m, dev_x, dev_y, dev_z);
+  cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
+  print_vec(z, 10, "%f","z");
   reduce_sum<<<1,blocksize>>>(nblks, dev_z);
   cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   return sqrt(zOut[0]);
