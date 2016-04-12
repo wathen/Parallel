@@ -95,7 +95,28 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
   //if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
   //  z[blockIdx.x] = y[myId];
 }
+__global__ void dot(unsigned int n, unsigned int m, int *x, int *y, int *c)
+{
+  unsigned int blockBase = blockDim.x * blockIdx.x;
+  unsigned int myId = blockBase + threadIdx.x;
+  uint n_threadsTotal = gridDim.x * blockDim.x;
+  unsigned int M = min(blockDim.x, n - blockBase);
+  __shared__ float product[m];
+  if(n_threadsTotal*(m-1)+myId < n)
+    for (int j = 0; j < m; ++j) {
+            product[threadIdx.x] = product[threadIdx.x] + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
+            // printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
+    }
 
+  if(index==0) *c = 0;
+  __syncthreads();
+
+  if( 0 == threadIdx.x ) {
+      int sum = 0;
+      for(int j=0; j < THREADS_PER_BLOCK; j++) sum += product[j];
+      atomicAdd(c,sum);
+  }
+}
 float norm_ref(float *x, unsigned int n) {
   float sum = 0.0;
   for(int i = 0; i < n; i++)
