@@ -8,10 +8,15 @@ import time
 import MatrixOperations as MO
 import NSprecondSetup
 
+def PETScCheck(A):
+    if dolfin_version() == '1.6.0':
+        return as_backend_type(A).mat()
+    else:
+        return PETSc.Mat().createAIJ(size=A.sparray().shape,csr=(A.sparray().indptr, A.sparray().indices, A.sparray().data))
 
 def FluidLinearSetup(Pressure,mu):
     MO.PrintStr("Preconditioning Fluid linear setup",3,"=","\n\n")
-    parameters['linear_algebra_backend'] = 'uBLAS'
+    # parameters['linear_algebra_backend'] = 'uBLAS'
     p = TrialFunction(Pressure)
     q = TestFunction(Pressure)
 
@@ -26,11 +31,11 @@ def FluidLinearSetup(Pressure,mu):
         L = assemble(mu*(jump(q)*jump(p)*dx(Pressure.mesh())))
     else:
         L = assemble(mu*(inner(grad(q), grad(p))*dx(Pressure.mesh())))
-    L = PETSc.Mat().createAIJ(size=L.sparray().shape,csr=(L.sparray().indptr, L.sparray().indices, L.sparray().data))
+    L = PETScCheck(L)
     print ("{:40}").format("DG scalar Laplacian assemble, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
     tic()
     Q = assemble((1./mu)*inner(p,q)*dx)
-    Q = PETSc.Mat().createAIJ(size=Q.sparray().shape,csr=(Q.sparray().indptr, Q.sparray().indices, Q.sparray().data))
+    Q = PETScCheck(Q)
     print ("{:40}").format("DG scalar mass matrix assemble, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
     tic()
     kspA, ksp = NSprecondSetup.PCDKSPlinear(Q, L)
@@ -40,7 +45,7 @@ def FluidLinearSetup(Pressure,mu):
 
 def FluidNonLinearSetup(Pressure,mu, u_k):
     MO.PrintStr("Preconditioning Fluid linear setup",3,"=")
-    parameters['linear_algebra_backend'] = 'uBLAS'
+    # parameters['linear_algebra_backend'] = 'uBLAS'
     p = TrialFunction(Pressure)
     q = TestFunction(Pressure)
     mesh = Pressure.mesh()
@@ -63,7 +68,7 @@ def FluidNonLinearSetup(Pressure,mu, u_k):
         else:
             Fp = assemble(mu*inner(grad(q), grad(p))*dx(mesh)+inner((u_k[0]*grad(p)[0]+u_k[1]*grad(p)[1]+u_k[2]*grad(p)[2]),q)*dx(mesh) + (1/2)*div(u_k)*inner(p,q)*dx(mesh) - (1/2)*(u_k[0]*N[0]+u_k[1]*N[1]+u_k[2]*N[2])*inner(p,q)*ds(mesh))
 
-    Fp = PETSc.Mat().createAIJ(size=Fp.sparray().shape,csr=(Fp.sparray().indptr, Fp.sparray().indices, Fp.sparray().data))
+    Fp = PETScCheck(Fp)
     print ("{:40}").format("DG convection-diffusion assemble, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
 
     tic()
@@ -75,7 +80,7 @@ def FluidNonLinearSetup(Pressure,mu, u_k):
 def MagneticSetup(Magnetic, Lagrange, u0, p0, CGtol,params):
     MO.PrintStr("Preconditioning Magnetic setup",3,"=")
 
-    parameters['linear_algebra_backend'] = 'uBLAS'
+    # parameters['linear_algebra_backend'] = 'uBLAS'
     if Magnetic.__str__().find("N1curl2") == -1:
         C, P = HiptmairSetup.HiptmairMatrixSetupBoundary(Magnetic.mesh(), Magnetic.dim(), Lagrange.dim(),Magnetic.mesh().geometry().dim())
         G, P = HiptmairSetup.HiptmairBCsetupBoundary(C,P,Magnetic.mesh())
@@ -101,8 +106,8 @@ def MagneticSetup(Magnetic, Lagrange, u0, p0, CGtol,params):
     print ("{:40}").format("Hiptmair Laplacians BC assembled, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
 
     tic()
-    VectorLaplacian = PETSc.Mat().createAIJ(size=VectorLaplacian.sparray().shape,csr=(VectorLaplacian.sparray().indptr, VectorLaplacian.sparray().indices, VectorLaplacian.sparray().data))
-    ScalarLaplacian = PETSc.Mat().createAIJ(size=ScalarLaplacian.sparray().shape,csr=(ScalarLaplacian.sparray().indptr, ScalarLaplacian.sparray().indices, ScalarLaplacian.sparray().data))
+    VectorLaplacian = PETScCheck(VectorLaplacian)
+    ScalarLaplacian = PETScCheck(ScalarLaplacian)
     print ("{:40}").format("PETSc Laplacians assembled, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
 
     tic()
@@ -110,7 +115,7 @@ def MagneticSetup(Magnetic, Lagrange, u0, p0, CGtol,params):
         CurlCurlShift, b2 = assemble_system(params[1]*inner(curl(u),curl(v))*dx+inner(u,v)*dx,inner(u0,v)*dx,bcu)
     else:
         CurlCurlShift, b2 = assemble_system(params[0]*params[1]*inner(curl(u),curl(v))*dx+inner(u,v)*dx,inner(u0,v)*dx,bcu)
-    CurlCurlShift = PETSc.Mat().createAIJ(size=CurlCurlShift.sparray().shape,csr=(CurlCurlShift.sparray().indptr, CurlCurlShift.sparray().indices, CurlCurlShift.sparray().data))
+    CurlCurlShift = PETScCheck(CurlCurlShift)
     print ("{:40}").format("Shifted Curl-Curl assembled, time: "), " ==>  ",("{:4f}").format(toc()),  ("{:9}").format("   time: "), ("{:4}").format(time.strftime('%X %x %Z')[0:5])
 
     tic()

@@ -8,10 +8,6 @@ from scipy.sparse import csr_matrix
 from scipy.io import loadmat
 import numpy as np
 
-def load_sparse_csr(filename):
-    loader = np.load(filename)
-    return csr_matrix((  loader['data'], loader['indices'], loader['indptr']),
-                         shape = loader['shape'])
 def Scipy2PETSc(A):
     A = A.tocsr()
     return PETSc.Mat().createAIJ(size=A.shape, csr=(A.indptr, A.indices, A.data))

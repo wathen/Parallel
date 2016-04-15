@@ -201,7 +201,7 @@ def foo():
         bcr = DirichletBC(W.sub(3),Expression(("0.0")), boundary)
         bcs = [bcu,bcb,bcr]
 
-        parameters['linear_algebra_backend'] = 'uBLAS'
+        # parameters['linear_algebra_backend'] = 'uBLAS'
 
         eps = 1.0           # error measure ||u-u_k||
         tol = 1.0E-4     # tolerance
@@ -285,8 +285,11 @@ def foo():
             SaveF(KSPlinearfluids, int(level[xx-1][0]))
             StoreMatrix(PETSc2Scipy(A),'Mat/' + str(int(level[xx-1][0])) +'K')
             StoreMatrix(PETSc2Scipy(Fp),'Mat/' + str(int(level[xx-1][0])) + 'Fp')
-            StoreMatrix(PETSc2Scipy(kspF.getOperators()[0]),'Mat/' + str(int(level[xx-1][0])) +'F')
-
+            StoreMatrix(PETSc2Scipy(kspF.getOperators()[0]),
+                'Mat/' + str(int(level[xx-1][0])) +'F')
+            b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'b.mat')
+            b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'x.mat')
+            # np.save(b.array,'Mat/'+ str(level) +'/
 
 
     interactive()
