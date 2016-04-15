@@ -260,7 +260,7 @@ def foo():
             u = b.duplicate()
             kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
             print "Inititial guess norm: ",  u.norm(PETSc.NormType.NORM_INFINITY)
-            #A,Q
+
             if IterType == 'Full':
 
                 n = FacetNormal(mesh)
@@ -274,9 +274,6 @@ def foo():
                 F = A.getSubMatrix(u_is,u_is)
                 kspF = NSprecondSetup.LSCKSPnonlinear(F)
 
-
-
-
             Options = 'p4'
             for items in KSPlinearfluids:
                 print(items)
@@ -287,8 +284,12 @@ def foo():
             StoreMatrix(PETSc2Scipy(Fp),'Mat/' + str(int(level[xx-1][0])) + 'Fp')
             StoreMatrix(PETSc2Scipy(kspF.getOperators()[0]),
                 'Mat/' + str(int(level[xx-1][0])) +'F')
-            b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'b.mat')
-            b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'x.mat')
+            # b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'b.mat')
+            # x.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'x.mat')
+            # np.array(dim).
+            np.save('Mat/'+ str(int(level[xx-1][0])) +'dim.mat',np.array(dim))
+            np.save('Mat/'+ str(int(level[xx-1][0])) +'b.mat',b.array)
+            np.save('Mat/'+ str(int(level[xx-1][0])) +'x.mat',x.array)
             # np.save(b.array,'Mat/'+ str(level) +'/
 
 

@@ -54,6 +54,7 @@ Fluid = [Multigrid(Scipy2PETSc(loadmat('Mat/'+level+'F0.mat')['Mat/'+level+'F0']
 Fp = Scipy2PETSc(loadmat('Mat/'+level+'Fp.mat')['Mat/'+level+'Fp'])
 F = Multigrid(Scipy2PETSc(loadmat('Mat/'+level+'F.mat')['Mat/'+level+'F']))
 K = Scipy2PETSc(loadmat('Mat/'+level+'K.mat')['Mat/'+level+'K'])
+a = np.load('Mat/'+level+'dim.mat.npy')
 
 
 
