@@ -141,14 +141,14 @@ def foo():
         Magneticdim[xx-1] = Magnetic.dim()
         Lagrangedim[xx-1] = Lagrange.dim()
         Wdim[xx-1] = W.dim()
-        print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
+        # print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
         dim = [Velocity.dim(), Pressure.dim(), Magnetic.dim(), Lagrange.dim()]
 
 
         def boundary(x, on_boundary):
             return on_boundary
 
-        u0, p0,b0, r0, Laplacian, Advection, gradPres,CurlCurl, gradR, NS_Couple, M_Couple = ExactSol.MHD2D(4,1, mesh)
+        u0, p0,b0, r0, Laplacian, Advection, gradPres,CurlCurl, gradR, NS_Couple, M_Couple = ExactSol.MHD2D(4,1, mesh, 'no')
 
 
         bcu = DirichletBC(Velocity,u0, boundary)
@@ -246,13 +246,13 @@ def foo():
         SolutionTime = 0
         while eps > tol  and iter < maxiter:
             iter += 1
-            MO.PrintStr("Iter "+str(iter),7,"=","\n\n","\n\n")
+            # MO.PrintStr("Iter "+str(iter),7,"=","\n\n","\n\n")
             AssembleTime = time.time()
             if IterType == "CD":
                 MO.StrTimePrint("MHD CD RHS assemble, time: ", time.time()-AssembleTime)
                 b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "CD",IterType)
             else:
-                MO.PrintStr("Setting up PETSc "+SetupType,2,"=","\n","\n")
+                # MO.PrintStr("Setting up PETSc "+SetupType,2,"=","\n","\n")
                 if  Split == "Yes":
                     if iter == 1:
                         Alin = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "Linear",IterType)
