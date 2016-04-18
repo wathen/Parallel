@@ -242,7 +242,107 @@ class InnerOuterMAGNETICapprox(BaseMyPC):
 
 
 
-        print "setup"
+    def apply(self, pc, x, y):
+
+        br = x.getSubVector(self.r_is)
+        xr = br.duplicate()
+        self.kspScalar.solve(br, xr)
+
+        # print self.D.size
+        x2 = x.getSubVector(self.p_is)
+        y2 = x2.duplicate()
+        y3 = x2.duplicate()
+        xp = x2.duplicate()
+        self.kspA.solve(x2,y2)
+        self.Fp.mult(y2,y3)
+        self.kspQ.solve(y3,xp)
+
+
+        # self.kspF.solve(bu1-bu4-bu2,xu)
+
+        bb = x.getSubVector(self.b_is)
+        xb = bb.duplicate()
+        #self.kspMX.solve(bb,xb)
+        xxr = bb.duplicate()
+        self.Dt.multTranspose(xr,xxr)
+        xb, its, self.HiptmairTime = HiptmairSetup.HiptmairApply(self.AA, bb-xxr, self.kspScalar, self.kspVector, self.G, self.P, self.tol)
+
+        bu1 = x.getSubVector(self.u_is)
+        bu2 = bu1.duplicate()
+        bu4 = bu1.duplicate()
+        self.Bt.multTranspose(xp,bu2)
+        self.Ct.multTranspose(xb,bu4)
+        XX = bu1.duplicate()
+        xu = XX.duplicate()
+        self.kspF.solve(bu1-bu4+bu2,xu)
+        #self.kspF.solve(bu1,xu)
+
+        y.array = (np.concatenate([xu.array, -xp.array,xb.array,xr.array]))
+    def ITS(self):
+        return self.CGits, self.HiptmairIts , self.CGtime, self.HiptmairTime
+
+
+
+class Parallel(BaseMyPC):
+
+    def __init__(self, W, kspF, kspA, kspQ,Fp,kspScalar, kspCGScalar, kspVector, G, P, A, Hiptmairtol,Options):
+        self.W = W
+        self.kspF = kspF
+        self.kspA = kspA
+        self.kspQ = kspQ
+        self.Fp = Fp
+        self.kspScalar = kspScalar
+        self.kspCGScalar = kspCGScalar
+        self.kspVector = kspVector
+        # self.Bt = Bt
+        self.HiptmairIts = 0
+        self.CGits = 0
+
+
+
+        # print range(self.W[0].dim(),self.W[0].dim()+self.W[1].dim())
+        # ss
+        self.P = P
+        self.G = G
+        self.AA = A
+        self.tol = Hiptmairtol
+        self.u_is = PETSc.IS().createGeneral(range(self.W[0]))
+        self.p_is = PETSc.IS().createGeneral(range(self.W[0],self.W[0]+self.W[1]))
+        self.b_is = PETSc.IS().createGeneral(range(self.W[0]+self.W[1],
+            self.W[0]+self.W[1]+self.W[2]))
+        self.r_is = PETSc.IS().createGeneral(range(self.W[0]+self.W[1]+self.W[2],
+            self.W[0]+self.W[1]+self.W[2]+self.W[3]))
+
+
+
+    def create(self, pc):
+        1
+
+
+    def setUp(self, pc):
+        A, P = pc.getOperators()
+        if A.type == 'python':
+            self.Ct = A.getPythonContext().getMatrix("Ct")
+            self.Bt = A.getPythonContext().getMatrix("Bt")
+        else:
+            self.Ct = A.getSubMatrix(self.b_is,self.u_is)
+            self.Bt = A.getSubMatrix(self.p_is,self.u_is)
+            self.Dt = A.getSubMatrix(self.r_is,self.b_is)
+        # print self.Ct.view()
+        #CFC = sp.csr_matrix( (data,(row,column)), shape=(self.W[1],self.W[1].dim()) )
+        #print CFC.shape
+        #CFC = PETSc.Mat().createAIJ(size=CFC.shape,csr=(CFC.indptr, CFC.indices, CFC.data))
+        #print CFC.size, self.AA.size
+        # MO.StoreMatrix(B,"A")
+        # print FC.todense()
+        #self.kspF.setType('preonly')
+        #self.kspF.getPC().setType('lu')
+        #self.kspF.setFromOptions()
+        #self.kspF.setPCSide(0)
+
+
+
+
     def apply(self, pc, x, y):
 
         br = x.getSubVector(self.r_is)

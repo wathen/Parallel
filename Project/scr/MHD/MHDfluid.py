@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 # interpolate scalar gradient onto nedelec space
-import json
 import petsc4py
 import sys
 
@@ -60,6 +59,14 @@ def SaveF(F,level):
     StoreMatrix(PETSc2Scipy(F[0].getOperators()[0]),'Mat/'+ str(level) +'F0')
     StoreMatrix(PETSc2Scipy(F[1].getOperators()[0]),'Mat/'+ str(level) +'F1')
 
+def arrayToVec(vecArray):
+    vec = PETSc.Vec().create(comm=PETSc.COMM_WORLD)
+    vec.setSizes(len(vecArray))
+    vec.setUp()
+    (Istart,Iend) = vec.getOwnershipRange()
+    return vec.createWithArray(vecArray[Istart:Iend],
+            comm=PETSc.COMM_WORLD)
+    vec.destroy()
 
 
 def foo():
@@ -170,28 +177,34 @@ def foo():
             F_M = Mu_m*kappa*CurlCurl+gradR -kappa*M_Couple
         params = [kappa,Mu_m,MU]
 
-        MO.PrintStr("Seting up initial guess matricies",2,"=","\n\n","\n")
-        BCtime = time.time()
-        BC = MHDsetup.BoundaryIndices(mesh)
-        MO.StrTimePrint("BC index function, time: ", time.time()-BCtime)
-        Hiptmairtol = 1e-2
-        HiptmairMatrices = PrecondSetup.MagneticSetup(Magnetic, Lagrange, b0, r0, Hiptmairtol, params)
+        # MO.PrintStr("Seting up initial guess matricies",2,"=","\n\n","\n")
+        # BCtime = time.time()
+        # BC = MHDsetup.BoundaryIndices(mesh)
+        # MO.StrTimePrint("BC index function, time: ", time.time()-BCtime)
+        # Hiptmairtol = 1e-2
+        # HiptmairMatrices = PrecondSetup.MagneticSetup(Magnetic, Lagrange, b0, r0, Hiptmairtol, params)
 
 
-        MO.PrintStr("Setting up MHD initial guess",5,"+","\n\n","\n\n")
-        u_k,p_k,b_k,r_k = common.InitialGuess(FSpaces,[u0,p0,b0,r0],[F_NS,F_M],params,HiptmairMatrices,1e-10,Neumann=Expression(("0","0")),options ="New")
-        b_t = TrialFunction(Velocity)
-        c_t = TestFunction(Velocity)
+        # MO.PrintStr("Setting up MHD initial guess",5,"+","\n\n","\n\n")
+        # u_k,p_k,b_k,r_k = common.InitialGuess(FSpaces,[u0,p0,b0,r0],[F_NS,F_M],params,HiptmairMatrices,1e-10,Neumann=Expression(("0","0")),options ="New")
+        # b_t = TrialFunction(Velocity)
+        # c_t = TestFunction(Velocity)
 
-        ones = Function(Pressure)
-        ones.vector()[:]=(0*ones.vector().array()+1)
-        # pConst = - assemble(p_k*dx)/assemble(ones*dx)
-        p_k.vector()[:] += - assemble(p_k*dx)/assemble(ones*dx)
+        # ones = Function(Pressure)
+        # ones.vector()[:]=(0*ones.vector().array()+1)
+        # # pConst = - assemble(p_k*dx)/assemble(ones*dx)
+        # p_k.vector()[:] += - assemble(p_k*dx)/assemble(ones*dx)
+        u_k = Function(Velocity)
+        p_k = Function(Pressure)
+        b_k = Function(Magnetic)
+        r_k = Function(Lagrange)
+
         x = Iter.u_prev(u_k,p_k,b_k,r_k)
-
-        KSPlinearfluids, MatrixLinearFluids = PrecondSetup.FluidLinearSetup(Pressure, MU)
-        kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
-        #plot(b_k)
+        # w = Function(W)
+        # x =
+        # KSPlinearfluids, MatrixLinearFluids = PrecondSetup.FluidLinearSetup(Pressure, MU)
+        # kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
+        # #plot(b_k)
 
         ns,maxwell,CoupleTerm,Lmaxwell,Lns = forms.MHD2D(mesh, W,F_M,F_NS, u_k,b_k,params,IterType,"CG",Saddle,Stokes)
         RHSform = forms.PicardRHS(mesh, W, u_k, p_k, b_k, r_k, params,"CG",Saddle,Stokes)
@@ -257,40 +270,40 @@ def foo():
             # if iter == 1:
             MO.StrTimePrint("MHD total assemble, time: ", time.time()-AssembleTime)
 
-            u = b.duplicate()
-            kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
-            print "Inititial guess norm: ",  u.norm(PETSc.NormType.NORM_INFINITY)
+            # u = b.duplicate()
+            # kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
+            # print "Inititial guess norm: ",  u.norm(PETSc.NormType.NORM_INFINITY)
 
-            if IterType == 'Full':
+            # if IterType == 'Full':
 
-                n = FacetNormal(mesh)
-                mat =  as_matrix([[b_k[1]*b_k[1],-b_k[1]*b_k[0]],[-b_k[1]*b_k[0],b_k[0]*b_k[0]]])
-                a = params[2]*inner(grad(b_t), grad(c_t))*dx(W.mesh()) + inner((grad(b_t)*u_k),c_t)*dx(W.mesh()) +(1./2)*div(u_k)*inner(c_t,b_t)*dx(W.mesh()) - (1./2)*inner(u_k,n)*inner(c_t,b_t)*ds(W.mesh())+kappa/Mu_m*inner(mat*b_t,c_t)*dx(W.mesh())
-                ShiftedMass = assemble(a)
-                bcu.apply(ShiftedMass)
-                ShiftedMass = CP.Assemble(ShiftedMass)
-                kspF = NSprecondSetup.LSCKSPnonlinear(ShiftedMass)
-            else:
-                F = A.getSubMatrix(u_is,u_is)
-                kspF = NSprecondSetup.LSCKSPnonlinear(F)
+            #     n = FacetNormal(mesh)
+            #     mat =  as_matrix([[b_k[1]*b_k[1],-b_k[1]*b_k[0]],[-b_k[1]*b_k[0],b_k[0]*b_k[0]]])
+            #     a = params[2]*inner(grad(b_t), grad(c_t))*dx(W.mesh()) + inner((grad(b_t)*u_k),c_t)*dx(W.mesh()) +(1./2)*div(u_k)*inner(c_t,b_t)*dx(W.mesh()) - (1./2)*inner(u_k,n)*inner(c_t,b_t)*ds(W.mesh())+kappa/Mu_m*inner(mat*b_t,c_t)*dx(W.mesh())
+            #     ShiftedMass = assemble(a)
+            #     bcu.apply(ShiftedMass)
+            #     ShiftedMass = CP.Assemble(ShiftedMass)
+            #     kspF = NSprecondSetup.LSCKSPnonlinear(ShiftedMass)
+            # else:
+            #     F = A.getSubMatrix(u_is,u_is)
+            #     kspF = NSprecondSetup.LSCKSPnonlinear(F)
 
-            Options = 'p4'
-            for items in KSPlinearfluids:
-                print(items)
+            # Options = 'p4'
+            # for items in KSPlinearfluids:
+            #     print(items)
 
-            SaveHX(HiptmairMatrices, int(level[xx-1][0]))
-            SaveF(KSPlinearfluids, int(level[xx-1][0]))
-            StoreMatrix(PETSc2Scipy(A),'Mat/' + str(int(level[xx-1][0])) +'K')
-            StoreMatrix(PETSc2Scipy(Fp),'Mat/' + str(int(level[xx-1][0])) + 'Fp')
-            StoreMatrix(PETSc2Scipy(kspF.getOperators()[0]),
-                'Mat/' + str(int(level[xx-1][0])) +'F')
-            # b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'b.mat')
-            # x.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'x.mat')
-            # np.array(dim).
-            np.save('Mat/'+ str(int(level[xx-1][0])) +'dim.mat',np.array(dim))
-            np.save('Mat/'+ str(int(level[xx-1][0])) +'b.mat',b.array)
-            np.save('Mat/'+ str(int(level[xx-1][0])) +'x.mat',x.array)
-            # np.save(b.array,'Mat/'+ str(level) +'/
+            # SaveHX(HiptmairMatrices, int(level[xx-1][0]))
+            # SaveF(KSPlinearfluids, int(level[xx-1][0]))
+            # StoreMatrix(PETSc2Scipy(A),'Mat/' + str(int(level[xx-1][0])) +'K')
+            # StoreMatrix(PETSc2Scipy(Fp),'Mat/' + str(int(level[xx-1][0])) + 'Fp')
+            # StoreMatrix(PETSc2Scipy(kspF.getOperators()[0]),
+            #     'Mat/' + str(int(level[xx-1][0])) +'F')
+            # # b.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'b.mat')
+            # # x.array.tofile('Mat/'+ str(int(level[xx-1][0])) +'x.mat')
+            # # np.array(dim).
+            # np.save('Mat/'+ str(int(level[xx-1][0])) +'dim.mat',np.array(dim))
+            # np.save('Mat/'+ str(int(level[xx-1][0])) +'b.mat',b.array)
+            # np.save('Mat/'+ str(int(level[xx-1][0])) +'x.mat',x.array)
+            # # np.save(b.array,'Mat/'+ str(level) +'/
 
 
     interactive()
