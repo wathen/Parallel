@@ -70,7 +70,7 @@ def arrayToVec(vecArray):
 
 
 def foo():
-    m = 6
+    m = 2
 
 
     errL2u =np.zeros((m-1,1))
@@ -115,8 +115,8 @@ def foo():
 
     MU[0]= 1e0
     for xx in xrange(1,m):
-        print xx
-        level[xx-1] = xx+ 2
+        # print xx
+        level[xx-1] = xx + 6
         nn = 2**(level[xx-1])
 
 
@@ -170,11 +170,11 @@ def foo():
         Saddle = "No"
         Stokes = "No"
         SetupType = 'python-class'
-        F_NS = -MU*Laplacian+Advection+gradPres-kappa*NS_Couple
+        F_NS = Expression(("0.0", "0.0"))
         if kappa == 0:
-            F_M = Mu_m*CurlCurl+gradR -kappa*M_Couple
+            F_M = Expression(("0.0", "0.0"))
         else:
-            F_M = Mu_m*kappa*CurlCurl+gradR -kappa*M_Couple
+            F_M = Expression(("0.0", "0.0"))
         params = [kappa,Mu_m,MU]
 
         # MO.PrintStr("Seting up initial guess matricies",2,"=","\n\n","\n")
@@ -247,9 +247,9 @@ def foo():
         while eps > tol  and iter < maxiter:
             iter += 1
             # MO.PrintStr("Iter "+str(iter),7,"=","\n\n","\n\n")
-            AssembleTime = time.time()
+            # AssembleTime = time.time()
             if IterType == "CD":
-                MO.StrTimePrint("MHD CD RHS assemble, time: ", time.time()-AssembleTime)
+                # MO.StrTimePrint("MHD CD RHS assemble, time: ", time.time()-AssembleTime)
                 b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "CD",IterType)
             else:
                 # MO.PrintStr("Setting up PETSc "+SetupType,2,"=","\n","\n")
@@ -266,9 +266,10 @@ def foo():
                         A,b = MHDsetup.SystemAssemble(FSpaces,A,b,SetupType,IterType)
                 else:
                     AA, bb = assemble_system(maxwell+ns+CoupleTerm, (Lmaxwell + Lns) - RHSform,  bcs)
-                    A,b = CP.Assemble(AA,bb)
+                    # A,b = CP.Assemble(AA,bb)
+            # assemble(maxwell+ns+CoupleTerm)
             # if iter == 1:
-            MO.StrTimePrint("MHD total assemble, time: ", time.time()-AssembleTime)
+            # MO.StrTimePrint("MHD total assemble, time: ", time.time()-AssembleTime)
 
             # u = b.duplicate()
             # kspFp, Fp = PrecondSetup.FluidNonLinearSetup(Pressure, MU, u_k)
@@ -306,5 +307,5 @@ def foo():
             # # np.save(b.array,'Mat/'+ str(level) +'/
 
 
-    interactive()
+    # interactive()
 foo()
