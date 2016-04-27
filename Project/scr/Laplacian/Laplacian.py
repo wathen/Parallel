@@ -10,13 +10,10 @@ parameters["form_compiler"]["cpp_optimize"] = True
 parameters["form_compiler"]["representation"] = "quadrature"
 parameters['reorder_dofs_serial'] = False
 
-# parameters["num_threads"] = 8
-
-n = int(2**5)
+n = int(2**4)
 mesh = UnitCubeMesh(n,n,n)
 
 V = VectorFunctionSpace(mesh, "CG", 2)
-# print V.dim()
 v = TestFunction(V)
 u = TrialFunction(V)
 
@@ -35,15 +32,13 @@ l = inner(f,v)*dx
 def boundary(x, on_boundary):
     return on_boundary
 
-
 A = PETScMatrix()
 b = PETScVector()
 bc = DirichletBC(V,f, boundary)
+t0 = Timer("assemble_system")
 assemble_system(a, l, bc, A_tensor = A, b_tensor = b)
-# assemble(a, tensor=A)
-# assemble(l, tensor=b)
-# bc.apply(A)
-# bc.apply(b)
+del(t0)
+
 A_petsc = A.mat()
 b_petsc = b.vec()
 u = b_petsc.duplicate()
@@ -56,5 +51,7 @@ ksp.setFromOptions()
 scale = b_petsc.norm()
 b_petsc = b_petsc/scale
 ksp.setOperators(A_petsc,A_petsc)
+t0 = Timer("ksp.solve")
 ksp.solve(b_petsc,u)
-
+del(t0)
+list_timings()
