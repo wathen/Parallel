@@ -117,9 +117,7 @@ int main(int argc, char *argv[]) {
 
     printf("\n  Random function:\n n = %i, blksize = %i, nblks = %i, m = %i\n", n, blksize, nblks, m);
 
-    print_vec(x, 10, "%f", "x");
     rndm(x, n, m, blksize, nblks);
-    print_vec(x, 10, "%f", "x");
 
     argk.n = n;
     argk.x = x;
@@ -131,7 +129,7 @@ int main(int argc, char *argv[]) {
 
 
     printf("Random: mean(T) = %10.3e, std(T) = %10.3e\n", stats.mean, stats.std);
-
+    printf("Random numbers per second: %10.0f\n",floor(float(n)/stats.mean));
     
     return 0;
 }
