@@ -10,7 +10,8 @@ parameters["form_compiler"]["cpp_optimize"] = True
 parameters["form_compiler"]["representation"] = "quadrature"
 parameters['reorder_dofs_serial'] = False
 
-n = int(2**6)
+N = int(sys.argv[1])
+n = int(2**N)
 mesh = UnitCubeMesh(n,n,n)
 
 

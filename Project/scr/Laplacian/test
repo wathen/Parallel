@@ -1,8 +1,54 @@
-echo $"\n\n\nmpirun -np 1 python Laplacian.py"
-mpirun -np 1 python Laplacian.py
-echo $"\n\n\nmpirun -np 2 python Laplacian.py"
-mpirun -np 2 python Laplacian.py
-echo $"\n\n\nmpirun -np 4 python Laplacian.py"
-mpirun -np 4 python Laplacian.py
-echo $"\n\n\nmpirun -np 8 python Laplacian.py"
-mpirun -np 8 python Laplacian.py
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 1"
+mpirun -np 1 python Laplacian.py 1 >> results_N=1 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 1"
+mpirun -np 2 python Laplacian.py 1 &>> results_N=1 
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 1"
+mpirun -np 4 python Laplacian.py 1 &>> results_N=1 
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 1"
+mpirun -np 8 python Laplacian.py 1 &>> results_N=1 
+
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 2"
+mpirun -np 1 python Laplacian.py 2 >> results_N=2 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 2"
+mpirun -np 2 python Laplacian.py 2 &>> results_N=2
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 2"
+mpirun -np 4 python Laplacian.py 2 &>> results_N=2
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 2"
+mpirun -np 8 python Laplacian.py 2 &>> results_N=2
+
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 3"
+mpirun -np 1 python Laplacian.py 3 >> results_N=3 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 3"
+mpirun -np 2 python Laplacian.py 3 &>> results_N=3
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 3"
+mpirun -np 4 python Laplacian.py 3 &>> results_N=3
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 3"
+mpirun -np 8 python Laplacian.py 3 &>> results_N=3
+
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 4"
+mpirun -np 1 python Laplacian.py 4 >> results_N=4 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 4"
+mpirun -np 2 python Laplacian.py 4 &>> results_N=4
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 4"
+mpirun -np 4 python Laplacian.py 4 &>> results_N=4
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 4"
+mpirun -np 8 python Laplacian.py 4 &>> results_N=4
+
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 5"
+mpirun -np 1 python Laplacian.py 5 >> results_N=5 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 5"
+mpirun -np 2 python Laplacian.py 5 &>> results_N=5
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 5"
+mpirun -np 4 python Laplacian.py 5 &>> results_N=5
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 5"
+mpirun -np 8 python Laplacian.py 5 &>> results_N=5
+
+echo $"\n\n\nmpirun -np 1 python Laplacian.py 6"
+mpirun -np 1 python Laplacian.py 6 >> results_N=6 2>&1
+echo $"\n\n\nmpirun -np 2 python Laplacian.py 6"
+mpirun -np 2 python Laplacian.py 6 &>> results_N=6
+echo $"\n\n\nmpirun -np 4 python Laplacian.py 6"
+mpirun -np 4 python Laplacian.py 6 &>> results_N=6
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 6"
+mpirun -np 8 python Laplacian.py 6 &>> results_N=6
+
