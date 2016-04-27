@@ -1,0 +1,224 @@
+823875
+*** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+[MPI_AVG] Summary of timings     |  reps    wall avg    wall tot
+----------------------------------------------------------------
+Apply (PETScMatrix)              |     1    0.044067    0.044067
+Apply (PETScVector)              |     3  1.9345e-05  5.8035e-05
+Assemble system                  |     1      16.586      16.586
+Build mesh number mesh entities  |     2  0.00055174   0.0011035
+Build sparsity                   |     2      2.2658      4.5316
+Delete sparsity                  |     2   1.464e-06   2.928e-06
+DirichletBC compute bc           |     1     0.88942     0.88942
+DirichletBC init facets          |     1       0.561       0.561
+Generate Box mesh                |     1    0.010793    0.010793
+Init PETSc                       |     1   2.535e-05   2.535e-05
+Init dofmap                      |     1     0.56646     0.56646
+Init dofmap from UFC dofmap      |     1    0.057837    0.057837
+Init tensor                      |     2   0.0082028    0.016406
+assemble_system                  |     1      16.592      16.592
+compute connectivity 2 - 3       |     1     0.01193     0.01193
+compute entities dim = 1         |     1     0.43451     0.43451
+compute entities dim = 2         |     1     0.51086     0.51086
+ksp.solve                        |     1      38.439      38.439
+Process 0: Number of global vertices: 35937
+Process 0: Number of global cells: 196608
+823875
+823875
+Process 0: *** ------------------------------------------------------Process 1: *** -------------------------------------------------------------------------
+*** Warning: d-------------------
+olfin::list_timings(bo*** Warning: dolfinol) has been deprecated ::list_timings(bool) has been dein DOLFIN version 1.6.0precated in DOLFIN versi.
+*** It will be removedon 1.6.0.
+*** It will b from version 1.7.0.
+**e removed from version* The method is replac 1.7.0.
+*** The method ied by another Logger::list_ts replaced by anotherimings(...), e.g, 'lis Logger::list_timingst_timings(TimingClear_ke(...), e.g, 'list_timiep, [TimingType_wall])'
+ngs(TimingClear_keep, [Timin*** ---------------------gType_wall])'
+**-------------------------* -------------------------------------------------------------------
+
+---------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1     0.12852     0.12852
+Apply (PETScVector)                               |     3  0.00038819   0.0011646
+Assemble system                                   |     1      8.8448      8.8448
+Build mesh number mesh entities                   |     3    0.067041     0.20112
+Build sparsity                                    |     2      1.2536      2.5073
+Compute local dual graph                          |     1     0.11178     0.11178
+Compute non-local dual graph                      |     1   0.0041968   0.0041968
+Delete sparsity                                   |     2  1.3815e-06   2.763e-06
+DirichletBC compute bc                            |     1     0.19148     0.19148
+DirichletBC gather                                |     1   0.0066818   0.0066818
+DirichletBC init facets                           |     1    0.019333    0.019333
+Distribute cells                                  |     1    0.013822    0.013822
+Distribute vertices                               |     1   0.0097315   0.0097315
+Generate Box mesh                                 |     1     0.78324     0.78324
+Init PETSc                                        |     1  2.9595e-05  2.9595e-05
+Init dofmap                                       |     1     0.63707     0.63707
+Init dofmap from UFC dofmap                       |     1    0.092333    0.092333
+Init tensor                                       |     2   0.0092754    0.018551
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1    0.037743    0.037743
+PARALLEL 3: Build mesh (from local mesh data)     |     1    0.016091    0.016091
+PARALLEL x: Number mesh entities                  |     2      0.1003      0.2006
+Partition graph (calling SCOTCH)                  |     1     0.13015     0.13015
+SCOTCH graph ordering                             |     1    0.061679    0.061679
+assemble_system                                   |     1      8.8515      8.8515
+build LocalMeshData                               |     1    0.034912    0.034912
+compute connectivity 2 - 3                        |     1   0.0050091   0.0050091
+compute entities dim = 1                          |     1     0.20774     0.20774
+compute entities dim = 2                          |     1     0.26231     0.26231
+ksp.solve                                         |     1      20.989      20.989
+Process 0: Number of global vertices: 35937
+Process 0: Number of global cells: 196608
+823875
+823875
+823875
+823875
+Process 0: *** ---------------------------------------Process 1: *** -------------------------------------------------------------------------
+*** Warning:Process 2: *** -------------------------------------------------------------------------
+*** WaProcess 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timi----------------------------------
+* dolfin::list_timings(brning: dolfin::list_timings(bool) hangs(bool) has been deprecated in DOLFIN ver** Warning: dolfin::list_ool) has been deprecated is been deprecated in DOsion 1.6.0.
+*** It will be rtimings(bool) has bn DOLFIN version 1.6.0.
+*LFIN version 1.6.0.
+*** It will een deprecated in DOLFIN version 1.** It will be removed frbe removed from emoved from version 1.6.0.
+*** It will be removed from veom version 1.7.0.
+***version 1.7.0.
+*** The m7.0.
+*** The method is replaced rsion 1.7.0.
+*** The method is replaced by  The metethod is replaced by another by another Logger::list_timianother Logger::list_timihod is replaced by another Logger::list_timings(...), e.g, 'Logger::list_timings(...), e.g, 'list_tngs(...), e.g, 'list_timings(TimingClear_keep, [Timngs(...), e.g, 'list_timings(TimingClear_keep, list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------imings(TimingClear_keep, [TimingType_wall])'
+*** -----------ingType_wall])'
+*** -------------------------[TimingTyp-------------------------------------------------------------------------------------------------------------------------
+
+------------------------------------------------
+
+e_wall])'
+*** -------------------------------------------------------------------------
+
+-------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1     0.28831     0.28831
+Apply (PETScVector)                               |     3  0.00037251   0.0011175
+Assemble system                                   |     1      4.9515      4.9515
+Build mesh number mesh entities                   |     3    0.043068      0.1292
+Build sparsity                                    |     2     0.71514      1.4303
+Compute local dual graph                          |     1    0.061264    0.061264
+Compute non-local dual graph                      |     1   0.0040452   0.0040452
+Delete sparsity                                   |     2  1.4296e-06  2.8593e-06
+DirichletBC compute bc                            |     1    0.098879    0.098879
+DirichletBC gather                                |     1     0.01052     0.01052
+DirichletBC init facets                           |     1    0.010425    0.010425
+Distribute cells                                  |     1    0.020025    0.020025
+Distribute vertices                               |     1   0.0057067   0.0057067
+Generate Box mesh                                 |     1     0.58199     0.58199
+Init PETSc                                        |     1  3.1028e-05  3.1028e-05
+Init dofmap                                       |     1     0.34324     0.34324
+Init dofmap from UFC dofmap                       |     1    0.058961    0.058961
+Init tensor                                       |     2    0.010828    0.021657
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1    0.033194    0.033194
+PARALLEL 3: Build mesh (from local mesh data)     |     1   0.0082063   0.0082063
+PARALLEL x: Number mesh entities                  |     2    0.064428     0.12886
+Partition graph (calling SCOTCH)                  |     1     0.18932     0.18932
+SCOTCH graph ordering                             |     1    0.026891    0.026891
+assemble_system                                   |     1      4.9591      4.9591
+build LocalMeshData                               |     1    0.037442    0.037442
+compute connectivity 2 - 3                        |     1   0.0026052   0.0026052
+compute entities dim = 1                          |     1     0.10633     0.10633
+compute entities dim = 2                          |     1     0.13656     0.13656
+ksp.solve                                         |     1      14.365      14.365
+Process 0: Number of global vertices: 35937
+Process 0: Number of global cells: 196608
+823875
+823875
+823875
+823875
+823875
+823875
+823875
+823875
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1     0.30786     0.30786
+Apply (PETScVector)                               |     3  0.00065426   0.0019628
+Assemble system                                   |     1      4.2468      4.2468
+Build mesh number mesh entities                   |     3    0.051415     0.15425
+Build sparsity                                    |     2     0.56801       1.136
+Compute local dual graph                          |     1    0.055829    0.055829
+Compute non-local dual graph                      |     1   0.0095426   0.0095426
+Delete sparsity                                   |     2  2.1377e-06  4.2755e-06
+DirichletBC compute bc                            |     1    0.098319    0.098319
+DirichletBC gather                                |     1    0.031464    0.031464
+DirichletBC init facets                           |     1    0.010913    0.010913
+Distribute cells                                  |     1    0.012798    0.012798
+Distribute vertices                               |     1   0.0065138   0.0065138
+Generate Box mesh                                 |     1     0.82869     0.82869
+Init PETSc                                        |     1   0.0013561   0.0013561
+Init dofmap                                       |     1     0.34682     0.34682
+Init dofmap from UFC dofmap                       |     1    0.080956    0.080956
+Init tensor                                       |     2    0.023329    0.046658
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1    0.024975    0.024975
+PARALLEL 3: Build mesh (from local mesh data)     |     1   0.0061267   0.0061267
+PARALLEL x: Number mesh entities                  |     2    0.077027     0.15405
+Partition graph (calling SCOTCH)                  |     1     0.44657     0.44657
+SCOTCH graph ordering                             |     1    0.016494    0.016494
+assemble_system                                   |     1      4.2607      4.2607
+build LocalMeshData                               |     1    0.054167    0.054167
+compute connectivity 2 - 3                        |     1   0.0019869   0.0019869
+compute entities dim = 1                          |     1     0.10162     0.10162
+compute entities dim = 2                          |     1     0.11633     0.11633
+ksp.solve                                         |     1      13.214      13.214
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 2: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 4: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 5: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 6: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 7: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
