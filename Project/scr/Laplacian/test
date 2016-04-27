@@ -1,0 +1,8 @@
+echo $"\n\n\nmpirun -np 1 python Laplacian.py"
+mpirun -np 1 python Laplacian.py
+echo $"\n\n\nmpirun -np 2 python Laplacian.py"
+mpirun -np 2 python Laplacian.py
+echo $"\n\n\nmpirun -np 4 python Laplacian.py"
+mpirun -np 4 python Laplacian.py
+echo $"\n\n\nmpirun -np 8 python Laplacian.py"
+mpirun -np 8 python Laplacian.py

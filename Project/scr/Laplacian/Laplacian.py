@@ -10,13 +10,14 @@ parameters["form_compiler"]["cpp_optimize"] = True
 parameters["form_compiler"]["representation"] = "quadrature"
 parameters['reorder_dofs_serial'] = False
 
-n = int(2**4)
+n = int(2**6)
 mesh = UnitCubeMesh(n,n,n)
+
 
 V = VectorFunctionSpace(mesh, "CG", 2)
 v = TestFunction(V)
 u = TrialFunction(V)
-
+print V.dim()
 class r0(Expression):
     def __init__(self):
         self.M = 1
