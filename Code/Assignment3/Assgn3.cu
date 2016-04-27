@@ -6,16 +6,21 @@ using namespace std;
 #define N (16*16)
 #define THREADS_PER_BLOCK 8
 
-__global__ void logistic_cuda(unsigned int n, unsigned int m, float a, float *x, float *z) {
-  unsigned int myId = blockDim.x*blockIdx.x + threadIdx.x;
+__global__ void logistic_cuda(unsigned int n, unsigned int m, unsigned int M, float a, float *x, float *z) {
+  unsigned int blockBase = blockDim.x * blockIdx.x;
+  unsigned int myId = blockBase + threadIdx.x;
+  uint n_threadsTotal = gridDim.x * blockDim.x;
+ 
   float X, Z;
-  X = x[myId];
   if(myId < n){
-    for (int i = 1; i < m; ++i) {
-      Z = a*X*(1.0f - X);
-      X = Z;
-    }
-    z[myId] = Z;
+    for (int j = 0; j < M; j++) {
+        X = x[n_threadsTotal*j + myId];
+        for (int i = 1; i < m; ++i) {
+          Z = a*X*(1.0f - X);
+          X = Z;
+        }
+        z[n_threadsTotal*j + myId] = Z;
+      } 
   }
 }
 
@@ -79,10 +84,8 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
   if(n_threadsTotal*(m-1)+myId < n)
     for (int j = 0; j < m; ++j) {
             temp = temp + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
-            printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
     }
     y[myId] = temp;
-  //printf("\n\n fff %f \n\n",y[blockBase]);
   __syncthreads();
   z[blockIdx.x] = 0.0;
   for(int i = 0; i < M; i++){
@@ -90,10 +93,6 @@ __global__ void dotprod(unsigned int n, unsigned int m, float *x, float *y, floa
     printf("\nz = %f, y = %f", z[blockIdx.x], y[blockBase+i]);
   }
 
-  //reduce_sum_dev(M, &(y[blockBase]));
-  //printf("\n\n ggg %f \n\n",y[myId]);
-  //if((n_threadsTotal*(m-1)+myId  < n) && (threadIdx.x == 0))
-  //  z[blockIdx.x] = y[myId];
 }
 __global__ void dot(unsigned int n, unsigned int m, float *x, float *product, float *c) {
   unsigned int blockBase = blockDim.x * blockIdx.x;
@@ -105,7 +104,6 @@ __global__ void dot(unsigned int n, unsigned int m, float *x, float *product, fl
   if(n_threadsTotal*(m-1)+myId < n) { 
     for (int j = 0; j < m; ++j) {
         product[threadIdx.x] = product[threadIdx.x] + x[n_threadsTotal*j + myId]*x[n_threadsTotal*j + myId];
-        // printf("%i    %i  %i %f %f    %i %i \n ", j, myId, n_threadsTotal*j+myId, x[n_threadsTotal*j+myId],temp,blockBase, M);
     }
   }
   if(myId==0) *c = 0.0;
@@ -126,9 +124,6 @@ float norm_ref(float *x, unsigned int n) {
   return(sqrt(sum));
 }
 
-/*****************************************************
-*  print_vec: print the first few elements of a vector
-******************************************************/
 
 void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
   printf("%s = ", who);
@@ -143,12 +138,16 @@ void print_vec(float *x, unsigned int n, const char *fmt, const char *who) {
 void logistic(float *x, unsigned int a, unsigned int n, unsigned int m, float *z, unsigned int blocksize) {
 
   float *dev_x, *dev_z;
-  int size = n*sizeof(float);
+  int size = n*sizeof(float);  
+  unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
+  if (1024 < nblks) {
+    nblks = 1024;
+  }
+  unsigned int M = ceil((float)(n)/(float)(nblks*blocksize));
   cudaMalloc((void**)(&dev_x), size);
   cudaMalloc((void**)(&dev_z), size);
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-  unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-  logistic_cuda<<<nblks , blocksize>>>(n, m, a, dev_x, dev_z);
+  logistic_cuda<<<nblks , blocksize>>>(n, m, M, a, dev_x, dev_z);
   cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
 }
 
@@ -159,13 +158,11 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   float *z, *zOut;
   float *dev_x, *dev_z, *dev_y;
   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-  printf("nblks = %i, Max = %i\n",nblks,MaxBlks);
   if (MaxBlks < nblks) {
     nblks = MaxBlks;
   }
   int size = n*sizeof(float);
   unsigned int m = ceil((float)(n)/(float)(nblks*blocksize));
-  printf("m = %i\n",m);
   zOut = (float *) malloc(sizeof(float));
   z = (float *) malloc(size);
   cudaMalloc((void**)(&dev_x), size);
@@ -174,78 +171,10 @@ float norm(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBl
   cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
   dot<<<nblks , blocksize>>>(n, m, dev_x, dev_y, dev_z);
   cudaMemcpy(z, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-  print_vec(z, 10, "%f","z");
   reduce_sum<<<1,blocksize>>>(nblks, dev_z);
   cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
   return sqrt(zOut[0]);
 }
-
-// float norm1(float * x, unsigned int n, unsigned int blocksize, unsigned int MaxBlks) {
-
-//   float z, *zOut;
-//   float *dev_x, *dev_z;
-//   int nUpdate = n;
-//   unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-//   //z = (float *) malloc(size);
-//   z = 0.0;
-//   if (n < MaxBlks*MaxBlks) {
-//     int size = n*sizeof(float);
-//     unsigned int nblks = ceil(((float)(n))/((float)(blocksize)));
-//     zOut = (float *) malloc(sizeof(float));
-//     cudaMalloc((void**)(&dev_x), size);
-//     cudaMalloc((void**)(&dev_z), size);
-//     cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-//     dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
-//     reduce_sum<<<1,blocksize>>>(nblks, dev_z);
-//     cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-//     z = zOut[0];
-//   } else {
-//     unsigned int vecSplit = ceil(((float)(n))/((float)(MaxBlks*MaxBlks)));
-//     printf("bigger than expected");
-//     for (int i = 0; i < vecSplit; ++i) {
-//       if (i < vecSplit-1) {
-//         unsigned int nblks = ceil(((float)(MaxBlks*MaxBlks))/((float)(blocksize)));
-//         nUpdate = nUpdate - MaxBlks*MaxBlks;
-//         float *xIn;
-//         int size = MaxBlks*MaxBlks*sizeof(float);
-//         xIn = (float *) malloc(size);
-//         // xOut = (float *) malloc(nUpdate*sizeof(float));
-//         memcpy(xIn, x, size);
-//         memcpy(x, &x[MaxBlks*MaxBlks], nUpdate*sizeof(float));
-//         zOut = (float *) malloc(sizeof(float));
-//         cudaMalloc((void**)(&dev_x), size);
-//         cudaMalloc((void**)(&dev_z), size);
-//         cudaMemcpy(dev_x, xIn, size, cudaMemcpyHostToDevice);
-//         dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
-//         reduce_sum<<<1,blocksize>>>(nblks, dev_z);
-//         cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-//         z += zOut[0];
-//       } else {
-//         int size = nUpdate*sizeof(float);
-
-//         unsigned int nblks = ceil(((float)(nUpdate))/((float)(blocksize)));
-//         zOut = (float *) malloc(sizeof(float));
-//         cudaMalloc((void**)(&dev_x), size);
-//         cudaMalloc((void**)(&dev_z), size);
-//         cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-//         dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
-//         reduce_sum<<<1,blocksize>>>(nblks, dev_z);
-//         cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-//         z += zOut[0];
-//         printf("%d",nUpdate);
-//       }
-//       // cudaMalloc((void**)(&dev_x), size);
-//       // cudaMalloc((void**)(&dev_z), size);
-//       // cudaMemcpy(dev_x, x, size, cudaMemcpyHostToDevice);
-//     }
-//   }
-//   // dotprod<<<nblks , blocksize>>>(n, dev_x, dev_x, dev_z);
-//   // cudaMemcpy(z, dev_z, size, cudaMemcpyDeviceToHost);
-//   // reduce_sum<<<1,blocksize>>>(nblks, dev_z);
-//   // cudaMemcpy(zOut, dev_z, sizeof(float), cudaMemcpyDeviceToHost);
-//   // print_vec(zOut, 10, "%5.5f","V");
-//   return sqrt(z);
-// }
 
 void do_timing_norm(void *void_arg) {
   struct kernel_arg_norm *argk = (struct kernel_arg_norm *)(void_arg);
@@ -302,16 +231,15 @@ int main(int argc, char *argv[] ) {
   printf("\n Norm error = %3.4e\n\n",1.0e-6*sqrt(n)*max(abs(p_norm-z_ref[0]), 1.0));
 
 
-  argk_n.n = N;
+  argk_n.n = n;
   argk_n.x = x;
   argk_n.blocksize = blocksize;
   argk_n.MaxBlks = MaxBlks;
-  //time_it_run(tr, do_timing_norm, (void *)(&argk_n));
-  //time_it_get_stats(tr, &stats_n);
+  time_it_run(tr, do_timing_norm, (void *)(&argk_n));
+  time_it_get_stats(tr, &stats_n);
 
 
-  unsigned int vecSplit = ceil(((float)(n))/((float)(MaxBlks*MaxBlks)));
-  printf("Norm: mean(T) = %10.3e, std(T) = %10.3e\n", vecSplit*stats_n.mean, stats_n.std);
+  unsigned int M = ceil(((float)(n))/((float)(MaxBlks*MaxBlks)));
 
 
   float *L;
@@ -327,16 +255,13 @@ int main(int argc, char *argv[] ) {
   argk_l.blocksize = blocksize;
   time_it_run(tr, do_timing_logistic, (void *)(&argk_l));
   time_it_get_stats(tr, &stats_l);
-  printf("Logistic: mean(T) = %10.3e, std(T) = %10.3e\n", stats_l.mean, stats_l.std);
   printf("\n\nLogistic calculations:   # operations = %10.4i   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 3*n*m, stats_l.mean, stats_l.mean/(3*n*m), (3*(float)n*(float)m)/(stats_l.mean*pow(10,9)));
   float Left_over_block = roundf((float)blocksize*( (((float)(n))/((float)(blocksize))) - floor(((float)(n))/((float)(blocksize)))));
   float nblocks = floor(((float)(n))/((float)(blocksize)));
 
-  //printf("Norm calculations:       # operations = %11.4f   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", 2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1), vecSplit*stats_n.mean, vecSplit*stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),pow(stats_n.mean/(2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1)),-1)/pow(10,9));
+  int NormWork = (2*(nblocks*(2*blocksize-1) + 2*Left_over_block-1))*M;
+  printf("Norm calculations:       # operations = %11.4i   mean time = %1.4e  time per op = %1.4e, Gflops = %5.3f\n\n", NormWork, stats_n.mean, stats_n.mean/(NormWork),pow(stats_n.mean/(NormWork),-1)/pow(10,9));
 
-  // for(int i = 0; i < n; i++){
-  //     printf("z = %5.5f,  L = %5.5f \n", z[i], L[i]);
-  // }
   free(x);
   free(z_ref);
   exit(0);
