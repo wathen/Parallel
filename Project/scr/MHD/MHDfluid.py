@@ -122,12 +122,15 @@ def foo():
 
 
         # Create mesh and define function space
-        nn = int(nn)
-        NN[xx-1] = nn/2
+        #nn = int(nn)
+        #NN[xx-1] = nn/2
         # parameters["form_compiler"]["quadrature_degree"] = 6
         # parameters = CP.ParameterSetup()
-        mesh = UnitSquareMesh(nn,nn)
-
+        #mesh = UnitSquareMesh(nn,nn)
+        
+        N = int(sys.argv[1])
+        n = int(2**N)
+        mesh = UnitCubeMesh(n,n,n)
         order = 2
         parameters['reorder_dofs_serial'] = False
         Velocity = VectorFunctionSpace(mesh, "CG", order)
@@ -141,22 +144,17 @@ def foo():
         Magneticdim[xx-1] = Magnetic.dim()
         Lagrangedim[xx-1] = Lagrange.dim()
         Wdim[xx-1] = W.dim()
-        # print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
+        print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
         dim = [Velocity.dim(), Pressure.dim(), Magnetic.dim(), Lagrange.dim()]
 
 
         def boundary(x, on_boundary):
             return on_boundary
 
-        u0, p0,b0, r0, Laplacian, Advection, gradPres,CurlCurl, gradR, NS_Couple, M_Couple = ExactSol.MHD2D(4,1, mesh, 'no')
 
 
-        bcu = DirichletBC(Velocity,u0, boundary)
-        bcb = DirichletBC(Magnetic,b0, boundary)
-        bcr = DirichletBC(Lagrange,r0, boundary)
 
         # bc = [u0,p0,b0,r0]
-        bcs = [bcu,bcb,bcr]
         FSpaces = [Velocity,Pressure,Magnetic,Lagrange]
 
 
@@ -170,11 +168,11 @@ def foo():
         Saddle = "No"
         Stokes = "No"
         SetupType = 'python-class'
-        F_NS = Expression(("0.0", "0.0"))
+        F_NS = Expression(("0.0", "0.0","0.0"))
         if kappa == 0:
-            F_M = Expression(("0.0", "0.0"))
+            F_M = Expression(("0.0", "0.0","0.0"))
         else:
-            F_M = Expression(("0.0", "0.0"))
+            F_M = Expression(("0.0", "0.0","0.0"))
         params = [kappa,Mu_m,MU]
 
         # MO.PrintStr("Seting up initial guess matricies",2,"=","\n\n","\n")
@@ -209,8 +207,8 @@ def foo():
         ns,maxwell,CoupleTerm,Lmaxwell,Lns = forms.MHD2D(mesh, W,F_M,F_NS, u_k,b_k,params,IterType,"CG",Saddle,Stokes)
         RHSform = forms.PicardRHS(mesh, W, u_k, p_k, b_k, r_k, params,"CG",Saddle,Stokes)
 
-        bcu = DirichletBC(W.sub(0),Expression(("0.0","0.0")), boundary)
-        bcb = DirichletBC(W.sub(2),Expression(("0.0","0.0")), boundary)
+        bcu = DirichletBC(W.sub(0),Expression(("0.0","0.0","0.0")), boundary)
+        bcb = DirichletBC(W.sub(2),Expression(("0.0","0.0","0.0")), boundary)
         bcr = DirichletBC(W.sub(3),Expression(("0.0")), boundary)
         bcs = [bcu,bcb,bcr]
 
@@ -248,24 +246,28 @@ def foo():
             iter += 1
             # MO.PrintStr("Iter "+str(iter),7,"=","\n\n","\n\n")
             # AssembleTime = time.time()
-            if IterType == "CD":
-                # MO.StrTimePrint("MHD CD RHS assemble, time: ", time.time()-AssembleTime)
-                b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "CD",IterType)
-            else:
-                # MO.PrintStr("Setting up PETSc "+SetupType,2,"=","\n","\n")
-                if  Split == "Yes":
-                    if iter == 1:
-                        Alin = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "Linear",IterType)
-                        Fnlin,b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "NonLinear",IterType)
-                        A = Fnlin+Alin
-                        A,b = MHDsetup.SystemAssemble(FSpaces,A,b,SetupType,IterType)
-                        u = b.duplicate()
-                    else:
-                        Fnline,b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "NonLinear",IterType)
-                        A = Fnlin+Alin
-                        A,b = MHDsetup.SystemAssemble(FSpaces,A,b,SetupType,IterType)
-                else:
-                    AA, bb = assemble_system(maxwell+ns+CoupleTerm, (Lmaxwell + Lns) - RHSform,  bcs)
+
+            t0 = Timer("assemble_system")
+            AA, bb = assemble_system(maxwell+ns+CoupleTerm, (Lmaxwell + Lns) - RHSform,  bcs)
+            del(t0)
+#            if IterType == "CD":
+#                # MO.StrTimePrint("MHD CD RHS assemble, time: ", time.time()-AssembleTime)
+#                b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "CD",IterType)
+#            else:
+#                # MO.PrintStr("Setting up PETSc "+SetupType,2,"=","\n","\n")
+#                if  Split == "Yes":
+#                    if iter == 1:
+#                        Alin = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "Linear",IterType)
+#                        Fnlin,b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "NonLinear",IterType)
+#                        A = Fnlin+Alin
+#                        A,b = MHDsetup.SystemAssemble(FSpaces,A,b,SetupType,IterType)
+#                        u = b.duplicate()
+#                    else:
+#                        Fnline,b = MHDsetup.Assemble(W,ns,maxwell,CoupleTerm,Lns,Lmaxwell,RHSform,bcs+BC, "NonLinear",IterType)
+#                        A = Fnlin+Alin
+#                        A,b = MHDsetup.SystemAssemble(FSpaces,A,b,SetupType,IterType)
+#                else:
+#                    AA, bb = assemble_system(maxwell+ns+CoupleTerm, (Lmaxwell + Lns) - RHSform,  bcs)
                     # A,b = CP.Assemble(AA,bb)
             # assemble(maxwell+ns+CoupleTerm)
             # if iter == 1:
@@ -306,6 +308,8 @@ def foo():
             # np.save('Mat/'+ str(int(level[xx-1][0])) +'x.mat',x.array)
             # # np.save(b.array,'Mat/'+ str(level) +'/
 
-
+    
     # interactive()
 foo()
+
+list_timings()

@@ -1,0 +1,292 @@
+[mpiexec@kaldi] Sending Ctrl-C to processes as requested
+[mpiexec@kaldi] Press Ctrl-C again to force abort
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+Traceback (most recent call last):
+  File "Laplacian.py", line 1, in <module>
+    from dolfin import *
+    from dolfin import *
+    from dolfin import *
+    from dolfin import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+    from dolfin import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+    from dolfin import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+    from dolfin import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+    import dolfin.importhandler
+    import dolfin.importhandler
+    import dolfin.importhandler
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    import dolfin.importhandler
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    import dolfin.importhandler
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    import dolfin.importhandler
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    import dolfin.importhandler
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    from dolfin import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/__init__.py", line 4, in <module>
+    __import__(dep)
+    __import__(dep)
+    __import__(dep)
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+    __import__(dep)
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+    __import__(dep)
+    import dolfin.importhandler
+    __import__(dep)
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+    __import__(dep)
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/dolfin/importhandler/__init__.py", line 40, in <module>
+    from ffc.compiler import compile_form, compile_element
+    from ffc.compiler import compile_form, compile_element
+    from ffc.compiler import compile_form, compile_element
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    from ffc.compiler import compile_form, compile_element
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    from ffc.compiler import compile_form, compile_element
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    __import__(dep)
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/__init__.py", line 18, in <module>
+    from ffc.compiler import compile_form, compile_element
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    from ffc.compiler import compile_form, compile_element
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    from ffc.compiler import compile_form, compile_element
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/compiler.py", line 125, in <module>
+    from ffc.analysis import analyze_forms, analyze_elements
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+    from ffc.analysis import analyze_forms, analyze_elements
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+    from ffc.quadratureelement import default_quadrature_degree
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from ffc.analysis import analyze_forms, analyze_elements
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/analysis.py", line 42, in <module>
+    from ffc.quadratureelement import default_quadrature_degree
+    from ffc.quadratureelement import default_quadrature_degree
+    from ffc.quadratureelement import default_quadrature_degree
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from ffc.quadratureelement import default_quadrature_degree
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from ffc.quadratureelement import default_quadrature_degree
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from ffc.quadratureelement import default_quadrature_degree
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from FIAT.functional import PointEvaluation
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+    from FIAT.functional import PointEvaluation
+    from FIAT.functional import PointEvaluation
+    from ffc.quadratureelement import default_quadrature_degree
+    from FIAT.functional import PointEvaluation
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/ffc/quadratureelement.py", line 27, in <module>
+    from FIAT.functional import PointEvaluation
+    from FIAT.functional import PointEvaluation
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+    from FIAT.functional import PointEvaluation
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+    from FIAT.finite_element import FiniteElement
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+    from FIAT.functional import PointEvaluation
+    from FIAT.finite_element import FiniteElement
+    from FIAT.finite_element import FiniteElement
+    from FIAT.finite_element import FiniteElement
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+    from FIAT.finite_element import FiniteElement
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/__init__.py", line 8, in <module>
+    from FIAT.finite_element import FiniteElement
+    from FIAT.finite_element import FiniteElement
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+    from .polynomial_set import PolynomialSet
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+    from .polynomial_set import PolynomialSet
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+    from FIAT.finite_element import FiniteElement
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/finite_element.py", line 19, in <module>
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+    from . import expansions
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    from . import expansions
+    from . import expansions
+    from . import expansions
+    from . import expansions
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    from .polynomial_set import PolynomialSet
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/polynomial_set.py", line 29, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    from . import expansions
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    from . import expansions
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    import sympy
+    import sympy
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    from . import expansions
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/FIAT/expansions.py", line 24, in <module>
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    from .polys import *
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    from .polys import *
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    import sympy
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/__init__.py", line 40, in <module>
+    from .polys import *
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/__init__.py", line 5, in <module>
+    from . import polytools
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+    from . import polytools
+    from . import polytools
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+    from . import polytools
+    from . import polytools
+    from . import polytools
+    from . import polytools
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+    from . import polytools
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/polytools.py", line 53, in <module>
+    from sympy.polys.domains import FF, QQ, ZZ
+    from sympy.polys.domains import FF, QQ, ZZ
+    from sympy.polys.domains import FF, QQ, ZZ
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+    from sympy.polys.domains import FF, QQ, ZZ
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+    from sympy.polys.domains import FF, QQ, ZZ
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+    from sympy.polys.domains import FF, QQ, ZZ
+    from sympy.polys.domains import FF, QQ, ZZ
+    from sympy.polys.domains import FF, QQ, ZZ
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/__init__.py", line 33, in <module>
+    from . import gmpyfinitefield
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from . import gmpyfinitefield
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from . import gmpyfinitefield
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyfinitefield.py", line 6, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    from sympy.polys.domains.gmpyintegerring import GMPYIntegerRing
+  File "/ubc/cs/research/scl/people/mwathen/.hastdist/bld/profile/gcgrmqvb7wb7/lib/python2.7/site-packages/sympy/polys/domains/gmpyintegerring.py", line 1, in <module>
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt    """Implementaton of :class:`GMPYIntegerRing` class. """
+
+KeyboardInterrupt
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt
+    """Implementaton of :class:`GMPYIntegerRing` class. """
+KeyboardInterrupt
+KeyboardInterrupt
+Process 0: Number of global vertices: 16974593
+Process 0: Number of global cells: 100663296

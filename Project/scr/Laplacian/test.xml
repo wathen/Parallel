@@ -1,0 +1,792 @@
+<?xml version="1.0"?>
+<dolfin xmlns:dolfin="http://fenicsproject.org">
+  <table name="[MPI_MAX] Summary of timings">
+    <row key="Apply (PETScMatrix)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.44" />
+      <col key="sys tot" type="double" value="0.44" />
+      <col key="usr avg" type="double" value="10.57" />
+      <col key="usr tot" type="double" value="10.57" />
+      <col key="wall avg" type="double" value="10.888031672" />
+      <col key="wall tot" type="double" value="10.888031672" />
+    </row>
+    <row key="Apply (PETScVector)">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0.0033333333333333335" />
+      <col key="sys tot" type="double" value="0.01" />
+      <col key="usr avg" type="double" value="0.02" />
+      <col key="usr tot" type="double" value="0.060000000000000005" />
+      <col key="wall avg" type="double" value="0.019531877333333336" />
+      <col key="wall tot" type="double" value="0.058595632000000009" />
+    </row>
+    <row key="Assemble system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="4.7200000000000006" />
+      <col key="sys tot" type="double" value="4.7200000000000006" />
+      <col key="usr avg" type="double" value="88.140000000000001" />
+      <col key="usr tot" type="double" value="88.140000000000001" />
+      <col key="wall avg" type="double" value="91.284892982000002" />
+      <col key="wall tot" type="double" value="91.284892982000002" />
+    </row>
+    <row key="Build mesh number mesh entities">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0.013333333333333334" />
+      <col key="sys tot" type="double" value="0.040000000000000001" />
+      <col key="usr avg" type="double" value="1.6800000000000004" />
+      <col key="usr tot" type="double" value="5.0400000000000009" />
+      <col key="wall avg" type="double" value="1.6829207036666667" />
+      <col key="wall tot" type="double" value="5.0487621110000003" />
+    </row>
+    <row key="Build sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.8600000000000001" />
+      <col key="sys tot" type="double" value="1.7200000000000002" />
+      <col key="usr avg" type="double" value="11.390000000000001" />
+      <col key="usr tot" type="double" value="22.780000000000001" />
+      <col key="wall avg" type="double" value="12.088045100000002" />
+      <col key="wall tot" type="double" value="24.176090200000004" />
+    </row>
+    <row key="Compute local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.060000000000000005" />
+      <col key="sys tot" type="double" value="0.060000000000000005" />
+      <col key="usr avg" type="double" value="0.93000000000000005" />
+      <col key="usr tot" type="double" value="0.93000000000000005" />
+      <col key="wall avg" type="double" value="0.96335139500000011" />
+      <col key="wall tot" type="double" value="0.96335139500000011" />
+    </row>
+    <row key="Compute non-local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.030000000000000002" />
+      <col key="sys tot" type="double" value="0.030000000000000002" />
+      <col key="usr avg" type="double" value="0.26000000000000001" />
+      <col key="usr tot" type="double" value="0.26000000000000001" />
+      <col key="wall avg" type="double" value="0.27274591500000001" />
+      <col key="wall tot" type="double" value="0.27274591500000001" />
+    </row>
+    <row key="Delete sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0" />
+      <col key="usr tot" type="double" value="0" />
+      <col key="wall avg" type="double" value="2.9468999999999999e-05" />
+      <col key="wall tot" type="double" value="5.8937999999999997e-05" />
+    </row>
+    <row key="DirichletBC compute bc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.02" />
+      <col key="sys tot" type="double" value="0.02" />
+      <col key="usr avg" type="double" value="1.0600000000000001" />
+      <col key="usr tot" type="double" value="1.0600000000000001" />
+      <col key="wall avg" type="double" value="1.053903043" />
+      <col key="wall tot" type="double" value="1.053903043" />
+    </row>
+    <row key="DirichletBC gather">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.02" />
+      <col key="sys tot" type="double" value="0.02" />
+      <col key="usr avg" type="double" value="0.87000000000000011" />
+      <col key="usr tot" type="double" value="0.87000000000000011" />
+      <col key="wall avg" type="double" value="0.87926596600000007" />
+      <col key="wall tot" type="double" value="0.87926596600000007" />
+    </row>
+    <row key="DirichletBC init facets">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.01" />
+      <col key="sys tot" type="double" value="0.01" />
+      <col key="usr avg" type="double" value="0.22" />
+      <col key="usr tot" type="double" value="0.22" />
+      <col key="wall avg" type="double" value="0.21540047500000001" />
+      <col key="wall tot" type="double" value="0.21540047500000001" />
+    </row>
+    <row key="Distribute cells">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.070000000000000007" />
+      <col key="sys tot" type="double" value="0.070000000000000007" />
+      <col key="usr avg" type="double" value="0.97000000000000008" />
+      <col key="usr tot" type="double" value="0.97000000000000008" />
+      <col key="wall avg" type="double" value="1.005774586" />
+      <col key="wall tot" type="double" value="1.005774586" />
+    </row>
+    <row key="Distribute vertices">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.01" />
+      <col key="sys tot" type="double" value="0.01" />
+      <col key="usr avg" type="double" value="0.24000000000000002" />
+      <col key="usr tot" type="double" value="0.24000000000000002" />
+      <col key="wall avg" type="double" value="0.24668113700000002" />
+      <col key="wall tot" type="double" value="0.24668113700000002" />
+    </row>
+    <row key="Generate Box mesh">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.81000000000000005" />
+      <col key="sys tot" type="double" value="0.81000000000000005" />
+      <col key="usr avg" type="double" value="25.25" />
+      <col key="usr tot" type="double" value="25.25" />
+      <col key="wall avg" type="double" value="25.780711323000002" />
+      <col key="wall tot" type="double" value="25.780711323000002" />
+    </row>
+    <row key="Init PETSc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.01" />
+      <col key="sys tot" type="double" value="0.01" />
+      <col key="usr avg" type="double" value="0.14000000000000001" />
+      <col key="usr tot" type="double" value="0.14000000000000001" />
+      <col key="wall avg" type="double" value="0.14729832700000001" />
+      <col key="wall tot" type="double" value="0.14729832700000001" />
+    </row>
+    <row key="Init dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.39000000000000001" />
+      <col key="sys tot" type="double" value="0.39000000000000001" />
+      <col key="usr avg" type="double" value="7.9800000000000004" />
+      <col key="usr tot" type="double" value="7.9800000000000004" />
+      <col key="wall avg" type="double" value="8.284959315" />
+      <col key="wall tot" type="double" value="8.284959315" />
+    </row>
+    <row key="Init dofmap from UFC dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.02" />
+      <col key="sys tot" type="double" value="0.02" />
+      <col key="usr avg" type="double" value="2.5100000000000002" />
+      <col key="usr tot" type="double" value="2.5100000000000002" />
+      <col key="wall avg" type="double" value="2.5220717340000003" />
+      <col key="wall tot" type="double" value="2.5220717340000003" />
+    </row>
+    <row key="Init tensor">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.065000000000000002" />
+      <col key="sys tot" type="double" value="0.13" />
+      <col key="usr avg" type="double" value="0.97500000000000009" />
+      <col key="usr tot" type="double" value="1.9500000000000002" />
+      <col key="wall avg" type="double" value="1.0368767640000001" />
+      <col key="wall tot" type="double" value="2.0737535280000001" />
+    </row>
+    <row key="PARALLEL 2: Distribute mesh (cells and vertices)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.080000000000000002" />
+      <col key="sys tot" type="double" value="0.080000000000000002" />
+      <col key="usr avg" type="double" value="1.3800000000000001" />
+      <col key="usr tot" type="double" value="1.3800000000000001" />
+      <col key="wall avg" type="double" value="1.385261034" />
+      <col key="wall tot" type="double" value="1.385261034" />
+    </row>
+    <row key="PARALLEL 3: Build mesh (from local mesh data)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.01" />
+      <col key="sys tot" type="double" value="0.01" />
+      <col key="usr avg" type="double" value="0.19" />
+      <col key="usr tot" type="double" value="0.19" />
+      <col key="wall avg" type="double" value="0.18738557900000002" />
+      <col key="wall tot" type="double" value="0.18738557900000002" />
+    </row>
+    <row key="PARALLEL x: Number mesh entities">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.02" />
+      <col key="sys tot" type="double" value="0.040000000000000001" />
+      <col key="usr avg" type="double" value="2.3399999999999999" />
+      <col key="usr tot" type="double" value="4.6799999999999997" />
+      <col key="wall avg" type="double" value="2.3479946665" />
+      <col key="wall tot" type="double" value="4.695989333" />
+    </row>
+    <row key="Partition graph (calling SCOTCH)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.41000000000000003" />
+      <col key="sys tot" type="double" value="0.41000000000000003" />
+      <col key="usr avg" type="double" value="12.41" />
+      <col key="usr tot" type="double" value="12.41" />
+      <col key="wall avg" type="double" value="12.486958473000001" />
+      <col key="wall tot" type="double" value="12.486958473000001" />
+    </row>
+    <row key="SCOTCH graph ordering">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.15000000000000002" />
+      <col key="sys tot" type="double" value="0.15000000000000002" />
+      <col key="usr avg" type="double" value="1.1500000000000001" />
+      <col key="usr tot" type="double" value="1.1500000000000001" />
+      <col key="wall avg" type="double" value="1.2463066950000001" />
+      <col key="wall tot" type="double" value="1.2463066950000001" />
+    </row>
+    <row key="assemble_system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="4.7200000000000006" />
+      <col key="sys tot" type="double" value="4.7200000000000006" />
+      <col key="usr avg" type="double" value="88.240000000000009" />
+      <col key="usr tot" type="double" value="88.240000000000009" />
+      <col key="wall avg" type="double" value="91.602856901999999" />
+      <col key="wall tot" type="double" value="91.602856901999999" />
+    </row>
+    <row key="build LocalMeshData">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.37" />
+      <col key="sys tot" type="double" value="0.37" />
+      <col key="usr avg" type="double" value="4.0499999999999998" />
+      <col key="usr tot" type="double" value="4.0499999999999998" />
+      <col key="wall avg" type="double" value="4.1009601080000007" />
+      <col key="wall tot" type="double" value="4.1009601080000007" />
+    </row>
+    <row key="compute connectivity 2 - 3">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.090000000000000011" />
+      <col key="usr tot" type="double" value="0.090000000000000011" />
+      <col key="wall avg" type="double" value="0.090218604000000008" />
+      <col key="wall tot" type="double" value="0.090218604000000008" />
+    </row>
+    <row key="compute entities dim = 1">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.10000000000000001" />
+      <col key="sys tot" type="double" value="0.10000000000000001" />
+      <col key="usr avg" type="double" value="2.7600000000000002" />
+      <col key="usr tot" type="double" value="2.7600000000000002" />
+      <col key="wall avg" type="double" value="2.7996702360000003" />
+      <col key="wall tot" type="double" value="2.7996702360000003" />
+    </row>
+    <row key="compute entities dim = 2">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.18000000000000002" />
+      <col key="sys tot" type="double" value="0.18000000000000002" />
+      <col key="usr avg" type="double" value="4.3000000000000007" />
+      <col key="usr tot" type="double" value="4.3000000000000007" />
+      <col key="wall avg" type="double" value="4.4287589230000002" />
+      <col key="wall tot" type="double" value="4.4287589230000002" />
+    </row>
+    <row key="ksp.solve">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="9.7000000000000011" />
+      <col key="sys tot" type="double" value="9.7000000000000011" />
+      <col key="usr avg" type="double" value="642.63" />
+      <col key="usr tot" type="double" value="642.63" />
+      <col key="wall avg" type="double" value="649.57476541000005" />
+      <col key="wall tot" type="double" value="649.57476541000005" />
+    </row>
+  </table>
+  <table name="[MPI_MIN] Summary of timings">
+    <row key="Apply (PETScMatrix)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.060000000000000005" />
+      <col key="sys tot" type="double" value="0.060000000000000005" />
+      <col key="usr avg" type="double" value="3.2200000000000002" />
+      <col key="usr tot" type="double" value="3.2200000000000002" />
+      <col key="wall avg" type="double" value="3.4223370230000003" />
+      <col key="wall tot" type="double" value="3.4223370230000003" />
+    </row>
+    <row key="Apply (PETScVector)">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.01" />
+      <col key="usr tot" type="double" value="0.030000000000000002" />
+      <col key="wall avg" type="double" value="0.013905753666666668" />
+      <col key="wall tot" type="double" value="0.041717261000000005" />
+    </row>
+    <row key="Assemble system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="2.9700000000000002" />
+      <col key="sys tot" type="double" value="2.9700000000000002" />
+      <col key="usr avg" type="double" value="86.310000000000002" />
+      <col key="usr tot" type="double" value="86.310000000000002" />
+      <col key="wall avg" type="double" value="91.161093221000002" />
+      <col key="wall tot" type="double" value="91.161093221000002" />
+    </row>
+    <row key="Build mesh number mesh entities">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.92333333333333345" />
+      <col key="usr tot" type="double" value="2.7700000000000005" />
+      <col key="wall avg" type="double" value="0.92524032766666675" />
+      <col key="wall tot" type="double" value="2.7757209830000003" />
+    </row>
+    <row key="Build sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.48000000000000004" />
+      <col key="sys tot" type="double" value="0.96000000000000008" />
+      <col key="usr avg" type="double" value="11.050000000000001" />
+      <col key="usr tot" type="double" value="22.100000000000001" />
+      <col key="wall avg" type="double" value="11.700057337500001" />
+      <col key="wall tot" type="double" value="23.400114675000001" />
+    </row>
+    <row key="Compute local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.71000000000000008" />
+      <col key="usr tot" type="double" value="0.71000000000000008" />
+      <col key="wall avg" type="double" value="0.76707868000000001" />
+      <col key="wall tot" type="double" value="0.76707868000000001" />
+    </row>
+    <row key="Compute non-local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.19" />
+      <col key="usr tot" type="double" value="0.19" />
+      <col key="wall avg" type="double" value="0.207121414" />
+      <col key="wall tot" type="double" value="0.207121414" />
+    </row>
+    <row key="Delete sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0" />
+      <col key="usr tot" type="double" value="0" />
+      <col key="wall avg" type="double" value="7.8099999999999998e-06" />
+      <col key="wall tot" type="double" value="1.562e-05" />
+    </row>
+    <row key="DirichletBC compute bc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.18000000000000002" />
+      <col key="usr tot" type="double" value="0.18000000000000002" />
+      <col key="wall avg" type="double" value="0.18148839" />
+      <col key="wall tot" type="double" value="0.18148839" />
+    </row>
+    <row key="DirichletBC gather">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0" />
+      <col key="usr tot" type="double" value="0" />
+      <col key="wall avg" type="double" value="0.0092200809999999998" />
+      <col key="wall tot" type="double" value="0.0092200809999999998" />
+    </row>
+    <row key="DirichletBC init facets">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.18000000000000002" />
+      <col key="usr tot" type="double" value="0.18000000000000002" />
+      <col key="wall avg" type="double" value="0.17793424700000002" />
+      <col key="wall tot" type="double" value="0.17793424700000002" />
+    </row>
+    <row key="Distribute cells">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.67000000000000004" />
+      <col key="usr tot" type="double" value="0.67000000000000004" />
+      <col key="wall avg" type="double" value="0.69177178300000008" />
+      <col key="wall tot" type="double" value="0.69177178300000008" />
+    </row>
+    <row key="Distribute vertices">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.19" />
+      <col key="usr tot" type="double" value="0.19" />
+      <col key="wall avg" type="double" value="0.19051116400000001" />
+      <col key="wall tot" type="double" value="0.19051116400000001" />
+    </row>
+    <row key="Generate Box mesh">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.5" />
+      <col key="sys tot" type="double" value="0.5" />
+      <col key="usr avg" type="double" value="23.860000000000003" />
+      <col key="usr tot" type="double" value="23.860000000000003" />
+      <col key="wall avg" type="double" value="24.645538598000002" />
+      <col key="wall tot" type="double" value="24.645538598000002" />
+    </row>
+    <row key="Init PETSc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0" />
+      <col key="usr tot" type="double" value="0" />
+      <col key="wall avg" type="double" value="4.5670000000000002e-05" />
+      <col key="wall tot" type="double" value="4.5670000000000002e-05" />
+    </row>
+    <row key="Init dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.030000000000000002" />
+      <col key="sys tot" type="double" value="0.030000000000000002" />
+      <col key="usr avg" type="double" value="7.6700000000000008" />
+      <col key="usr tot" type="double" value="7.6700000000000008" />
+      <col key="wall avg" type="double" value="8.0102488420000011" />
+      <col key="wall tot" type="double" value="8.0102488420000011" />
+    </row>
+    <row key="Init dofmap from UFC dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="1.4500000000000002" />
+      <col key="usr tot" type="double" value="1.4500000000000002" />
+      <col key="wall avg" type="double" value="1.4568964400000002" />
+      <col key="wall tot" type="double" value="1.4568964400000002" />
+    </row>
+    <row key="Init tensor">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.01" />
+      <col key="sys tot" type="double" value="0.02" />
+      <col key="usr avg" type="double" value="0.31000000000000005" />
+      <col key="usr tot" type="double" value="0.62000000000000011" />
+      <col key="wall avg" type="double" value="0.32510314150000003" />
+      <col key="wall tot" type="double" value="0.65020628300000005" />
+    </row>
+    <row key="PARALLEL 2: Distribute mesh (cells and vertices)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="1.1300000000000001" />
+      <col key="usr tot" type="double" value="1.1300000000000001" />
+      <col key="wall avg" type="double" value="1.1588886940000001" />
+      <col key="wall tot" type="double" value="1.1588886940000001" />
+    </row>
+    <row key="PARALLEL 3: Build mesh (from local mesh data)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.16" />
+      <col key="usr tot" type="double" value="0.16" />
+      <col key="wall avg" type="double" value="0.16315427000000002" />
+      <col key="wall tot" type="double" value="0.16315427000000002" />
+    </row>
+    <row key="PARALLEL x: Number mesh entities">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="1.1899999999999999" />
+      <col key="usr tot" type="double" value="2.3799999999999999" />
+      <col key="wall avg" type="double" value="1.1902742135" />
+      <col key="wall tot" type="double" value="2.3805484269999999" />
+    </row>
+    <row key="Partition graph (calling SCOTCH)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.060000000000000005" />
+      <col key="sys tot" type="double" value="0.060000000000000005" />
+      <col key="usr avg" type="double" value="11.890000000000001" />
+      <col key="usr tot" type="double" value="11.890000000000001" />
+      <col key="wall avg" type="double" value="12.451604011000001" />
+      <col key="wall tot" type="double" value="12.451604011000001" />
+    </row>
+    <row key="SCOTCH graph ordering">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.73000000000000009" />
+      <col key="usr tot" type="double" value="0.73000000000000009" />
+      <col key="wall avg" type="double" value="0.87279096900000008" />
+      <col key="wall tot" type="double" value="0.87279096900000008" />
+    </row>
+    <row key="assemble_system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="2.9700000000000002" />
+      <col key="sys tot" type="double" value="2.9700000000000002" />
+      <col key="usr avg" type="double" value="86.38000000000001" />
+      <col key="usr tot" type="double" value="86.38000000000001" />
+      <col key="wall avg" type="double" value="91.325174509000007" />
+      <col key="wall tot" type="double" value="91.325174509000007" />
+    </row>
+    <row key="build LocalMeshData">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.030000000000000002" />
+      <col key="sys tot" type="double" value="0.030000000000000002" />
+      <col key="usr avg" type="double" value="1.1700000000000002" />
+      <col key="usr tot" type="double" value="1.1700000000000002" />
+      <col key="wall avg" type="double" value="1.5506980540000002" />
+      <col key="wall tot" type="double" value="1.5506980540000002" />
+    </row>
+    <row key="compute connectivity 2 - 3">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.050000000000000003" />
+      <col key="usr tot" type="double" value="0.050000000000000003" />
+      <col key="wall avg" type="double" value="0.049658817000000001" />
+      <col key="wall tot" type="double" value="0.049658817000000001" />
+    </row>
+    <row key="compute entities dim = 1">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="1.76" />
+      <col key="usr tot" type="double" value="1.76" />
+      <col key="wall avg" type="double" value="1.7553365890000001" />
+      <col key="wall tot" type="double" value="1.7553365890000001" />
+    </row>
+    <row key="compute entities dim = 2">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="3.0900000000000003" />
+      <col key="usr tot" type="double" value="3.0900000000000003" />
+      <col key="wall avg" type="double" value="3.0848168600000001" />
+      <col key="wall tot" type="double" value="3.0848168600000001" />
+    </row>
+    <row key="ksp.solve">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="6.5100000000000007" />
+      <col key="sys tot" type="double" value="6.5100000000000007" />
+      <col key="usr avg" type="double" value="635.74000000000001" />
+      <col key="usr tot" type="double" value="635.74000000000001" />
+      <col key="wall avg" type="double" value="649.53430370300009" />
+      <col key="wall tot" type="double" value="649.53430370300009" />
+    </row>
+  </table>
+  <table name="[MPI_AVG] Summary of timings">
+    <row key="Apply (PETScMatrix)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.26062500000000005" />
+      <col key="sys tot" type="double" value="0.26062500000000005" />
+      <col key="usr avg" type="double" value="7.8353125000000015" />
+      <col key="usr tot" type="double" value="7.8353125000000015" />
+      <col key="wall avg" type="double" value="8.1049403335312515" />
+      <col key="wall tot" type="double" value="8.1049403335312515" />
+    </row>
+    <row key="Apply (PETScVector)">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0.00052083333333333333" />
+      <col key="sys tot" type="double" value="0.0015625000000000001" />
+      <col key="usr avg" type="double" value="0.014999999999999998" />
+      <col key="usr tot" type="double" value="0.045000000000000019" />
+      <col key="wall avg" type="double" value="0.016379376010416669" />
+      <col key="wall tot" type="double" value="0.049138128031250013" />
+    </row>
+    <row key="Assemble system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="3.5696874999999992" />
+      <col key="sys tot" type="double" value="3.5696874999999992" />
+      <col key="usr avg" type="double" value="87.550937500000003" />
+      <col key="usr tot" type="double" value="87.550937500000003" />
+      <col key="wall avg" type="double" value="91.231081567625026" />
+      <col key="wall tot" type="double" value="91.231081567625026" />
+    </row>
+    <row key="Build mesh number mesh entities">
+      <col key="reps" type="double" value="3" />
+      <col key="sys avg" type="double" value="0.0034374999999999991" />
+      <col key="sys tot" type="double" value="0.010312500000000002" />
+      <col key="usr avg" type="double" value="1.03" />
+      <col key="usr tot" type="double" value="3.0900000000000007" />
+      <col key="wall avg" type="double" value="1.03421918909375" />
+      <col key="wall tot" type="double" value="3.1026575672812506" />
+    </row>
+    <row key="Build sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.65984375000000017" />
+      <col key="sys tot" type="double" value="1.3196875000000003" />
+      <col key="usr avg" type="double" value="11.247968750000004" />
+      <col key="usr tot" type="double" value="22.495937500000007" />
+      <col key="wall avg" type="double" value="11.924752547562496" />
+      <col key="wall tot" type="double" value="23.849505095124993" />
+    </row>
+    <row key="Compute local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.039687500000000021" />
+      <col key="sys tot" type="double" value="0.039687500000000021" />
+      <col key="usr avg" type="double" value="0.81687500000000013" />
+      <col key="usr tot" type="double" value="0.81687500000000013" />
+      <col key="wall avg" type="double" value="0.85714339084375002" />
+      <col key="wall tot" type="double" value="0.85714339084375002" />
+    </row>
+    <row key="Compute non-local dual graph">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.014375000000000008" />
+      <col key="sys tot" type="double" value="0.014375000000000008" />
+      <col key="usr avg" type="double" value="0.2271875000000001" />
+      <col key="usr tot" type="double" value="0.2271875000000001" />
+      <col key="wall avg" type="double" value="0.24307299768749999" />
+      <col key="wall tot" type="double" value="0.24307299768749999" />
+    </row>
+    <row key="Delete sparsity">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0" />
+      <col key="usr tot" type="double" value="0" />
+      <col key="wall avg" type="double" value="1.7446218749999995e-05" />
+      <col key="wall tot" type="double" value="3.4892437499999991e-05" />
+    </row>
+    <row key="DirichletBC compute bc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.0043749999999999995" />
+      <col key="sys tot" type="double" value="0.0043749999999999995" />
+      <col key="usr avg" type="double" value="0.59875" />
+      <col key="usr tot" type="double" value="0.59875" />
+      <col key="wall avg" type="double" value="0.60149162174999982" />
+      <col key="wall tot" type="double" value="0.60149162174999982" />
+    </row>
+    <row key="DirichletBC gather">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.0059375000000000001" />
+      <col key="sys tot" type="double" value="0.0059375000000000001" />
+      <col key="usr avg" type="double" value="0.45406250000000004" />
+      <col key="usr tot" type="double" value="0.45406250000000004" />
+      <col key="wall avg" type="double" value="0.46391937365625002" />
+      <col key="wall tot" type="double" value="0.46391937365625002" />
+    </row>
+    <row key="DirichletBC init facets">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.0025000000000000001" />
+      <col key="sys tot" type="double" value="0.0025000000000000001" />
+      <col key="usr avg" type="double" value="0.19343750000000007" />
+      <col key="usr tot" type="double" value="0.19343750000000007" />
+      <col key="wall avg" type="double" value="0.19498951640625001" />
+      <col key="wall tot" type="double" value="0.19498951640625001" />
+    </row>
+    <row key="Distribute cells">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.021875000000000006" />
+      <col key="sys tot" type="double" value="0.021875000000000006" />
+      <col key="usr avg" type="double" value="0.88468750000000029" />
+      <col key="usr tot" type="double" value="0.88468750000000029" />
+      <col key="wall avg" type="double" value="0.90977054156250026" />
+      <col key="wall tot" type="double" value="0.90977054156250026" />
+    </row>
+    <row key="Distribute vertices">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.0021875000000000002" />
+      <col key="sys tot" type="double" value="0.0021875000000000002" />
+      <col key="usr avg" type="double" value="0.20750000000000007" />
+      <col key="usr tot" type="double" value="0.20750000000000007" />
+      <col key="wall avg" type="double" value="0.20816136618750003" />
+      <col key="wall tot" type="double" value="0.20816136618750003" />
+    </row>
+    <row key="Generate Box mesh">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.61343749999999997" />
+      <col key="sys tot" type="double" value="0.61343749999999997" />
+      <col key="usr avg" type="double" value="24.575625000000002" />
+      <col key="usr tot" type="double" value="24.575625000000002" />
+      <col key="wall avg" type="double" value="25.2341466845625" />
+      <col key="wall tot" type="double" value="25.2341466845625" />
+    </row>
+    <row key="Init PETSc">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.00031250000000000001" />
+      <col key="sys tot" type="double" value="0.00031250000000000001" />
+      <col key="usr avg" type="double" value="0.024062500000000004" />
+      <col key="usr tot" type="double" value="0.024062500000000004" />
+      <col key="wall avg" type="double" value="0.0250148896875" />
+      <col key="wall tot" type="double" value="0.0250148896875" />
+    </row>
+    <row key="Init dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.323125" />
+      <col key="sys tot" type="double" value="0.323125" />
+      <col key="usr avg" type="double" value="7.8581250000000002" />
+      <col key="usr tot" type="double" value="7.8581250000000002" />
+      <col key="wall avg" type="double" value="8.1927711772187504" />
+      <col key="wall tot" type="double" value="8.1927711772187504" />
+    </row>
+    <row key="Init dofmap from UFC dofmap">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.0040624999999999993" />
+      <col key="sys tot" type="double" value="0.0040624999999999993" />
+      <col key="usr avg" type="double" value="1.5678124999999998" />
+      <col key="usr tot" type="double" value="1.5678124999999998" />
+      <col key="wall avg" type="double" value="1.5714424112499998" />
+      <col key="wall tot" type="double" value="1.5714424112499998" />
+    </row>
+    <row key="Init tensor">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.02250000000000001" />
+      <col key="sys tot" type="double" value="0.045000000000000019" />
+      <col key="usr avg" type="double" value="0.55359375000000011" />
+      <col key="usr tot" type="double" value="1.1071875000000002" />
+      <col key="wall avg" type="double" value="0.57725249017187508" />
+      <col key="wall tot" type="double" value="1.1545049803437502" />
+    </row>
+    <row key="PARALLEL 2: Distribute mesh (cells and vertices)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.024375000000000008" />
+      <col key="sys tot" type="double" value="0.024375000000000008" />
+      <col key="usr avg" type="double" value="1.2993750000000002" />
+      <col key="usr tot" type="double" value="1.2993750000000002" />
+      <col key="wall avg" type="double" value="1.32750397575" />
+      <col key="wall tot" type="double" value="1.32750397575" />
+    </row>
+    <row key="PARALLEL 3: Build mesh (from local mesh data)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.00093749999999999997" />
+      <col key="sys tot" type="double" value="0.00093749999999999997" />
+      <col key="usr avg" type="double" value="0.17593749999999997" />
+      <col key="usr tot" type="double" value="0.17593749999999997" />
+      <col key="wall avg" type="double" value="0.17619918862500003" />
+      <col key="wall tot" type="double" value="0.17619918862500003" />
+    </row>
+    <row key="PARALLEL x: Number mesh entities">
+      <col key="reps" type="double" value="2" />
+      <col key="sys avg" type="double" value="0.0051562500000000011" />
+      <col key="sys tot" type="double" value="0.010312500000000002" />
+      <col key="usr avg" type="double" value="1.34859375" />
+      <col key="usr tot" type="double" value="2.6971875000000001" />
+      <col key="wall avg" type="double" value="1.355528001984375" />
+      <col key="wall tot" type="double" value="2.7110560039687499" />
+    </row>
+    <row key="Partition graph (calling SCOTCH)">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.2840625" />
+      <col key="sys tot" type="double" value="0.2840625" />
+      <col key="usr avg" type="double" value="12.166874999999997" />
+      <col key="usr tot" type="double" value="12.166874999999997" />
+      <col key="wall avg" type="double" value="12.46971006221875" />
+      <col key="wall tot" type="double" value="12.46971006221875" />
+    </row>
+    <row key="SCOTCH graph ordering">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.1171875" />
+      <col key="sys tot" type="double" value="0.1171875" />
+      <col key="usr avg" type="double" value="0.97031250000000013" />
+      <col key="usr tot" type="double" value="0.97031250000000013" />
+      <col key="wall avg" type="double" value="1.0877294665625001" />
+      <col key="wall tot" type="double" value="1.0877294665625001" />
+    </row>
+    <row key="assemble_system">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="3.57375" />
+      <col key="sys tot" type="double" value="3.57375" />
+      <col key="usr avg" type="double" value="87.645312500000017" />
+      <col key="usr tot" type="double" value="87.645312500000017" />
+      <col key="wall avg" type="double" value="91.376997026968752" />
+      <col key="wall tot" type="double" value="91.376997026968752" />
+    </row>
+    <row key="build LocalMeshData">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.076562500000000019" />
+      <col key="sys tot" type="double" value="0.076562500000000019" />
+      <col key="usr avg" type="double" value="3.4087500000000008" />
+      <col key="usr tot" type="double" value="3.4087500000000008" />
+      <col key="wall avg" type="double" value="3.49363347725" />
+      <col key="wall tot" type="double" value="3.49363347725" />
+    </row>
+    <row key="compute connectivity 2 - 3">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0" />
+      <col key="sys tot" type="double" value="0" />
+      <col key="usr avg" type="double" value="0.069062500000000027" />
+      <col key="usr tot" type="double" value="0.069062500000000027" />
+      <col key="wall avg" type="double" value="0.068433011124999998" />
+      <col key="wall tot" type="double" value="0.068433011124999998" />
+    </row>
+    <row key="compute entities dim = 1">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.059062500000000039" />
+      <col key="sys tot" type="double" value="0.059062500000000039" />
+      <col key="usr avg" type="double" value="2.615625000000001" />
+      <col key="usr tot" type="double" value="2.615625000000001" />
+      <col key="wall avg" type="double" value="2.6791146476250005" />
+      <col key="wall tot" type="double" value="2.6791146476250005" />
+    </row>
+    <row key="compute entities dim = 2">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="0.14093750000000002" />
+      <col key="sys tot" type="double" value="0.14093750000000002" />
+      <col key="usr avg" type="double" value="4.0484375000000004" />
+      <col key="usr tot" type="double" value="4.0484375000000004" />
+      <col key="wall avg" type="double" value="4.1946564310000003" />
+      <col key="wall tot" type="double" value="4.1946564310000003" />
+    </row>
+    <row key="ksp.solve">
+      <col key="reps" type="double" value="1" />
+      <col key="sys avg" type="double" value="7.8603124999999991" />
+      <col key="sys tot" type="double" value="7.8603124999999991" />
+      <col key="usr avg" type="double" value="639.85124999999994" />
+      <col key="usr tot" type="double" value="639.85124999999994" />
+      <col key="wall avg" type="double" value="649.56130599428127" />
+      <col key="wall tot" type="double" value="649.56130599428127" />
+    </row>
+  </table>
+</dolfin>

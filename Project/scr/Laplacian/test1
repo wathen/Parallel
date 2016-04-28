@@ -1,0 +1,7 @@
+        
+echo $"\n\n\nmpirun -np 8 python Laplacian.py 8"
+mpirun -np 8 python Laplacian.py 8 &>> results_N=8
+echo $"\n\n\nmpirun -np 16 python Laplacian.py 8"
+mpirun -np 16 python Laplacian.py 8 &>> results_N=8
+echo $"\n\n\nmpirun -np 32 python Laplacian.py 8"
+mpirun -np 32 python Laplacian.py 8 &>> results_N=8

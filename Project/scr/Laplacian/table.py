@@ -2,14 +2,15 @@ from sys import argv
 import numpy as np
 import pandas as pd
 import MatrixOperations as MO
-
-A = np.zeros((4,6))
-K = np.zeros((4,6))
+m = 7
+A = np.zeros((6,m))
+K = np.zeros((6,m))
 print A
-n = np.zeros((6,))
+n = np.zeros((m,))
 k = 0
-for j in xrange(1,7):
+for j in xrange(1,m+1):
     name = "results_N="+str(j)
+    print name
     i = 0
     with open(name) as f:
         n[j-1] = float(f.readline())
@@ -18,6 +19,8 @@ for j in xrange(1,7):
                 A[i,k] = (float(line[-22:-12]))
             if line[0:len('ksp.solve')] == 'ksp.solve':
                 K[i,k] = (float(line[-22:-12]))
+                i = i+1
+            if line[0:len('=   BAD TERMINATION')] == '=   BAD TERMINATION':
                 i = i+1
     k = k+1
         # print A
