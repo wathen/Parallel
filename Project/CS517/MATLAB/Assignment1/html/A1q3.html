@@ -1,0 +1,683 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>A1q3</title><meta name="generator" content="MATLAB 7.14"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2013-10-10"><meta name="DC.source" content="A1q3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Jacobi</a></li><li><a href="#4">BLKJacobi</a></li><li><a href="#5">GS</a></li><li><a href="#6">SOR</a></li><li><a href="#7">GMRES</a></li><li><a href="#8">PGMRES</a></li><li><a href="#9">Plotting commands</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> A1q3()
+</pre><pre class="codeinput">close <span class="string">all</span>
+clc
+
+sigma = -10;
+tau = -20;
+n = 2^4;
+h = 1/(n+1);
+
+beta = sigma*h/2;
+gamma = tau*h/2;
+fprintf(<span class="string">'\n    ====================================================='</span>)
+fprintf(<span class="string">'\n      Solving the Convection-Diffusion equation with\n'</span>)
+fprintf(<span class="string">'         beta = %2.4f, gamma = %2.4f and n = %3i\n'</span>,beta,gamma,n)
+fprintf(<span class="string">'    =====================================================\n'</span>)
+<span class="comment">% Creating discretised Convection Diffusion matrix</span>
+A = ConvectionDiffusion(beta,gamma,n);
+
+<span class="comment">% Defin exact solution and RHS functions</span>
+u = @(x,y) sin(pi*x).*cos(pi*y);
+f = @(x,y,sigma,tau) 2*pi^2*u(x,y)+sigma*pi*cos(pi*x).*cos(pi*y) <span class="keyword">...</span>
+    -tau*pi*sin(pi*x).*sin(pi*y);
+
+<span class="comment">% Creating domain</span>
+x = linspace(0,1,n+2);
+[X,Y] = meshgrid(x,x);
+
+
+<span class="comment">% Defining RHS vector</span>
+F = f(X,Y,sigma,tau);
+<span class="comment">% Applying  Dirichlet boundary conditions</span>
+F(:,1) = sparse(n+2,1);
+F(:,end) = sparse(n+2,1);
+F = h^2*F(:);
+
+<span class="comment">% Defining exact solution</span>
+uE = u(X,Y);
+uE = uE(:);
+
+<span class="comment">% Calculating error</span>
+tic
+uA = A\F;
+Dtime = toc;
+fprintf(<span class="string">'\n      Time using backslash = %4.4f'</span>,Dtime)
+fprintf(<span class="string">'\n      solution norm = %1.4e \n\n\n'</span>,norm(uE-uA,inf));
+
+<span class="comment">% Setting up initial guess</span>
+x = sparse((n+2)^2,1);
+
+<span class="comment">% Defining iterative parameters</span>
+max_iter = 2000;
+tol = 1e-6;
+</pre><pre class="codeoutput">
+    =====================================================
+      Solving the Convection-Diffusion equation with
+         beta = -0.2941, gamma = -0.5882 and n =  16
+    =====================================================
+
+      Time using backslash = 0.0011
+      solution norm = 5.7838e-03 
+
+
+</pre><h2>Jacobi<a name="3"></a></h2><pre class="codeinput">[~,rJ,iterJ] = Jacobi(max_iter,tol,x,A,F);
+</pre><pre class="codeoutput">                      ------------------     
+                      |     Jacobi     |   
+                      ------------------     
+      Residual after error  476 interations = 2.1153e-06 
+      Time to run Jacobi = 0.0130
+
+</pre><h2>BLKJacobi<a name="4"></a></h2><pre class="codeinput">[~,rBLK,iterBLK] = BLKJacobi(max_iter,tol,x,A,F);
+</pre><pre class="codeoutput">                      ------------------     
+                      |   BLK Jacobi   |   
+                      ------------------     
+      Residual after error  235 interations = 2.0259e-06 
+      Time to run Jacobi = 0.0112
+
+</pre><h2>GS<a name="5"></a></h2><pre class="codeinput">[~,rGS,iterGS] = GS(max_iter,tol,x,A,F);
+</pre><pre class="codeoutput">                      ------------------     
+                      |  Gauss-Siedel  |   
+                      ------------------     
+      Residual after error  254 interations = 2.0381e-06 
+      Time to run GS = 0.0091
+
+</pre><h2>SOR<a name="6"></a></h2><pre class="codeinput">fprintf(<span class="string">'                      ------------------     \n'</span>);
+fprintf(<span class="string">'                      |      SOR       |   \n'</span>);
+fprintf(<span class="string">'                      ------------------     \n'</span>);
+ii = 0;
+rSOR = cell(9,1);
+iterSOR = sparse(9,1);
+test = zeros(9,1);
+omega = zeros(9,1);
+<span class="keyword">for</span> i = 1.1:.1:1.9
+    ii = ii + 1;
+    [~,rSORR,iterSOR(ii)] = SOR(max_iter,tol,x,A,F,i);
+    rSOR{ii} = rSORR;
+    test(ii) = rSORR(end);
+    omega(ii) = i;
+<span class="keyword">end</span>
+[~,index]=min(test);
+</pre><pre class="codeoutput">                      ------------------     
+                      |      SOR       |   
+                      ------------------     
+      Omega = 1.1 
+      Residual after error  209 interations = 2.0551e-06 
+      Time to run SOR = 0.0080
+
+      Omega = 1.2 
+      Residual after error  171 interations = 2.1014e-06 
+      Time to run SOR = 0.0060
+
+      Omega = 1.3 
+      Residual after error  139 interations = 1.9958e-06 
+      Time to run SOR = 0.0049
+
+      Omega = 1.4 
+      Residual after error  110 interations = 2.0794e-06 
+      Time to run SOR = 0.0039
+
+      Omega = 1.5 
+      Residual after error   84 interations = 1.8860e-06 
+      Time to run SOR = 0.0031
+
+      Omega = 1.6 
+      Residual after error   63 interations = 1.4426e-06 
+      Time to run SOR = 0.0024
+
+      Omega = 1.7 
+      Residual after error   83 interations = 1.9735e-06 
+      Time to run SOR = 0.0030
+
+      Omega = 1.8 
+      Residual after error  125 interations = 1.5454e-06 
+      Time to run SOR = 0.0045
+
+      Omega = 1.9 
+      Residual after error  253 interations = 1.9071e-06 
+      Time to run SOR = 0.0089
+
+</pre><h2>GMRES<a name="7"></a></h2><pre class="codeinput">tic
+[~,~,~,iterGM,rGM] = gmres(A,F,[100],tol,max_iter);
+time = toc;
+<span class="comment">% Produces results</span>
+fprintf(<span class="string">'                      -----------------     \n'</span>);
+fprintf(<span class="string">'                      |     GMRES     |   \n'</span>);
+fprintf(<span class="string">'                      -----------------     \n'</span>);
+fprintf(<span class="string">'      Residual error after %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+    ,iterGM(end),rGM(iterGM(end)))
+fprintf(<span class="string">'      Time to run GM = %2.4f\n\n'</span>,time)
+</pre><pre class="codeoutput">                      -----------------     
+                      |     GMRES     |   
+                      -----------------     
+      Residual error after   48 interations = 2.6250e-06 
+      Time to run GM = 0.0263
+
+</pre><h2>PGMRES<a name="8"></a></h2><pre class="codeinput">tic
+setup.type = <span class="string">'nofill'</span>;
+[L,U] = ilu(A,setup);
+[~,~,~,iterPGM,rPGM] = gmres(A,F,[50],tol,max_iter,L,U);
+time = toc;
+<span class="comment">% Produces results</span>
+fprintf(<span class="string">'                      -----------------     \n'</span>);
+fprintf(<span class="string">'                      |    PGMRES     |   \n'</span>);
+fprintf(<span class="string">'                      -----------------     \n'</span>);
+fprintf(<span class="string">'      Residual error after %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+    ,iterPGM(end),rPGM(iterPGM(end)))
+fprintf(<span class="string">'      Time to run PGM = %2.4f\n\n'</span>,time)
+
+rSOR = rSOR{index};
+m_iter = max([iterJ,iterBLK,iterGS,iterSOR(index),iterGM(end),iterPGM(end)]);
+m_res = max([rJ(1),rBLK(1),rGS(1),rSOR(1),rGM(1),rPGM(1)]);
+</pre><pre class="codeoutput">                      -----------------     
+                      |    PGMRES     |   
+                      -----------------     
+      Residual error after   14 interations = 1.3931e-05 
+      Time to run PGM = 0.0058
+
+</pre><h2>Plotting commands<a name="9"></a></h2><pre class="codeinput">semilogy(rJ,<span class="string">'c'</span>); hold <span class="string">on</span>
+semilogy(rBLK,<span class="string">'k'</span>); hold <span class="string">on</span>
+semilogy(rGS,<span class="string">'r--'</span>);hold <span class="string">on</span>
+semilogy(rSOR,<span class="string">'b-.'</span>);hold <span class="string">on</span>
+semilogy(rGM,<span class="string">'g'</span>);hold <span class="string">on</span>
+semilogy(rPGM,<span class="string">'c--'</span>);hold <span class="string">on</span>
+axis([0 m_iter tol m_res]);
+legend(<span class="string">'Jacobi'</span>,<span class="string">'block Jacobi'</span>,<span class="string">'GS'</span>,[<span class="string">'SOR-omega='</span>,num2str(omega(index))]<span class="keyword">...</span>
+    ,<span class="string">'GMRES'</span>,<span class="string">'GMRES-ilu'</span>,<span class="string">'Location'</span>,<span class="string">'Best'</span>)
+xlabel(<span class="string">'Iterations'</span>,<span class="string">'fontsize'</span>,14);
+ylabel(<span class="string">'Residual error'</span>,<span class="string">'fontsize'</span>,14);
+</pre><img vspace="5" hspace="5" src="A1q3_01.png" alt=""> <pre class="codeinput">    <span class="keyword">function</span> [A] = ConvectionDiffusion(beta,gamma,n)
+
+        e = ones(n,1);
+
+        <span class="comment">% Creating sparse diagonal matrices</span>
+        I = spdiags(e,0,n,n);
+        I1 =spdiags(e,1,n,n);
+        I2 = spdiags(e,-1,n,n);
+
+        <span class="comment">% Creating 1D Convection-Diffusion matricies</span>
+        Abeta = 2*I +(beta-1)*I1 - (beta+1)*I2;
+        Agamma = 2*I +(gamma-1)*I1 - (gamma+1)*I2;
+
+        <span class="comment">% applying boundary conditions</span>
+        AbetaBC = [1 sparse(1,n+1);[-(beta+1); sparse(n-1,1)] <span class="keyword">...</span>
+            Abeta [sparse(n-1,1); beta-1];sparse(1,n+1) 1];
+        AgammaBC = [2 -2 sparse(1,n);[-(gamma+1); sparse(n-1,1)]<span class="keyword">...</span>
+            Agamma [sparse(n-1,1); gamma-1];sparse(1,n) -2 2 ];
+
+        <span class="comment">% Creating 2D Convection-Diffusion matrix</span>
+        A = kron(AbetaBC,speye(n+2))+kron(speye(n+2),AgammaBC);
+
+    <span class="keyword">end</span>
+
+
+    <span class="keyword">function</span> [x,rJ,i] = Jacobi(max_iter,tol,x,A,b)
+        <span class="comment">% Jacobi method</span>
+        tic
+        <span class="comment">% Creating vector of diagonals of A</span>
+        D = spdiags(A,0);
+        b_norm = norm(b);
+        r = b;
+
+        <span class="comment">% Carring out Jacobi</span>
+        <span class="keyword">for</span> i = 1:max_iter
+
+            <span class="comment">% updating x</span>
+            x = x + r./D;
+            r = b-A*x;
+            rJ(i) = norm(r);
+
+            <span class="keyword">if</span> (rJ(i)/b_norm) &lt; tol
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        time = toc;
+        <span class="comment">% Produces results</span>
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'                      |     Jacobi     |   \n'</span>);
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'      Residual after error %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+            ,i,rJ(i))
+        fprintf(<span class="string">'      Time to run Jacobi = %2.4f\n\n'</span>,time)
+    <span class="keyword">end</span>
+
+
+    <span class="keyword">function</span> [x,rJ,i] = BLKJacobi(max_iter,tol,x,A,b)
+        <span class="comment">% Jacobi method</span>
+        tic
+        <span class="comment">% Creating Block Jacobi</span>
+        BLKjac = spdiags([spdiags(A,-1),spdiags(A,0),spdiags(A,1)]<span class="keyword">...</span>
+            ,[-1:1],(n+2)^2,(n+2)^2);
+        b_norm = norm(b);
+        r = b;
+        <span class="comment">% Factoring BLKjac so can use backwards and forwards subsitution at</span>
+        <span class="comment">% each step</span>
+        [LowT,UpT,Piv] = lu(BLKjac,<span class="string">'vector'</span>);
+        <span class="comment">% Carring out BLKJacobi</span>
+        <span class="keyword">for</span> i = 1:max_iter
+
+            <span class="comment">% updating x</span>
+            x = x + UpT\(LowT\(r(Piv,:)));
+
+            r = b-A*x;
+            rJ(i) = norm(r);
+
+            <span class="keyword">if</span> (rJ(i)/b_norm) &lt; tol
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        time = toc;
+        <span class="comment">% Produces results</span>
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'                      |   BLK Jacobi   |   \n'</span>);
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'      Residual after error %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+            ,i,rJ(i))
+        fprintf(<span class="string">'      Time to run Jacobi = %2.4f\n\n'</span>,time)
+    <span class="keyword">end</span>
+
+    <span class="keyword">function</span> [x,rGS,i] = GS(max_iter,tol,x,A,b)
+        tic
+        <span class="comment">% Creating lower triangular</span>
+        E = tril(A);
+        b_norm = norm(b);
+        r = b;
+
+        <span class="comment">% Carring out GS</span>
+        <span class="keyword">for</span> i = 1:max_iter
+
+            <span class="comment">% updating x</span>
+            x = x + E\r;
+            r = b-A*x;
+            rGS(i) = norm(r);
+
+            <span class="keyword">if</span> (rGS(i)/b_norm) &lt; tol
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        time = toc;
+        <span class="comment">% Produces results</span>
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'                      |  Gauss-Siedel  |   \n'</span>);
+        fprintf(<span class="string">'                      ------------------     \n'</span>);
+        fprintf(<span class="string">'      Residual after error %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+            ,i,rGS(i))
+        fprintf(<span class="string">'      Time to run GS = %2.4f\n\n'</span>,time)
+    <span class="keyword">end</span>
+
+
+    <span class="keyword">function</span> [x,rSOR,i] = SOR(max_iter,tol,x,A,b,omega)
+        tic
+        <span class="comment">% Creating lower triangular</span>
+        E = tril(A);
+        [N,~] = size(A);
+        <span class="comment">% Creating sparse diagonal matrix</span>
+        D = spdiags(spdiags(A,0),0,N,N);
+
+        <span class="comment">% Calculating the matrix which we need to solve at each step</span>
+        S = ((1/omega-1)*D+E);
+        b_norm = norm(b);
+        r = b;
+
+        <span class="comment">% Carring out SOR</span>
+        <span class="keyword">for</span> i = 1:max_iter
+
+            <span class="comment">% updating x</span>
+            x = x + S\r;
+            r = b-A*x;
+            rSOR(i) = norm(r);
+
+            <span class="keyword">if</span> (rSOR(i)/b_norm) &lt; tol
+                <span class="keyword">break</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+        time = toc;
+        <span class="comment">% Produces results</span>
+        fprintf(<span class="string">'      Omega = %1.1f \n'</span>,omega)
+        fprintf(<span class="string">'      Residual after error %4.0f interations = %1.4e \n'</span><span class="keyword">...</span>
+            ,i,rSOR(i))
+        fprintf(<span class="string">'      Time to run SOR = %2.4f\n\n'</span>,time)
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.14<br></p></div><!--
+##### SOURCE BEGIN #####
+function A1q3()
+
+close all
+clc
+
+sigma = -10;
+tau = -20;
+n = 2^4;
+h = 1/(n+1);
+
+beta = sigma*h/2;
+gamma = tau*h/2;
+fprintf('\n    =====================================================')
+fprintf('\n      Solving the Convection-Diffusion equation with\n')
+fprintf('         beta = %2.4f, gamma = %2.4f and n = %3i\n',beta,gamma,n)
+fprintf('    =====================================================\n')
+% Creating discretised Convection Diffusion matrix
+A = ConvectionDiffusion(beta,gamma,n);
+
+% Defin exact solution and RHS functions
+u = @(x,y) sin(pi*x).*cos(pi*y);
+f = @(x,y,sigma,tau) 2*pi^2*u(x,y)+sigma*pi*cos(pi*x).*cos(pi*y) ...
+    -tau*pi*sin(pi*x).*sin(pi*y);
+
+% Creating domain
+x = linspace(0,1,n+2);
+[X,Y] = meshgrid(x,x);
+
+
+% Defining RHS vector
+F = f(X,Y,sigma,tau);
+% Applying  Dirichlet boundary conditions
+F(:,1) = sparse(n+2,1);
+F(:,end) = sparse(n+2,1);
+F = h^2*F(:);
+
+% Defining exact solution
+uE = u(X,Y);
+uE = uE(:);
+
+% Calculating error
+tic
+uA = A\F;
+Dtime = toc;
+fprintf('\n      Time using backslash = %4.4f',Dtime)
+fprintf('\n      solution norm = %1.4e \n\n\n',norm(uE-uA,inf));
+
+% Setting up initial guess
+x = sparse((n+2)^2,1);
+
+% Defining iterative parameters
+max_iter = 2000;
+tol = 1e-6;
+
+%% Jacobi
+[~,rJ,iterJ] = Jacobi(max_iter,tol,x,A,F);
+%% BLKJacobi
+[~,rBLK,iterBLK] = BLKJacobi(max_iter,tol,x,A,F);
+%% GS
+[~,rGS,iterGS] = GS(max_iter,tol,x,A,F);
+%% SOR
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+fprintf('                      |      SOR       |   \n');
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+ii = 0;
+rSOR = cell(9,1);
+iterSOR = sparse(9,1);
+test = zeros(9,1);
+omega = zeros(9,1);
+for i = 1.1:.1:1.9
+    ii = ii + 1;
+    [~,rSORR,iterSOR(ii)] = SOR(max_iter,tol,x,A,F,i);
+    rSOR{ii} = rSORR;
+    test(ii) = rSORR(end);
+    omega(ii) = i;
+end
+[~,index]=min(test);
+
+%% GMRES
+tic
+[~,~,~,iterGM,rGM] = gmres(A,F,[100],tol,max_iter);
+time = toc;
+% Produces results
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-     \n');
+fprintf('                      |     GMRES     |   \n');
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-     \n');
+fprintf('      Residual error after %4.0f interations = %1.4e \n'...
+    ,iterGM(end),rGM(iterGM(end)))
+fprintf('      Time to run GM = %2.4f\n\n',time)
+
+
+%% PGMRES
+
+tic
+setup.type = 'nofill';
+[L,U] = ilu(A,setup);
+[~,~,~,iterPGM,rPGM] = gmres(A,F,[50],tol,max_iter,L,U);
+time = toc;
+% Produces results
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-     \n');
+fprintf('                      |    PGMRES     |   \n');
+fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-     \n');
+fprintf('      Residual error after %4.0f interations = %1.4e \n'...
+    ,iterPGM(end),rPGM(iterPGM(end)))
+fprintf('      Time to run PGM = %2.4f\n\n',time)
+
+rSOR = rSOR{index};
+m_iter = max([iterJ,iterBLK,iterGS,iterSOR(index),iterGM(end),iterPGM(end)]);
+m_res = max([rJ(1),rBLK(1),rGS(1),rSOR(1),rGM(1),rPGM(1)]);
+
+
+%% Plotting commands
+semilogy(rJ,'c'); hold on
+semilogy(rBLK,'k'); hold on
+semilogy(rGS,'rREPLACE_WITH_DASH_DASH');hold on
+semilogy(rSOR,'b-.');hold on
+semilogy(rGM,'g');hold on
+semilogy(rPGM,'cREPLACE_WITH_DASH_DASH');hold on
+axis([0 m_iter tol m_res]);
+legend('Jacobi','block Jacobi','GS',['SOR-omega=',num2str(omega(index))]...
+    ,'GMRES','GMRES-ilu','Location','Best')
+xlabel('Iterations','fontsize',14);
+ylabel('Residual error','fontsize',14);
+
+
+
+%%
+    function [A] = ConvectionDiffusion(beta,gamma,n)
+        
+        e = ones(n,1);
+        
+        % Creating sparse diagonal matrices
+        I = spdiags(e,0,n,n);
+        I1 =spdiags(e,1,n,n);
+        I2 = spdiags(e,-1,n,n);
+        
+        % Creating 1D Convection-Diffusion matricies
+        Abeta = 2*I +(beta-1)*I1 - (beta+1)*I2;
+        Agamma = 2*I +(gamma-1)*I1 - (gamma+1)*I2;
+        
+        % applying boundary conditions
+        AbetaBC = [1 sparse(1,n+1);[-(beta+1); sparse(n-1,1)] ...
+            Abeta [sparse(n-1,1); beta-1];sparse(1,n+1) 1];
+        AgammaBC = [2 -2 sparse(1,n);[-(gamma+1); sparse(n-1,1)]...
+            Agamma [sparse(n-1,1); gamma-1];sparse(1,n) -2 2 ];
+        
+        % Creating 2D Convection-Diffusion matrix
+        A = kron(AbetaBC,speye(n+2))+kron(speye(n+2),AgammaBC);
+        
+    end
+
+
+    function [x,rJ,i] = Jacobi(max_iter,tol,x,A,b)
+        % Jacobi method
+        tic
+        % Creating vector of diagonals of A
+        D = spdiags(A,0);
+        b_norm = norm(b);
+        r = b;
+        
+        % Carring out Jacobi
+        for i = 1:max_iter
+            
+            % updating x
+            x = x + r./D;
+            r = b-A*x;
+            rJ(i) = norm(r);
+            
+            if (rJ(i)/b_norm) < tol
+                break
+            end
+        end
+        time = toc;
+        % Produces results
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('                      |     Jacobi     |   \n');
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('      Residual after error %4.0f interations = %1.4e \n'...
+            ,i,rJ(i))
+        fprintf('      Time to run Jacobi = %2.4f\n\n',time)
+    end
+
+
+    function [x,rJ,i] = BLKJacobi(max_iter,tol,x,A,b)
+        % Jacobi method
+        tic
+        % Creating Block Jacobi
+        BLKjac = spdiags([spdiags(A,-1),spdiags(A,0),spdiags(A,1)]...
+            ,[-1:1],(n+2)^2,(n+2)^2);
+        b_norm = norm(b);
+        r = b;
+        % Factoring BLKjac so can use backwards and forwards subsitution at
+        % each step
+        [LowT,UpT,Piv] = lu(BLKjac,'vector');
+        % Carring out BLKJacobi
+        for i = 1:max_iter
+            
+            % updating x
+            x = x + UpT\(LowT\(r(Piv,:)));
+
+            r = b-A*x;
+            rJ(i) = norm(r);
+            
+            if (rJ(i)/b_norm) < tol
+                break
+            end
+        end
+        time = toc;
+        % Produces results
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('                      |   BLK Jacobi   |   \n');
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('      Residual after error %4.0f interations = %1.4e \n'...
+            ,i,rJ(i))
+        fprintf('      Time to run Jacobi = %2.4f\n\n',time)
+    end
+
+    function [x,rGS,i] = GS(max_iter,tol,x,A,b)
+        tic
+        % Creating lower triangular
+        E = tril(A);
+        b_norm = norm(b);
+        r = b;
+        
+        % Carring out GS
+        for i = 1:max_iter
+            
+            % updating x
+            x = x + E\r;
+            r = b-A*x;
+            rGS(i) = norm(r);
+            
+            if (rGS(i)/b_norm) < tol
+                break
+            end
+        end
+        time = toc;
+        % Produces results
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('                      |  Gauss-Siedel  |   \n');
+        fprintf('                      REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH     \n');
+        fprintf('      Residual after error %4.0f interations = %1.4e \n'...
+            ,i,rGS(i))
+        fprintf('      Time to run GS = %2.4f\n\n',time)
+    end
+
+
+    function [x,rSOR,i] = SOR(max_iter,tol,x,A,b,omega)
+        tic
+        % Creating lower triangular
+        E = tril(A);
+        [N,~] = size(A);
+        % Creating sparse diagonal matrix
+        D = spdiags(spdiags(A,0),0,N,N);
+        
+        % Calculating the matrix which we need to solve at each step
+        S = ((1/omega-1)*D+E);
+        b_norm = norm(b);
+        r = b;
+        
+        % Carring out SOR
+        for i = 1:max_iter
+            
+            % updating x
+            x = x + S\r;
+            r = b-A*x;
+            rSOR(i) = norm(r);
+            
+            if (rSOR(i)/b_norm) < tol
+                break
+            end
+        end
+        time = toc;
+        % Produces results
+        fprintf('      Omega = %1.1f \n',omega)
+        fprintf('      Residual after error %4.0f interations = %1.4e \n'...
+            ,i,rSOR(i))
+        fprintf('      Time to run SOR = %2.4f\n\n',time)
+    end
+
+end
+##### SOURCE END #####
+--></body></html>

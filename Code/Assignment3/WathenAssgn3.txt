@@ -1,0 +1,16 @@
+Michael Wathen 78307121
+
+CS 521 - Assignment 3
+
+1a) See functions logistic_cuda(), logistic_ref(), logistic() and main() in file Assgn3.cu
+1b) From timing results I observe roughly 13 Gflops.
+1c) Not knowing C or C++ beforehand meant that the cuda implementation was particularly tricky. I'm not sure that my implementation is 100% correct at this point so my comments on efficiency seem fairly invalid.
+
+2a) See the other function in Assgn3.cu.
+2b) From timing results I observe roughly 77 gigabytes per second
+2c) Again with 1c this is hard for me to comment on. The use of "strides" when vectors were longer than 1024^2 caused me great headaches on the implementation front.
+
+3a) See file Assgn3_q3.cu
+3b) See file Assgn3_q3.cu
+3c) Running the code produces roughly 30,000,000 random number a second
+3d) I am not really sure how the random state works...

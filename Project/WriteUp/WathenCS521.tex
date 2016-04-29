@@ -1,0 +1,173 @@
+ %   Journal Article Template
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{bm}
+%\usepackage[notref,notcite]{showkeys}
+%\usepackage[dvipdfm]{hyperref}
+%\usepackage{hyperref}
+\usepackage{graphicx}
+%\usepackage{subfigure}
+%\usepackage{epsfig,psfig}
+\usepackage{amsfonts,amsmath,latexsym}
+\usepackage{amsbsy}
+\usepackage{nicefrac}
+\usepackage{subcaption}
+\usepackage{slashbox}
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{sidecap}
+\usepackage{calc}
+\usepackage{enumitem}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%s
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% PROOF
+%
+%\newenvironment{rproof}{\addvspace{\medskipamount}\par\noindent{\it Proof:\/}}
+%{\unskip\nobreak\hfill$\Box$\par\addvspace{\medskipamount}}
+%
+% ROMENUM
+%
+\newcounter{bean}
+\newenvironment{romenum}{\begin{list}{{(\roman{bean})}}
+{\usecounter{bean}}}{\end{list}}
+% \newtheorem{remark}[theorem]{Remark}
+%
+% special SYMBOLS
+%
+\newcommand{\uu}[1]{\boldsymbol #1}                     % vector fields
+\newcommand{\uuu}[1]{\underline{#1}}                 % tensor fields
+\newcommand{\jmp}[1]{[\![#1]\!]}                     % jump
+\newcommand{\mvl}[1]{\{\!\!\{#1\}\!\!\}}             % mean value
+%
+% NORMS
+%
+\newcommand{\N}[1]{\|#1\|}                            % norm
+\newcommand{\tn}[1]{|\!|\!|#1|\!|\!|}             % triple norm
+%
+\newcommand{\mc}[1]{\mathcal{#1}}
+\newcommand{\curl}{\rm curl}
+\newcommand{\dvr}{\rm div}
+\newcommand{\nedelec}{N\'{e}d\'{e}lec }
+\newcommand{\fenics}{{\tt FEniCS} }
+
+\newcommand{\grad}{\ensuremath{\nabla}}
+\newcommand{\RE}[1]{{\bf\textcolor{red}       {#1}}}
+\newcommand{\re}[1]{{\textcolor{red}       {#1}}}
+\newcommand{\orange}[1]{{\textcolor{Orange}       {#1}}}
+\newcommand{\kns}{\mathcal{K}_{\rm NS}}
+\newcommand{\km}{\mathcal{K}_{\rm M}}
+\newcommand{\kc}{\mathcal{K}_{\rm C}}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% end: our definitions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\newenvironment{Pf}{\noindent {\bf Proof:}} {\hfill $\Box$ \medskip}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Parallel Finite Element assembly}
+\author{
+ Michael Wathen\thanks{Department of Computer Science,
+The University of British Columbia, Vancouver, BC, V6T 1Z4, Canada,
+ mwathen@cs.ubc.ca.}
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+% \begin{keywords}
+% incompressible magnetohydrodynamics, saddle-point linear systems, null space, preconditioners, approximate inverse, Krylov subspace methods
+% \end{keywords}
+
+% {\small {\bf AMS Subject Classification.} 65F08, 65F10, 65F50, 65N22}
+% 65F08: Preconditioners for iterative methods
+% 65F10: Iterative methods for linear systems
+% 65F15: Eigenvalues, eigenvectors
+% 65N22: Solution of discretized equations
+% 74S05: Finite element methods
+
+\section{Introduction}
+
+Many industrial and geophysical scientific computing problems require discrete solving techniques for partial differential equations (PDEs). The two main components of a PDE solving are:
+\begin{itemize}
+    \item Discretisation;
+    \item Linear/non-linear solve.
+\end{itemize}
+
+ % In general, these problems occur within large three-dimensional domains.
+
+
+% Consider solving the following linear system
+% $$Ax = b,$$
+% where $A$ is a non-singular $n \times n$ matrix. Consider $n$ large enough so that it is not possible to solve using direct methods due to memory usage and time constraints. With problems such as these we would turn to iterative methods. Most iterative methods can be written in the following form:
+% $$x_{k+1} = x_k + M^{-1}r_k,$$
+% where $r_k = b-Ax_k$ is the residual at the $k^{\mbox{\tiny{th}}}$ iteration and $M$ is some sort of operator (usually called a preconditioner). Simple $M$'s would be for example the diagonal of $A$ (Jacobi iterations) or the lower triangular part of $A$ (Gauss-Seidel iterations). However, for larger  $n$, the number of iterations it takes for these two schemes to converge will go up and hence they perform very badly on large problems. Instead of using one of these simple iterative methods we would therefore like to choose a method with the property that as problem size increases the number of iterations that the scheme takes to converge does not grow. The method many choose is multigrid. Multigrid can be defined both in a geometric way (geometric multigrid) and in an algebraic sense (algebraic multigrid). In this project we will look at both of these methods
+
+
+\section{Assembly}
+
+\section{Results}
+
+\subsection{Laplacian}
+
+Consider Laplace's equation with non-homogeneous Dirichlet boundary conditions
+$$
+\begin{array}{rcl}
+    \Delta u &=& f \ \mbox{in} \ \Omega,\\
+    u &=& g \ \mbox{on} \ \partial\Omega.
+\end{array}
+$$
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|ccccccc|}
+        \hline
+        MPI & \multicolumn{7}{c|}{DoFs}\\
+        processes &   375     &   2,187    &   14,739   &   107,811  &   823,875  &   6,440,067 & 50,923,779 \\
+        \hline
+            1 &  1.88e-01 &  4.99e-02 &  6.44e-01 &  2.69e+00 &  1.86e+01 &  1.49e+02 & - \\
+            2 &  5.59e-02 &  7.60e-02 &  1.91e-01 &  1.38e+00 &  1.04e+01 &  7.92e+01 & - \\
+            4 &  3.12e-02 &  3.78e-02 &  1.29e-01 &  1.05e+00 &  5.66e+00 &  4.19e+01 & - \\
+            8 &  2.61e-02 &  3.45e-02 &  8.71e-02 &  5.31e-01 &  3.11e+00 &  2.32e+01 & 1.88e+02 \\
+            16 &  7.83e-02 &  8.45e-02 &  1.16e-01 &  4.34e-01 &  2.12e+00 &  1.34e+01 & 9.94e+01 \\
+            32 &  1.45e-01 &  1.33e-01 &  2.48e-01 &  3.17e-01 &  1.69e+00 &  1.20e+01 & 9.14e+01 \\
+        \hline
+    \end{tabular}
+    \caption{Assemble time}
+\end{table}
+
+
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|c|ccccccc|}
+        \hline
+        MPI & \multicolumn{7}{c|}{DoFs}\\
+        processes &   375     &   2,187    &   14,739   &   107,811  &   823,875  &   6,440,067  & 50,923,779 \\
+        \hline
+        1 &  1.15e-01 &  3.29e-02 &  3.67e-01 &  4.50e+00 &  4.34e+01 &  3.93e+02 & - \\
+        2 &  1.31e-02 &  2.19e-02 &  2.12e-01 &  2.90e+00 &  2.79e+01 &  1.92e+02 & - \\
+        4 &  4.32e-03 &  1.42e-02 &  1.74e-01 &  1.46e+00 &  1.40e+01 &  1.21e+02 & - \\
+        8 &  4.47e-03 &  1.18e-02 &  8.42e-02 &  1.18e+00 &  1.18e+01 &  9.24e+01 & 7.76e+02 \\
+        16 &  1.35e-02 &  2.38e-02 &  8.28e-02 &  1.26e+00 &  9.11e+00 &  8.00e+01 & 6.71e+02 \\
+        32 &  1.58e-02 &  2.28e-02 &  6.27e-02 &  9.35e-01 &  8.70e+00 &  7.66e+01 & 6.50e+02 \\
+
+        \hline
+    \end{tabular}
+    \caption{Assemble time}
+\end{table}
+\subsection{MHD}
+
+\section{Conclusion}
+
+\end{document}

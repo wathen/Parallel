@@ -1,0 +1,301 @@
+
+% This LaTeX was auto-generated from an M-file by MATLAB.
+% To make changes, update the M-file and republish this document.
+
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{fullpage}
+
+\sloppy
+\definecolor{lightgray}{gray}{0.5}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\section*{Question 2}
+
+\subsection*{Code}
+
+    \begin{verbatim}
+function A2Q2()
+clc
+
+NN = [64,128,256,512,1024,2048,4096];
+kk = [NN/2;NN];
+
+for JJ = 1:size(kk,1)
+    for II = 1:length(NN)
+
+        % Defining descrete Laplacian
+        N = NN(II);
+        A = Laplacian(N);
+
+        % Defining eigenvalues of descrete Laplacian
+        Eigen = @(ii,jj,N) 4-2*(cos(ii*pi/(N+1))+cos(jj*pi/(N+1)));
+        SmallestEigA = [Eigen(1,1,N);Eigen(2,1,N);Eigen(1,2,N)];
+        LargestEigA = [Eigen(N,N,N);Eigen(N-1,N,N);Eigen(N,N-1,N)];
+
+        b = randn(N^2,1);
+
+        % Calling Lanczos code
+        k = kk(JJ,II);
+        [T] = lancz(A, b, k);
+
+        % Calculating eigenvalues of T
+        OPTS.maxit = 1e6;
+        OPTS.tol = 1e-10;
+
+        EIG = eig(full(T));
+        EIG = sort(EIG);
+        SmallestEigT = EIG(1:3);
+        LargestEigT =  EIG(end-2:end);
+
+        % Sort eigenvalues
+        SSEA = sort(SmallestEigA);
+        SLEA = sort(LargestEigA);
+        SSET = sort(SmallestEigT);
+        SLET = sort(LargestEigT);
+
+        % Defining table data
+        data = [SSEA,SSET,abs(SSEA-SSET)./abs(SSEA),SLEA,SLET,abs(SLEA-SLET)./abs(SLEA)];
+
+        % Set up some options
+        tblOpts = {'header',{'Smallest Eig A','Smallest Eig T',...
+            'inf-norm rel','Largest Eig A','Largest Eig T'...
+            ,'inf-norm rel'},'format',{'%1.4e','%1.4e','%1.4f'...
+            ,'%1.6f','%1.6f','%1.4e'},'align','center','delim','|',...
+            'printRow',true};
+
+        for ii = 1:size(data,1);
+            table(['Table of Eigenvalues for n = ',num2str(NN(II)^2),...
+                ' and k = ',num2str(k)],data(1:ii,:),tblOpts{:}...
+                ,'finalRow',ii == size(data,1));
+        end
+
+    end
+    fprintf('\n\n\n\n\n')
+end
+
+    function [A] = Laplacian(n)
+        % Creating discretised Laplacian
+
+        e = ones(n,1);
+
+        % Creating sparse diagonal matrices
+        I = spdiags(e,0,n,n);
+        I1 =spdiags(e,1,n,n);
+        I2 = spdiags(e,-1,n,n);
+
+        % Creating 1D Convection-Diffusion matricies
+        A1D = 2*I -1*I1 - 1*I2;
+
+        % Creating 2D Convection-Diffusion matrix
+        A = kron(I,A1D)+kron(A1D,I);
+
+    end
+
+
+
+    function [T,Q] = lancz(A, b, k)
+        %function [T,Q] = lancz(A, b, k)
+        %
+        % Function the performs the Lanczos process
+        %
+        % Input:
+        %        A - Symmetic matrix
+        %        b - initial guess
+        %        A - number of steps in the Lanczos algorithm
+        %
+        % Output:
+        %        T - Symmetic Hessenberg matrix (Tridiagonal)
+        %        Q - (OPTIONAL) orthogonal basis
+
+        n = length(b);
+        qprev = sparse(n,1);
+        q = b / norm(b);
+        beta = [];
+        alpha = [];
+
+        if nargout == 2
+            Q = [];
+        end
+
+        for i = 1:k
+            v = A*q;
+            alpha(i) = q' * v;
+
+            if i == 1
+                v = v - alpha(i)*q;
+            else
+                v = v - beta(i-1)*qprev - alpha(i)*q;
+            end
+            beta(i) = norm(v);
+            qprev = q;
+
+            if nargout == 2
+                Q = [Q,q];
+            end
+
+            if (abs(beta(i)) < 1e-10)
+                break
+            end
+            q = v / beta(i);
+        end
+        beta = beta(:);
+        T = spdiags([beta alpha(:) [0;beta(1:end-1)]],[-1:1],i,i);
+    end
+
+
+end
+\end{verbatim}
+
+\newpage
+
+\subsection*{Case 1: k = $\frac{\sqrt{n}}{2}$}
+
+        \color{lightgray} \begin{verbatim}
+
+                           Table of Eigenvalues for n = 4096 and k = 32
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     4.6711e-03   |   2.5640e-02   |    4.4891    |    7.988328   |    7.838486   |  1.8758e-02
+     1.1672e-02   |   6.8586e-02   |    4.8760    |    7.988328   |    7.920954   |  8.4341e-03
+     1.1672e-02   |   1.5992e-01   |    12.7009   |    7.995329   |    7.977258   |  2.2602e-03
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                           Table of Eigenvalues for n = 16384 and k = 64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.1861e-03   |   4.7371e-03   |    2.9938    |    7.997035   |    7.960365   |  4.5855e-03
+     2.9649e-03   |   1.7237e-02   |    4.8137    |    7.997035   |    7.980712   |  2.0412e-03
+     2.9649e-03   |   3.9478e-02   |    12.3147   |    7.998814   |    7.994351   |  5.5796e-04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                          Table of Eigenvalues for n = 65536 and k = 128
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     2.9885e-04   |   8.4862e-04   |    1.8396    |    7.999253   |    7.990894   |  1.0450e-03
+     7.4711e-04   |   4.9382e-03   |    5.6097    |    7.999253   |    7.995929   |  4.1557e-04
+     7.4711e-04   |   9.5807e-03   |    11.8236   |    7.999701   |    7.999109   |  7.4068e-05
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                          Table of Eigenvalues for n = 262144 and k = 256
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     7.5006e-05   |   2.6490e-04   |    2.5317    |    7.999812   |    7.997717   |  2.6189e-04
+     1.8751e-04   |   1.0481e-03   |    4.5893    |    7.999812   |    7.998970   |  1.0537e-04
+     1.8751e-04   |   2.4785e-03   |    12.2180   |    7.999925   |    7.999614   |  3.8845e-05
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                         Table of Eigenvalues for n = 1048576 and k = 512
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.8788e-05   |   5.4249e-05   |    1.8874    |    7.999953   |    7.999404   |  6.8617e-05
+     4.6970e-05   |   2.9117e-04   |    5.1991    |    7.999953   |    7.999755   |  2.4799e-05
+     4.6970e-05   |   6.3521e-04   |    12.5238   |    7.999981   |    7.999950   |  3.9057e-06
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                         Table of Eigenvalues for n = 4194304 and k = 1024
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     4.7016e-06   |   1.1715e-05   |    1.4917    |    7.999988   |    7.999848   |  1.7482e-05
+     1.1754e-05   |   8.0296e-05   |    5.8313    |    7.999988   |    7.999943   |  5.6411e-06
+     1.1754e-05   |   1.5026e-04   |    11.7833   |    7.999995   |    7.999983   |  1.4910e-06
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                        Table of Eigenvalues for n = 16777216 and k = 2048
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.1760e-06   |   2.5772e-06   |    1.1915    |    7.999997   |    7.999964   |  4.1215e-06
+     2.9399e-06   |   1.4707e-05   |    4.0025    |    7.999997   |    7.999981   |  1.9719e-06
+     2.9399e-06   |   3.5629e-05   |    11.1189   |    7.999999   |    7.999995   |  5.3818e-07
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\end{verbatim} \color{black}
+
+\subsection*{Case 1: k = $\sqrt{n}$}
+
+\color{lightgray} \begin{verbatim}
+
+                           Table of Eigenvalues for n = 4096 and k = 64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     4.6711e-03   |   4.9254e-03   |    0.0544    |    7.988328   |    7.957860   |  3.8140e-03
+     1.1672e-02   |   1.3954e-02   |    0.1955    |    7.988328   |    7.979281   |  1.1325e-03
+     1.1672e-02   |   4.4271e-02   |    2.7928    |    7.995329   |    7.994390   |  1.1740e-04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                          Table of Eigenvalues for n = 16384 and k = 128
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.1861e-03   |   1.6810e-03   |    0.4172    |    7.997035   |    7.989340   |  9.6218e-04
+     2.9649e-03   |   5.3415e-03   |    0.8016    |    7.997035   |    7.993429   |  4.5088e-04
+     2.9649e-03   |   9.9601e-03   |    2.3593    |    7.998814   |    7.997786   |  1.2849e-04
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                          Table of Eigenvalues for n = 65536 and k = 256
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     2.9885e-04   |   3.3616e-04   |    0.1248    |    7.999253   |    7.997303   |  2.4382e-04
+     7.4711e-04   |   1.2475e-03   |    0.6698    |    7.999253   |    7.999108   |  1.8108e-05
+     7.4711e-04   |   2.6021e-03   |    2.4829    |    7.999701   |    7.999687   |  1.7919e-06
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                          Table of Eigenvalues for n = 262144 and k = 512
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     7.5006e-05   |   8.0829e-05   |    0.0776    |    7.999812   |    7.999275   |  6.7192e-05
+     1.8751e-04   |   2.6584e-04   |    0.4177    |    7.999812   |    7.999648   |  2.0520e-05
+     1.8751e-04   |   5.9906e-04   |    2.1948    |    7.999925   |    7.999841   |  1.0494e-05
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                         Table of Eigenvalues for n = 1048576 and k = 1024
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.8788e-05   |   4.8293e-05   |    1.5704    |    7.999953   |    7.999872   |  1.0154e-05
+     4.6970e-05   |   8.4837e-05   |    0.8062    |    7.999953   |    7.999943   |  1.2128e-06
+     4.6970e-05   |   1.8231e-04   |    2.8814    |    7.999981   |    7.999978   |  4.5637e-07
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                         Table of Eigenvalues for n = 4194304 and k = 2048
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     4.7016e-06   |   9.6027e-06   |    1.0424    |    7.999988   |    7.999959   |  3.6114e-06
+     1.1754e-05   |   1.8401e-05   |    0.5655    |    7.999988   |    7.999978   |  1.3107e-06
+     1.1754e-05   |   4.3829e-05   |    2.7289    |    7.999995   |    7.999994   |  1.2905e-07
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+                        Table of Eigenvalues for n = 16777216 and k = 4096
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   Smallest Eig A | Smallest Eig T | inf-norm rel | Largest Eig A | Largest Eig T | inf-norm rel
+---------------------------------------------------------------------------------------------------
+     1.1760e-06   |   3.0872e-06   |    1.6252    |    7.999997   |    7.999989   |  1.0106e-06
+     2.9399e-06   |   5.9548e-06   |    1.0255    |    7.999997   |    7.999995   |  2.6198e-07
+     2.9399e-06   |   1.2085e-05   |    3.1105    |    7.999999   |    7.999998   |  1.0918e-07
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+\end{verbatim} \color{black}
+
+Note: in the tables above I have calculated the relative error between the exact eigenvalue and the Ritz values.
+
+\subsection*{Discussion}
+
+From the tables we can see that for case 2 ($k = \sqrt{n}$) we approximate the largest and smallest eigenvalue better than in case 1 (where $k$ is have the value of case 2). However, in both cases we see that the approximation for the largest eigenvalue is better. In fact, we don't get see any digits of accuracy when approximating the smallest eigenvalue. This is not the case when looking at the largest eigenvalue.
+
+
+\end{document}
+

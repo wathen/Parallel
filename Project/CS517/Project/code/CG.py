@@ -1,0 +1,279 @@
+#!/usr/bin/python
+import petsc4py
+import slepc4py
+import sys
+import os.path
+import warnings
+from nose.tools import assert_raises
+import numpy as np
+from scipy import sparse
+from scikits.sparse.cholmod import (cholesky, cholesky_AAt,
+                                    analyze, analyze_AAt,
+                                    CholmodError)
+petsc4py.init(sys.argv)
+slepc4py.init(sys.argv)
+from pyamg import *
+from petsc4py import PETSc
+from slepc4py import SLEPc
+Print = PETSc.Sys.Print
+# from MatrixOperations import *
+from dolfin import *
+import numpy as np
+import matplotlib.pylab as plt
+import os
+import scipy.io
+from PyTrilinos import Epetra, EpetraExt, AztecOO, ML, Amesos
+from scipy2Trilinos import scipy_csr_matrix2CrsMatrix
+import PETScIO as IO
+from scipy import array, linalg, dot
+import scipy.sparse as sps
+import scipy.sparse.linalg as slinalg
+
+m = 2
+errL2u = np.zeros((m-1,1))
+errL2p = np.zeros((m-1,1))
+l2uorder = np.zeros((m-1,1))
+l2porder = np.zeros((m-1,1))
+NN = np.zeros((m-1,1))
+DoF = np.zeros((m-1,1))
+Vdim = np.zeros((m-1,1))
+Qdim = np.zeros((m-1,1))
+Wdim = np.zeros((m-1,1))
+iterationsAMG = np.zeros((m-1,1))
+SolTimeAMG = np.zeros((m-1,1))
+SolTimeDirect= np.zeros((m-1,1))
+iterationsILU = np.zeros((m-1,1))
+SolTimeILU = np.zeros((m-1,1))
+SolTimeILUrate = np.zeros((m-1,1))
+SolTimeAMGrate = np.zeros((m-1,1))
+udiv = np.zeros((m-1,1))
+nn = 2
+
+dim = 3
+Solving = 'Iterative'
+ShowResultPlots = 'no'
+ShowErrorPlots = 'no'
+EigenProblem = 'no'
+SavePrecond = 'no'
+case = 1
+parameters['linear_algebra_backend'] = 'uBLAS'
+
+
+for xx in xrange(1,m):
+    print xx
+    nn = 2**(xx+7)
+    # Create mesh and define function space
+    nn = int(nn)
+    NN[xx-1] = nn
+
+    if dim == 3:
+        mesh = UnitCubeMesh(nn,nn,nn)
+    else:
+        mesh = UnitSquareMesh(nn,nn)
+
+    parameters['reorder_dofs_serial'] = False
+    V =VectorFunctionSpace(mesh, "CG", 1 )
+    parameters['reorder_dofs_serial'] = False
+    Vdim[xx-1] = V.dim()
+    print "\n\n DoF ", V.dim()
+    # creating trial and test function s
+    v = TestFunction(V)
+    u = TrialFunction(V)
+
+
+    def boundary(x, on_boundary):
+        return on_boundary
+
+    if dim == 3:
+        u0 = Expression(("0","0","0"))
+    else:
+        u0 = Expression(('x[0]*x[1]','x[0]*x[1]'))
+
+    bc = DirichletBC(V,u0, boundary)
+
+    if dim == 3:
+        f = Expression(('- 2*(x[1]*x[1]-x[1])*(x[0]*x[0]-x[0])-2*(x[0]*x[0]-x[0])*(x[2]*x[2]-x[2])-2*(x[1]*x[1]-x[1])*(x[2]*x[2]-x[2])', \
+        '- 2*(x[1]*x[1]-x[1])*(x[0]*x[0]-x[0])-2*(x[0]*x[0]-x[0])*(x[2]*x[2]-x[2])-2*(x[1]*x[1]-x[1])*(x[2]*x[2]-x[2])', \
+        '- 2*(x[1]*x[1]-x[1])*(x[0]*x[0]-x[0])-2*(x[0]*x[0]-x[0])*(x[2]*x[2]-x[2])-2*(x[1]*x[1]-x[1])*(x[2]*x[2]-x[2])'))
+    else:
+        f = Expression(('- 2*(x[1]*x[1]-x[1])-2*(x[0]*x[0]-x[0])','-2*(x[0]*x[0]-x[0]) - 2*(x[1]*x[1]-x[1])'))
+
+    N = FacetNormal(mesh)
+    h = CellSize(mesh)
+    h_avg =avg(h)
+    alpha = 10.0
+    gamma =10.0
+    n = FacetNormal(mesh)
+    h = CellSize(mesh)
+    h_avg =avg(h)
+    d = 0
+    a = inner(grad(v), grad(u))*dx
+    L1  =  inner(v,f)*dx
+
+
+    #plt.spy(Ps)
+    tic()
+    AA, bb = assemble_system(a, L1, bc)
+    As = AA.sparray()
+    As.eliminate_zeros()
+
+    A = PETSc.Mat().createAIJ(size=As.shape,csr=(As.indptr, As.indices, As.data))
+    print toc()
+    b = bb.array()
+    zeros = 0*b
+    del bb
+    bb = IO.arrayToVec(b)
+    x = IO.arrayToVec(zeros)
+
+
+    if (SavePrecond == 'yes'):
+        Wstring = str(int(Wdim[xx-1][0]))
+        nameA ="".join(['matrix/A',Wstring,".mat"])
+        scipy.io.savemat(nameA, mdict={'A': As},oned_as='row')
+        nameP ="".join(['matrix/P',Wstring,".mat"])
+        scipy.io.savemat(nameP, mdict={'P': Ps},oned_as='row')
+        nameB ="".join(['matrix/B',Wstring,".mat"])
+        scipy.io.savemat(nameB, mdict={'b': bb},oned_as='row')
+
+    if (Solving == 'Direct'):
+        ksp = PETSc.KSP().create()
+        ksp.setOperators(A)
+
+        ksp.setFromOptions()
+        print 'Solving with:', ksp.getType()
+
+        tic()
+        ksp.solve(bb, x)
+        SolTimeDirect[xx-1] = toc()
+        print "time to solve: ",SolTimeDirect[xx-1]
+
+
+
+    if (Solving == 'Iterative'):
+
+        ksp = PETSc.KSP().create()
+        pc = PETSc.PC().create()
+        ksp.setFromOptions()
+        # ksp.create(PETSc.COMM_WORLD)
+        # use conjugate gradients
+        ksp.setTolerances(1e-6)
+        ksp.setType(PETSc.KSP.Type.CG)
+        pc = ksp.getPC()
+        pc.setOperators(A)
+        pc.setType(pc.Type.HYPRE)
+        # and next solve
+        ksp.setOperators(A,A)
+        tic()
+        ksp.solve(bb, x)
+        SolTimeAMG[xx-1] = toc()
+        tic()
+        ksp.solve(bb, x)
+        SolTimeAMG[xx-1] = toc()
+        print "time to solve: ",SolTimeAMG[xx-1]
+        iterationsAMG[xx-1] =  ksp.its
+        print "iterations = ", iterationsAMG[xx-1]
+
+        del ksp, pc
+        ksp = PETSc.KSP().create()
+        pc = PETSc.PC().create()
+        ksp.setFromOptions()
+        # ksp.create(PETSc.COMM_WORLD)
+        # use conjugate gradients
+        ksp.setTolerances(1e-6)
+        ksp.setType(PETSc.KSP.Type.CG)
+        pc = ksp.getPC()
+        pc.setOperators(A)
+        pc.setType(pc.Type.ILU)
+        # and next solve
+        ksp.setOperators(A,A)
+        tic()
+        ksp.solve(bb, x)
+        SolTimeILU[xx-1] = toc()
+        tic()
+        ksp.solve(bb, x)
+        SolTimeILU[xx-1] = toc()
+        print "time to solve: ",SolTimeILU[xx-1]
+        iterationsILU[xx-1] =  ksp.its
+        print "iterations = ", iterationsILU[xx-1]
+        del ksp,pc
+
+        print "time to solve: ",SolTimeDirect[xx-1]
+        if xx == 1:
+            l2uorder[xx-1] = 0
+        else:
+            SolTimeAMGrate[xx-1] =  np.abs((SolTimeAMG[xx-1]/SolTimeAMG[xx-2]))
+            SolTimeILUrate[xx-1] =  np.abs((SolTimeILU[xx-1]/SolTimeILU[xx-2]))
+    # if (Solving == 'Iterative' or Solving == 'Direct'):
+    #     if dim == 3:
+    #         ue = Expression(('x[0]*x[1]*x[2]*(x[1]-1)*(x[2]-1)*(x[0]-1)','x[0]*x[1]*x[2]*(x[1]-1)*(x[2]-1)*(x[0]-1)','x[0]*x[1]*x[2]*(x[1]-1)*(x[2]-1)*(x[0]-1)'))
+    #     else:
+    #         ue = Expression(('(x[1]*x[1]-x[1])*(x[0]*x[0]-x[0])+x[0]*x[1]','(x[1]*x[1]-x[1])*(x[0]*x[0]-x[0])+x[0]*x[1]'))
+
+    #     u = interpolate(ue,V)
+
+    #     if (SavePrecond == 'yes'):
+    #         exact ="".join(['matrix/U',Wstring,".mat"])
+    #         scipy.io.savemat(exact, {'U':u.vector().array()},oned_as='column')
+
+    #     Nv  = u.vector().array().shape
+
+    #     X = IO.vecToArray(x)
+    #     x = X[0:Vdim[xx-1][0]]
+    #     # x = x_epetra[0:Nv[0]]
+    #     ua = Function(V)
+    #     ua.vector()[:] = x
+    #     udiv[xx-1] = assemble(div(ua)*dx)
+    #     ra = Function(V)
+    #     r = b-As*x
+    #     ra.vector()[:] = r
+    #     errL2u[xx-1] = errornorm(ue,ua,norm_type="L2", degree_rise=4,mesh=mesh)
+
+    #     if xx == 1:
+    #         l2uorder[xx-1] = 0
+    #     else:
+    #         l2uorder[xx-1] =  np.abs(np.log2(errL2u[xx-2]/errL2u[xx-1]))
+
+    #     print errL2u[xx-1]
+
+
+if (ShowErrorPlots == 'yes'):
+    plt.loglog(NN,errL2u)
+    plt.title('Error plot for CG2 elements - Velocity L2 convergence = %f' % np.log2(np.average((errL2u[0:m-2]/errL2u[1:m-1]))))
+    plt.xlabel('N')
+    plt.ylabel('L2 error')
+
+    plt.show()
+
+
+if (Solving == 'Iterative' or Solving == 'Direct'):
+    print "\n\n"
+    print "          ==============================="
+    print "                  Results Table"
+    print "          ===============================\n\n"
+    import pandas as pd
+    if (Solving == 'Iterative'):
+        tableTitles = ["Grid size","DoF","# iters","Soln Time","rate","# iters","Soln Time","rate"]
+        tableValues = np.concatenate((NN,Vdim,iterationsAMG,SolTimeAMG,SolTimeAMGrate,iterationsILU,SolTimeILU,SolTimeILUrate),axis=1)
+    elif (Solving == 'Direct'):
+        tableTitles = ["DoF","Soln Time","V-L2","V-order","||div u_h||"]
+        tableValues = np.concatenate((Vdim,SolTime,errL2u,l2uorder,udiv),axis=1)
+
+    df = pd.DataFrame(tableValues, columns = tableTitles)
+    pd.set_printoptions(precision=3)
+    print df
+    print "\n\n"
+    print "Velocity Elements rate of convergence ", np.log2(np.average((errL2u[0:m-2]/errL2u[1:m-1])))
+    print "Pressure Elements rate of convergence ", np.log2(np.average((errL2p[0:m-2]/errL2p[1:m-1])))
+    print df.to_latex()
+
+
+if (SavePrecond == 'yes'):
+    scipy.io.savemat('matrix/Wdim.mat', {'Wdim':Wdim},oned_as='column')
+
+
+if (ShowResultPlots == 'yes'):
+    plot(ra)
+    # plot(interpolate(ue,V))
+
+    interactive()
+

@@ -1,0 +1,261 @@
+\documentclass[11pt]{article}
+
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage{nicefrac}
+\usepackage{subfigure}
+\usepackage{algorithm}
+\usepackage{paralist}
+\usepackage[geometry]{ifsym}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{cite}
+\usepackage{nicefrac}
+\usepackage{algpseudocode}
+\usepackage{varwidth}
+
+% \bibliographystyle{amsplain}
+
+\addtolength{\oddsidemargin}{-.2in}
+    \addtolength{\evensidemargin}{-.5in}
+    \addtolength{\textwidth}{0.5in}
+
+    \addtolength{\topmargin}{-.5in}
+    \addtolength{\textheight}{0.35in}
+
+\sloppy                 % makes TeX less fussy about line breaking
+
+\pagestyle{plain}           % use just a plain page number
+
+\numberwithin{equation}{section}    % add the section number to the equation label
+
+
+
+\usepackage{fancyheadings}
+
+\newcommand{\com}[1]{\texttt{#1}}
+\newcommand{\DIV}{\ensuremath{\mathop{\mathbf{DIV}}}}
+\newcommand{\GRAD}{\ensuremath{\mathop{\mathbf{GRAD}}}}
+\newcommand{\CURL}{\ensuremath{\mathop{\mathbf{CURL}}}}
+\newcommand{\CURLt}{\ensuremath{\mathop{\overline{\mathbf{CURL}}}}}
+\newcommand{\nullspace}{\ensuremath{\mathop{\mathrm{null}}}}
+
+
+\newcommand{\FrameboxA}[2][]{#2}
+\newcommand{\Framebox}[1][]{\FrameboxA}
+\newcommand{\Fbox}[1]{#1}
+
+%\usepackage[round]{natbib}
+
+\newcommand{\half}{\mbox{\small \(\frac{1}{2}\)}}
+\newcommand{\hf}{{\frac 12}}
+\newcommand {\HH}  { {\bf H} }
+\newcommand{\hH}{\widehat{H}}
+\newcommand{\hL}{\widehat{L}}
+\newcommand{\bmath}[1]{\mbox{\bf #1}}
+\newcommand{\hhat}[1]{\stackrel{\scriptstyle \wedge}{#1}}
+\newcommand{\R}{{\rm I\!R}}
+\newcommand {\D} {{\vec{D}}}
+\newcommand {\sg}{{\hsigma}}
+%\renewcommand{\vec}[1]{\ensuremath{\mathbf{#1}}}
+\newcommand{\E}{\vec{E}}
+\renewcommand{\H}{\vec{H}}
+\newcommand{\J}{\vec{J}}
+\newcommand{\dd}{d^{\rm obs}}
+\newcommand{\F}{\vec{F}}
+\newcommand{\C}{\vec{C}}
+\newcommand{\s}{\vec{s}}
+\newcommand{\N}{\vec{N}}
+\newcommand{\M}{\vec{M}}
+\newcommand{\A}{\vec{A}}
+\newcommand{\B}{\vec{B}}
+\newcommand{\w}{\vec{w}}
+\newcommand{\nn}{\vec{n}}
+\newcommand{\cA}{{\cal A}}
+\newcommand{\cQ}{{\cal Q}}
+\newcommand{\cR}{{\cal R}}
+\newcommand{\cG}{{\cal G}}
+\newcommand{\cW}{{\cal W}}
+\newcommand{\hsig}{\hat \sigma}
+\newcommand{\hJ}{\hat \J}
+\newcommand{\hbeta}{\widehat \beta}
+\newcommand{\lam}{\lambda}
+\newcommand{\dt}{\delta t}
+\newcommand{\kp}{\kappa}
+\newcommand {\lag} { {\cal L}}
+\newcommand{\zero}{\vec{0}}
+\newcommand{\Hr}{H_{red}}
+\newcommand{\Mr}{M_{red}}
+\newcommand{\mr}{m_{ref}}
+\newcommand{\thet}{\ensuremath{\mbox{\boldmath $\theta$}}}
+\newcommand{\curl}{\ensuremath{\nabla\times\,}}
+\renewcommand{\div}{\nabla\cdot\,}
+\newcommand{\grad}{\ensuremath{\nabla}}
+\newcommand{\dm}{\delta m}
+\newcommand{\gradh}{\ensuremath{\nabla}_h}
+\newcommand{\divh}{\nabla_h\cdot\,}
+\newcommand{\curlh}{\ensuremath{\nabla_h\times\,}}
+\newcommand{\curlht}{\ensuremath{\nabla_h^T\times\,}}
+\newcommand{\Q}{\vec{Q}}
+\renewcommand{\J}{\vec J}
+\renewcommand{\J}{\vec J}
+\newcommand{\U}{\vec u}
+\newcommand{\Bt}{B^{\mbox{\tiny{T}}}}
+\newcommand{\me}{Maxwell's equations }
+\newcommand{\ns}{Navier-Stokes Equations }
+\renewcommand{\s}{Stokes Equations }
+\newcommand{\Fs}{\vec{f}_{\mbox{\tiny s}}}
+\newcommand{\partialt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\cref}[1]{(\ref{#1})}
+% \newcommand{\Ct}{\ensuremath{C^{\mbox{\tiny{T}}}}
+\newcommand{\Ct}{\ensuremath{C^{\mbox{\tiny{T}}}}}
+% \renewcommand{\baselinestretch}{1.40}\normalsize
+\usepackage{setspace}
+\usepackage{amsthm}
+\newtheorem{prop}{Proposition}[section]
+
+\onehalfspacing
+\begin{document}
+\pagestyle{fancyplain}
+\fancyhead{}
+\fancyfoot{} % clear all footer fields
+\fancyfoot[LE,RO]{\thepage \hspace{-5mm}}
+\fancyfoot[LO,CE]{ \footnotesize{ Michael Wathen 7830121}}
+\fancyfoot[CO,RE]{}
+
+\title{Fast iterative Preconditioner for the Stokes problem}
+\author{Michael Wathen}
+\maketitle
+
+\section{Introduction} \label{sec:intro}
+
+
+
+\section{Stokes Equations} \label{sec:stokes}
+
+
+
+\begin{equation} \label{eq:Stokes}
+    \begin{aligned}
+        -\nu \Delta \U- \nabla p &= \Fs,\\
+        \div \U     &= 0.
+    \end{aligned}
+\end{equation}
+
+\section{Finite element discretisation} \label{sec:discretisation}
+
+
+
+\section{Linear solver} \label{sec:solver}
+
+
+
+\subsection{Iterative Scheme} \label{sec:itersolver}
+
+\noindent\fbox{%
+
+\begin{varwidth}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}
+\begin{algorithmic}
+
+   \For {i =1,2,$\,$\ldots}
+
+    \EndFor
+
+\end{algorithmic}
+% \caption{as}
+\end{varwidth}
+
+}
+
+\subsection{Preconditioning} \label{sec:precond}
+
+In this section we will look consider preconditioning Stokes equations. When  applying a preconditioner to a linear system ($\mathcal{A} x = b$) we need to bear in mind the following two conditions:
+\begin{itemize}
+    \item[1.] the preconditioner $\mathcal{P}$ must should approximate $\mathcal{A}$,
+    \item[2.] $\mathcal{P}$ should be much easier to solve.
+\end{itemize}
+An example of an excellent preconditioner is to take $\mathcal{P} = \mathcal{A}$ and then the iterative solution will converge in exactly one iteration. However, taking the preconditioner to be the same matrix far to expensive. On the other hand, if we take $\mathcal{P}$ to be the identity matrix then we have a very simply system to solve at each step but the iterative scheme will converge at the same rate as a non-preconditioned system. Therefore, we would like to find a preconditioner that is a happy median between easiness to solve and approximates that original matrix. The following sections outline what is know as the Schur complement preconditioner and an approximation of the Schur complement preconditioner.
+
+\subsubsection{Schur complement } \label{sec:schur}
+
+If we consider any non-symmetric invertible saddle matrix
+$$\mathcal{K}_{\mbox{\tiny{non-sym}}} = \begin{bmatrix}
+A & B\\
+C & 0\\
+\end{bmatrix}, $$
+where $A$ is non-singular then we can perform a block Gaussian elimination ($\mathcal{K}_{\mbox{\tiny{non-sym}}}  = LDU$) to get the following block decomposition:
+$$\begin{bmatrix}
+A & B\\
+C & 0\\
+\end{bmatrix}=
+\begin{bmatrix}
+I& 0\\
+CA^{-1}& I\\
+\end{bmatrix}
+\begin{bmatrix}
+A& 0\\
+0& -CA^{-1}B\\
+\end{bmatrix}
+\begin{bmatrix}
+I & A^{-1}B\\
+0& I\\
+\end{bmatrix}.$$
+This decomposition suggests that taking $D$ to be the preconditioner may be effective. In fact, if we do exactly this we can show that this is indeed an excellent preconditioner.
+
+The following theorem and proof presented by M. Murphy, G. Golub, A. Wathen., shows that by using $D$ as a preconditioner we would converge in exactly 3 iterations.
+3 eigenvalue Theorem......
+
+\subsection{Approximation of Schur complement} \label{sec:schurapprox}
+
+From section \ref{sec:schur} we have proved that taking a preconditioner of the form,
+$$\begin{bmatrix}
+A & 0\\
+0 & S\\
+\end{bmatrix}, $$
+where $A$ was the original $(1,1)$ block of your matrix and $S$ to as the Schur complement then the iterative scheme will converge in exactly $3$ iterations. This therefore would be an extremely effective preconditioner for an iterative scheme. Unfortunately, forming the Schur complement of a system is often computationally expensive and will form a dense matrix. This generally means that we would not like to for $S$ exactly but would like to find a good approximation to it.
+
+From the finite element discretisation of \s given in \ref{sec:discretisation} we obtained the following bilinear from:
+\begin{equation} \label{eq:bilinForm}
+    \begin{aligned}
+        a(u,v)+ b(v,p) &= L(v,\Fs),\\
+        b(q,u)     &= 0,
+    \end{aligned}
+\end{equation}
+where $$a(u,v) = \int_\Omega \grad u : \grad v \, d\Omega, \ \ b(u,p) = \int_\Omega u\ \div p \, dx \ \  \mbox{and} \ \  L(v,\Fs) = \int_{\partial \Omega} v\cdot \Fs \, ds, $$
+as before. As we are considering using Taylor-Hood \emph{find taylor-hood paper} discretisation (i.e. P2-P1 elements) then we have an inf-sup stable discretisation of the Stokes equation.
+
+
+\section{Numerical Results} \label{sec:results}
+
+
+
+\subsection{Other Saddle point system preconditioners}
+
+Here we will have a look at other saddle point systems which we use iterative methods to solve them. The two sets of equations are the \ns which which govern the motion of viscous incompressible fluids and \me that describe the electric flux and magnetic field.
+
+\subsubsection{\ns}
+
+
+
+\begin{equation} \label{eq:NS}
+    \begin{aligned}
+        -\nu \Delta \U+ (\U \, \nabla)\cdot \U + \nabla p &= \vec f_{\mbox{\tiny{NS}}},\\
+        \div \U     &= 0
+    \end{aligned}
+\end{equation}
+
+
+\subsubsection{\me}
+
+
+
+\section{Conclusion}
+
+
+
+\section{Appendix}
+
+
+\end{document}
