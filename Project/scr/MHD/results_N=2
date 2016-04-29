@@ -1,0 +1,4 @@
+Fatal Python error: PyThreadState_Get: no current thread
+--------------------------------------------------------------------------
+mpirun noticed that process rank 0 with PID 24663 on node dhcp-128-189-76-95 exited on signal 6 (Abort trap: 6).
+--------------------------------------------------------------------------

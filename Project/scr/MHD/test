@@ -1,0 +1,15 @@
+for i in `seq 1 7`;
+    do
+        echo $"\n\n\nmpirun -np 1 python MHDfluid.py $i"
+        mpirun -np 1 python MHDfluid.py $i >> results_N=$i 2>&1
+        #echo $"\n\n\nmpirun -np 2 python MHDfluid.py $i"
+        #mpirun -np 2 python MHDfluid.py $i &>> results_N=$i
+        #echo $"\n\n\nmpirun -np 4 python MHDfluid.py $i"
+        #mpirun -np 4 python MHDfluid.py $i &>> results_N=$i
+        #echo $"\n\n\nmpirun -np 8 python MHDfluid.py $i"
+        #mpirun -np 8 python MHDfluid.py $i &>> results_N=$i
+        #echo $"\n\n\nmpirun -np 16 python MHDfluid.py $i"
+        #mpirun -np 16 python MHDfluid.py $i &>> results_N=$i
+        #echo $"\n\n\nmpirun -np 32 python MHDfluid.py $i"
+        #mpirun -np 32 python MHDfluid.py $i &>> results_N=$i
+    done
