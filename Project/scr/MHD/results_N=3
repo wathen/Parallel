@@ -1,4 +1,626 @@
-Fatal Python error: PyThreadState_Get: no current thread
---------------------------------------------------------------------------
-mpirun noticed that process rank 0 with PID 24673 on node dhcp-128-189-76-95 exited on signal 6 (Abort trap: 6).
---------------------------------------------------------------------------
+20381
+*** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+[MPI_AVG] Summary of timings     |  reps    wall avg    wall tot
+----------------------------------------------------------------
+Apply (PETScMatrix)              |     1   0.0015561   0.0015561
+Apply (PETScVector)              |     7  1.1923e-05  8.3464e-05
+Assemble system                  |     1      4.7894      4.7894
+Build mesh number mesh entities  |     7  2.0677e-06  1.4474e-05
+Build sparsity                   |     2     0.10917     0.21834
+Delete sparsity                  |     2   1.091e-06   2.182e-06
+DirichletBC compute bc           |     3   0.0021823   0.0065469
+DirichletBC init facets          |     3   0.0016426   0.0049279
+Generate Box mesh                |     1  0.00035365  0.00035365
+Init PETSc                       |     1  3.9073e-05  3.9073e-05
+Init dof vector                  |     4  9.9789e-05  0.00039916
+Init dofmap                      |     5   0.0023749    0.011875
+Init dofmap from UFC dofmap      |     5  0.00094805   0.0047403
+Init tensor                      |     2  0.00041922  0.00083844
+assemble_system                  |     1       4.822       4.822
+compute connectivity 2 - 3       |     1  0.00020968  0.00020968
+compute entities dim = 1         |     1   0.0049396   0.0049396
+compute entities dim = 2         |     1    0.005851    0.005851
+Process 0: Number of global vertices: 729
+Process 0: Number of global cells: 3072
+20381
+20381
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1     0.15769     0.15769
+Apply (PETScVector)                               |     7  8.3687e-05  0.00058581
+Assemble system                                   |     1      2.9814      2.9814
+Build mesh number mesh entities                   |     8   0.0027734    0.022188
+Build sparsity                                    |     2     0.15608     0.31217
+Compute local dual graph                          |     1     0.12177     0.12177
+Compute non-local dual graph                      |     1  0.00061618  0.00061618
+Delete sparsity                                   |     2  2.3648e-06  4.7295e-06
+DirichletBC compute bc                            |     3   0.0026289   0.0078867
+DirichletBC gather                                |     3  0.00075131   0.0022539
+DirichletBC init facets                           |     3   0.0019792   0.0059376
+Distribute cells                                  |     1  0.00064699  0.00064699
+Distribute vertices                               |     1  0.00064322  0.00064322
+Generate Box mesh                                 |     1     0.16717     0.16717
+Init PETSc                                        |     1  6.4985e-05  6.4985e-05
+Init dof vector                                   |     4   0.0045434    0.018173
+Init dofmap                                       |     5    0.070379      0.3519
+Init dofmap from UFC dofmap                       |     5   0.0046742    0.023371
+Init tensor                                       |     2    0.001688    0.003376
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1    0.002049    0.002049
+PARALLEL 3: Build mesh (from local mesh data)     |     1  0.00087675  0.00087675
+PARALLEL x: Number mesh entities                  |     2    0.010863    0.021727
+Partition graph (calling SCOTCH)                  |     1    0.027208    0.027208
+SCOTCH graph ordering                             |     5   0.0036483    0.018242
+assemble_system                                   |     1      3.0761      3.0761
+build LocalMeshData                               |     1   0.0004928   0.0004928
+compute connectivity 2 - 3                        |     1  0.00033391  0.00033391
+compute entities dim = 1                          |     1    0.006516    0.006516
+compute entities dim = 2                          |     1   0.0070137   0.0070137
+Process 0: Number of global vertices: 729
+Process 0: Number of global cells: 3072
+20381
+20381
+20381
+20381
+Process 2: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1      0.1501      0.1501
+Apply (PETScVector)                               |     7  5.9474e-05  0.00041632
+Assemble system                                   |     1      1.4688      1.4688
+Build mesh number mesh entities                   |     8   0.0011331   0.0090646
+Build sparsity                                    |     2    0.034698    0.069397
+Compute local dual graph                          |     1   0.0021093   0.0021093
+Compute non-local dual graph                      |     1  0.00081508  0.00081508
+Delete sparsity                                   |     2  1.0939e-06  2.1878e-06
+DirichletBC compute bc                            |     3  0.00066821   0.0020046
+DirichletBC gather                                |     3  0.00021199  0.00063597
+DirichletBC init facets                           |     3  0.00050724   0.0015217
+Distribute cells                                  |     1  0.00072292  0.00072292
+Distribute vertices                               |     1  0.00057682  0.00057682
+Generate Box mesh                                 |     1     0.14687     0.14687
+Init PETSc                                        |     1  2.8108e-05  2.8108e-05
+Init dof vector                                   |     4  0.00097983   0.0039193
+Init dofmap                                       |     5    0.016331    0.081657
+Init dofmap from UFC dofmap                       |     5   0.0014095   0.0070475
+Init tensor                                       |     2   0.0010101   0.0020202
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1   0.0017254   0.0017254
+PARALLEL 3: Build mesh (from local mesh data)     |     1  0.00045833  0.00045833
+PARALLEL x: Number mesh entities                  |     2   0.0044319   0.0088638
+Partition graph (calling SCOTCH)                  |     1    0.047287    0.047287
+SCOTCH graph ordering                             |     5   0.0011981   0.0059907
+assemble_system                                   |     1      1.4989      1.4989
+build LocalMeshData                               |     1    0.086325    0.086325
+compute connectivity 2 - 3                        |     1  0.00016778  0.00016778
+compute entities dim = 1                          |     1   0.0017304   0.0017304
+compute entities dim = 2                          |     1   0.0032258   0.0032258
+Process 0: Number of global vertices: 729
+Process 0: Number of global cells: 3072
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+Process 6: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 5: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 2: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 4: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 7: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1    0.057797    0.057797
+Apply (PETScVector)                               |     7  7.9544e-05  0.00055681
+Assemble system                                   |     1      0.7481      0.7481
+Build mesh number mesh entities                   |     8   0.0019469    0.015575
+Build sparsity                                    |     2    0.022173    0.044345
+Compute local dual graph                          |     1    0.079955    0.079955
+Compute non-local dual graph                      |     1  0.00028206  0.00028206
+Delete sparsity                                   |     2  1.2652e-06  2.5304e-06
+DirichletBC compute bc                            |     3  0.00039669   0.0011901
+DirichletBC gather                                |     3  0.00021973   0.0006592
+DirichletBC init facets                           |     3  0.00029562  0.00088685
+Distribute cells                                  |     1  0.00030042  0.00030042
+Distribute vertices                               |     1  0.00019946  0.00019946
+Generate Box mesh                                 |     1     0.14357     0.14357
+Init PETSc                                        |     1    5.92e-05    5.92e-05
+Init dof vector                                   |     4  0.00069669   0.0027868
+Init dofmap                                       |     5    0.013591    0.067953
+Init dofmap from UFC dofmap                       |     5   0.0031399      0.0157
+Init tensor                                       |     2   0.0016152   0.0032304
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1  0.00060398  0.00060398
+PARALLEL 3: Build mesh (from local mesh data)     |     1  0.00010434  0.00010434
+PARALLEL x: Number mesh entities                  |     2   0.0077442    0.015488
+Partition graph (calling SCOTCH)                  |     1    0.021377    0.021377
+SCOTCH graph ordering                             |     5  0.00057019   0.0028509
+assemble_system                                   |     1     0.78826     0.78826
+build LocalMeshData                               |     1    0.039357    0.039357
+compute connectivity 2 - 3                        |     1  3.5056e-05  3.5056e-05
+compute entities dim = 1                          |     1  0.00080299  0.00080299
+compute entities dim = 2                          |     1   0.0006309   0.0006309
+Process 0: Number of global vertices: 729
+Process 0: Number of global cells: 3072
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+2038120381
+20381
+
+Process 5: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 10: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 7: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 8: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 6: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 13: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 15: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 4: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 11: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 2: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 14: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 12: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 9: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1     0.13599     0.13599
+Apply (PETScVector)                               |     7  0.00010872  0.00076102
+Assemble system                                   |     1      0.6163      0.6163
+Build mesh number mesh entities                   |     8   0.0012803    0.010242
+Build sparsity                                    |     2    0.021441    0.042883
+Compute local dual graph                          |     1      0.2509      0.2509
+Compute non-local dual graph                      |     1  0.00038269  0.00038269
+Delete sparsity                                   |     2  2.1916e-06  4.3833e-06
+DirichletBC compute bc                            |     3  0.00040737   0.0012221
+DirichletBC gather                                |     3  0.00038425   0.0011528
+DirichletBC init facets                           |     3  0.00032281  0.00096842
+Distribute cells                                  |     1  0.00061117  0.00061117
+Distribute vertices                               |     1  0.00042498  0.00042498
+Generate Box mesh                                 |     1     0.36104     0.36104
+Init PETSc                                        |     1  0.00070978  0.00070978
+Init dof vector                                   |     4   0.0022997   0.0091987
+Init dofmap                                       |     5    0.011435    0.057176
+Init dofmap from UFC dofmap                       |     5   0.0019758   0.0098789
+Init tensor                                       |     2   0.0033477   0.0066954
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1   0.0011141   0.0011141
+PARALLEL 3: Build mesh (from local mesh data)     |     1  6.5574e-05  6.5574e-05
+PARALLEL x: Number mesh entities                  |     2    0.005087    0.010174
+Partition graph (calling SCOTCH)                  |     1    0.031719    0.031719
+SCOTCH graph ordering                             |     5  0.00027434   0.0013717
+assemble_system                                   |     1     0.67154     0.67154
+build LocalMeshData                               |     1    0.075004    0.075004
+compute connectivity 2 - 3                        |     1  2.6514e-05  2.6514e-05
+compute entities dim = 1                          |     1  0.00042837  0.00042837
+compute entities dim = 2                          |     1  0.00035756  0.00035756
+Process 0: Number of global vertices: 729
+Process 0: Number of global cells: 3072
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+20381
+Process 19: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 20: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 9: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 18: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 30: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 31: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 28: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 1: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+
+Process 2: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 6: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 21: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+
+
+Process 13: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 3: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 10: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 12: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 4: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 8: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 5: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 25: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 27: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 22: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 23: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+
+Process 14: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 24: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+
+Process 29: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 16: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 17: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 7: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 11: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+Process 15: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+
+Process 26: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: *** -------------------------------------------------------------------------
+*** Warning: dolfin::list_timings(bool) has been deprecated in DOLFIN version 1.6.0.
+*** It will be removed from version 1.7.0.
+*** The method is replaced by another Logger::list_timings(...), e.g, 'list_timings(TimingClear_keep, [TimingType_wall])'
+*** -------------------------------------------------------------------------
+
+Process 0: [MPI_AVG] Summary of timings                      |  reps    wall avg    wall tot
+---------------------------------------------------------------------------------
+Apply (PETScMatrix)                               |     1    0.046932    0.046932
+Apply (PETScVector)                               |     7  0.00016662   0.0011663
+Assemble system                                   |     1     0.45579     0.45579
+Build mesh number mesh entities                   |     8    0.013889     0.11111
+Build sparsity                                    |     2    0.025093    0.050186
+Compute local dual graph                          |     1     0.48658     0.48658
+Compute non-local dual graph                      |     1  0.00096931  0.00096931
+Delete sparsity                                   |     2  1.8376e-06  3.6752e-06
+DirichletBC compute bc                            |     3   0.0003405   0.0010215
+DirichletBC gather                                |     3  0.00031367  0.00094102
+DirichletBC init facets                           |     3  0.00027725  0.00083175
+Distribute cells                                  |     1   0.0012884   0.0012884
+Distribute vertices                               |     1   0.0006211   0.0006211
+Generate Box mesh                                 |     1      1.1928      1.1928
+Init PETSc                                        |     1   0.0049046   0.0049046
+Init dof vector                                   |     4    0.016874    0.067495
+Init dofmap                                       |     5    0.064809     0.32404
+Init dofmap from UFC dofmap                       |     5    0.022128     0.11064
+Init tensor                                       |     2    0.001803    0.003606
+PARALLEL 2: Distribute mesh (cells and vertices)  |     1   0.0019865   0.0019865
+PARALLEL 3: Build mesh (from local mesh data)     |     1  6.2691e-05  6.2691e-05
+PARALLEL x: Number mesh entities                  |     2    0.055497     0.11099
+Partition graph (calling SCOTCH)                  |     1     0.05037     0.05037
+SCOTCH graph ordering                             |     5  0.00016469  0.00082344
+assemble_system                                   |     1     0.66623     0.66623
+build LocalMeshData                               |     1     0.65091     0.65091
+compute connectivity 2 - 3                        |     1  3.1391e-05  3.1391e-05
+compute entities dim = 1                          |     1    0.000365    0.000365
+compute entities dim = 2                          |     1   0.0002884   0.0002884

@@ -1,0 +1,15 @@
+556997381
+Process 0: Number of global vertices: 16974593
+Process 0: Number of global cells: 100663296
+
+===================================================================================
+=   BAD TERMINATION OF ONE OF YOUR APPLICATION PROCESSES
+=   EXIT CODE: 9
+=   CLEANING UP REMAINING PROCESSES
+=   YOU CAN IGNORE THE BELOW CLEANUP MESSAGES
+===================================================================================
+YOUR APPLICATION TERMINATED WITH THE EXIT STRING: Killed (signal 9)
+This typically refers to a problem with your application.
+Please see the FAQ page for debugging suggestions
+Process 0: Number of global vertices: 16974593
+Process 0: Number of global cells: 100663296

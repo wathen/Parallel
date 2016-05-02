@@ -144,7 +144,8 @@ def foo():
         Magneticdim[xx-1] = Magnetic.dim()
         Lagrangedim[xx-1] = Lagrange.dim()
         Wdim[xx-1] = W.dim()
-        print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
+        print W.dim()
+        #print "\n\nW:  ",Wdim[xx-1],"Velocity:  ",Velocitydim[xx-1],"Pressure:  ",Pressuredim[xx-1],"Magnetic:  ",Magneticdim[xx-1],"Lagrange:  ",Lagrangedim[xx-1],"\n\n"
         dim = [Velocity.dim(), Pressure.dim(), Magnetic.dim(), Lagrange.dim()]
 
 
