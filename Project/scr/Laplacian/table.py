@@ -27,6 +27,7 @@ for j in xrange(1,m+1):
 
 print n
 print A
+print A*8
 print K
 
 print "\n\n"
@@ -44,9 +45,37 @@ LatexTable = MO.PandasFormat(LatexTable,n[6-1],"%4.2f")
 LatexTable = MO.PandasFormat(LatexTable,n[7-1],"%4.2f")
 print LatexTable.to_latex()
 
+AssembleTable = n#[1, 2, 3, 4, 5, 6]
+# Assemble = np.concatenate((n.T,A), axis=1)
+LatexTable = pd.DataFrame(8*A, columns = AssembleTable)
+pd.set_option('precision',3)
+LatexTable = MO.PandasFormat(LatexTable,n[1-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[2-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[3-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[4-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[5-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[6-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[7-1],"%4.2f")
+print LatexTable.to_latex()
+
 AssembleTable = n#[ "1", "2", "3", "4", "5", "6"]
 # Assemble = np.concatenate((n,A), axis=2)
 LatexTable = pd.DataFrame(K, columns = AssembleTable)
+pd.set_option('precision',3)
+LatexTable = MO.PandasFormat(LatexTable,n[1-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[2-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[3-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[4-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[5-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[6-1],"%4.2f")
+LatexTable = MO.PandasFormat(LatexTable,n[7-1],"%4.2f")
+
+print LatexTable.to_latex()
+
+
+AssembleTable = n#[ "1", "2", "3", "4", "5", "6"]
+# Assemble = np.concatenate((n,A), axis=2)
+LatexTable = pd.DataFrame(8*K, columns = AssembleTable)
 pd.set_option('precision',3)
 LatexTable = MO.PandasFormat(LatexTable,n[1-1],"%4.2f")
 LatexTable = MO.PandasFormat(LatexTable,n[2-1],"%4.2f")
