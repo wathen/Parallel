@@ -15,7 +15,16 @@ n = int(2**N)
 mesh = UnitCubeMesh(n,n,n)
 
 
-V = VectorFunctionSpace(mesh, "CG", 2)
+V = VectorFunctionSpace(mesh, "CG", 1)
+comm = mpi_comm_world()
+mpiRank = MPI.rank(comm)
+
+p = plot(mesh)
+p.write_png('mesh'+str(mpiRank))
+file=File("Mesh/mesh"+str(mpiRank)+".xdmf")
+file<< mesh
+
+print V.dofmap().dofs()
 v = TestFunction(V)
 u = TrialFunction(V)
 print V.dim()

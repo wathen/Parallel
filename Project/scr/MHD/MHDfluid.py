@@ -127,7 +127,7 @@ def foo():
         # parameters["form_compiler"]["quadrature_degree"] = 6
         # parameters = CP.ParameterSetup()
         #mesh = UnitSquareMesh(nn,nn)
-        
+
         N = int(sys.argv[1])
         n = int(2**N)
         mesh = UnitCubeMesh(n,n,n)
@@ -149,8 +149,8 @@ def foo():
         dim = [Velocity.dim(), Pressure.dim(), Magnetic.dim(), Lagrange.dim()]
 
 
-        def boundary(x, on_boundary):
-            return on_boundary
+        # def boundary(x, on_boundary):
+        #     return on_boundary
 
 
 
@@ -309,7 +309,7 @@ def foo():
             # np.save('Mat/'+ str(int(level[xx-1][0])) +'x.mat',x.array)
             # # np.save(b.array,'Mat/'+ str(level) +'/
 
-    
+
     # interactive()
 foo()
 
