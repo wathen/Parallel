@@ -183,8 +183,6 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/latex-fonts/lasy5.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmr12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmsy10.tfm
-INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt10.tfm
-INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmi10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmex10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/amsfonts/symbols/msam10.tfm
@@ -193,8 +191,10 @@ INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbx10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmmib10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmbsy10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/latex-fonts/lasy10.tfm
+INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt10.tfm
 OUTPUT WathenCS521.pdf
 INPUT /opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmtt12.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/cm/cmti10.tfm
 INPUT /opt/local/share/texmf-texlive/fonts/tfm/public/latex-fonts/lasyb10.tfm
 INPUT WathenCS521.bbl

@@ -19,10 +19,18 @@ V = VectorFunctionSpace(mesh, "CG", 1)
 comm = mpi_comm_world()
 mpiRank = MPI.rank(comm)
 
-p = plot(mesh)
-p.write_png('mesh'+str(mpiRank))
-file=File("Mesh/mesh"+str(mpiRank)+".xdmf")
-file<< mesh
+# p = plot(mesh)
+# p.write_png('mesh'+str(mpiRank))
+# file = File("Mesh/mesh"+str(mpiRank)+".xdmf")
+# file << mesh
+meshname = "Mesh/mesh"+str(mpiRank)
+# meshfunction = MeshFunction("size_t", mesh, meshname + "_meshfunction.xml")
+# f = HDF5File(meshfunction.mpi_comm(), meshname+"_meshfunction.hdf5", 'w')
+# f.write(meshfunction, meshname_meshfunction)
+# f = HDF5File("Mesh/mesh"+str(mpiRank)+'.h5', 'w')
+# f.write(mesh, 'mesh')
+f = HDF5File(mesh.mpi_comm(), meshname+".hdf5", 'w')
+f.write(mesh, meshname)
 
 print V.dofmap().dofs()
 v = TestFunction(V)
