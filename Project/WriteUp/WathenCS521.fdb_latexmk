@@ -1,14 +1,14 @@
 # Fdb version 3
-["bibtex WathenCS521"] 1462406104 "WathenCS521.aux" "WathenCS521.bbl" "WathenCS521" 1462406104
+["bibtex WathenCS521"] 1462467634 "WathenCS521.aux" "WathenCS521.bbl" "WathenCS521" 1462467635
   "/opt/local/share/texmf-texlive/bibtex/bst/base/plain.bst" 1400539841 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "WathenCS521.aux" 1462406104 2122 d02d2120dcae413b9e84ef63f7cf58f2 ""
+  "WathenCS521.aux" 1462467635 2249 0e9b796642189fbde985d2f5036bf9f3 ""
   "WathenCS521.bcf" 0 -1 0 ""
-  "ref.bib" 1462393925 36216 11943b3b83accef09641196334c964f2 ""
+  "ref.bib" 1462398135 36216 11943b3b83accef09641196334c964f2 ""
   (generated)
-  "WathenCS521.blg"
   "WathenCS521.bbl"
-["pdflatex"] 1462406104 "WathenCS521.tex" "WathenCS521.pdf" "WathenCS521" 1462406104
-  "/opt/local/etc/texmf/texmf.cnf" 1449896479 30201 366bbc44267e480c71481b47c65e8e90 ""
+  "WathenCS521.blg"
+["pdflatex"] 1462467634 "WathenCS521.tex" "WathenCS521.pdf" "WathenCS521" 1462467635
+  "/opt/local/etc/texmf/texmf.cnf" 1437103760 30201 617e54aeb58039ea7682681f2a8beb71 ""
   "/opt/local/share/texmf-texlive/fonts/map/fontname/texfonts.map" 1400541555 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1400541829 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/opt/local/share/texmf-texlive/fonts/tfm/public/amsfonts/cmextra/cmbsy6.tfm" 1400541829 1124 14ccf5552bc7f77ca02a8a402bea8bfb ""
@@ -130,16 +130,16 @@
   "/opt/local/share/texmf-texlive/tex/latex/units/nicefrac.sty" 1400536220 4029 0462ee5ab265cf59dc15a41a3b883101 ""
   "/opt/local/share/texmf-texlive/tex/latex/url/url.sty" 1400536179 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
   "/opt/local/share/texmf-texlive/tex/latex/xcolor/xcolor.sty" 1400536195 55224 a43bab84e0ac5e6efcaf9a98bde73a94 ""
-  "/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map" 1462383114 1631313 56f88aa9b4823690aeb44cbea5d1f97d ""
-  "/opt/local/var/db/texmf/web2c/pdftex/pdflatex.fmt" 1455232621 3252608 7127bff291b465d88a01968483f9f0c3 ""
-  "WathenCS521.aux" 1462406104 2122 d02d2120dcae413b9e84ef63f7cf58f2 ""
-  "WathenCS521.bbl" 1462406104 2729 6434ff4562581c45f528cf3ad8973f15 "bibtex WathenCS521"
-  "WathenCS521.tex" 1462406103 15620 39a81762518314553abe4e4374f9faf6 ""
-  "algorithm.sty" 1462323107 2918 06dc323ad00ae4e4be96af0d7c726a6f ""
-  "algorithmicx.sty" 1462323107 26749 6226a5b6671bfe4d2a13da54ab415139 ""
-  "algpseudocode.sty" 1462323107 3457 d9077efe6b74c5a094199256af8d7d9a ""
-  "slashbox.sty" 1461889769 2685 ce2190dc09125c3010b0dfd2226dd182 ""
+  "/opt/local/var/db/texmf/fonts/map/pdftex/updmap/pdftex.map" 1462211675 1631313 56f88aa9b4823690aeb44cbea5d1f97d ""
+  "/opt/local/var/db/texmf/web2c/pdftex/pdflatex.fmt" 1437154718 3252608 487139b98ca277d8875beef1ae39bc04 ""
+  "WathenCS521.aux" 1462467635 2249 0e9b796642189fbde985d2f5036bf9f3 ""
+  "WathenCS521.bbl" 1462467634 2729 6434ff4562581c45f528cf3ad8973f15 "bibtex WathenCS521"
+  "WathenCS521.tex" 1462467633 19292 41c9a91b6bbee2c2a13553c5e8bbcc59 ""
+  "algorithm.sty" 1462219150 2918 06dc323ad00ae4e4be96af0d7c726a6f ""
+  "algorithmicx.sty" 1462219469 26749 6226a5b6671bfe4d2a13da54ab415139 ""
+  "algpseudocode.sty" 1462219239 3457 d9077efe6b74c5a094199256af8d7d9a ""
+  "slashbox.sty" 1461802055 2685 ce2190dc09125c3010b0dfd2226dd182 ""
   (generated)
+  "WathenCS521.log"
   "WathenCS521.aux"
   "WathenCS521.pdf"
-  "WathenCS521.log"
