@@ -1,6 +1,6 @@
    % Journal Article Template
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[10pt]{article}
+\documentclass[11pt]{article}
 % \documentclass{siamltex}
 %
 \usepackage{graphicx}
@@ -106,23 +106,23 @@ The University of British Columbia, Vancouver, BC, V6T 1Z4, Canada,
 
 \section{Introduction}
 
-Many industrial and geophysical scientific computing problems require discrete solving techniques for partial differential equations (PDEs). The two key components of a PDE solving are:
+Many industrial and geophysical scientific computing problems require discrete solving techniques for partial differential equations (PDEs). The two key components of a PDE solve are:
 \begin{itemize}
-    \item Discretisation;
-    \item Linear/non-linear solve.
+    \item discretisation;
+    \item linear/non-linear solve.
 \end{itemize}
-For discretisation there are three main methods which are use finite differences, finite volumes and finite element methods (FEM). FEM discretises the model and represents the solution with respect to basis functions. Such methods rely heavily on variational methods from calculus of variations to approximate the solution.
+For discretisation there are three main methods which are used: finite differences, finite volumes and finite element methods (FEM). FEM discretises the model and represents the solution with respect to basis functions. Such methods rely heavily on variational methods from calculus of variations to approximate the solution.
 
 The second key component is, the solving technique. Often, for large three-dimensional scientific computing problems it is not possible to do a direct solve for the system matrix. This is because such problems still have a large band width (lots of entries fair away from the diagonal), and hence the memory and time consumption is too large. Therefore, an iterative approach is required for these problems.
 
-For a efficient FEM implementation the work to construct an $n\times n$ matrix is $\mathcal{O}(n)$. However, this is order for the solve is not necessarily true for all PDE models. For example, if the viscosity is small then it is known that for Navier-Stokes equations problem of solving the discrete system becomes harder. There is a huge amount of work that goes into the development for optimal ($\mathcal{O}(n)$) solvers for PDE; for example see \cite{bosch2014fast,elman2014finite,greif2007preconditioners}.
+For a efficient FEM implementation the work to construct an $n\times n$ matrix is $\mathcal{O}(n)$. However, this is order is not necessarily true for all PDE solve. For example, if the viscosity is small then it is known that the Navier-Stokes equations become harder to solve. There is a huge amount of work that goes into the development for optimal ($\mathcal{O}(n)$) solvers for PDE; for example see \cite{bosch2014fast,elman2014finite,greif2007preconditioners,phillips2014block}.
 
 For this project we will mainly focus on parallel finite element method within the \fenics  software framework \cite{wells2012automated}. We will show assembly times for both the Laplacian and magnetohydrodynamics equations. Since the Laplacian plays an integral roll in many PDEs, we will also look at a the timings for a parallel solve of it.
 
 
 \section{FEM in \fenics}
 
-To understand the principle of parallel finite element methods, it is necessary to look at the sequential version. Given a certain cell, $\mathcal{T}_h$, with the local-to-global degrees of freedom mapping $i_T$ then the generic finite element assembly is given as:
+To understand the basic principle of parallel finite element methods, it is necessary to look at the sequential version. Given a certain cell, $\mathcal{T}_h$, with the local-to-global degrees of freedom mapping $i_T$ then the generic finite element assembly algorithm is given by:
 \begin{algorithm}
 
 FEM assembly
@@ -140,13 +140,9 @@ FEM assembly
     \end{algorithmic}
 \end{algorithm}
 
-From this algorithm, we see that the general principle of the FEM is to loop through the cells of the discretised domain and calculate the local cell matrices. Then the local elements are mapped back into the global matrix, $A$. This therefore means that for certain global degrees of freedom require multiple reads and writes.
+From this algorithm, we see that the general principle of the FEM is to loop through the cells of the discretised domain and calculate the local cell matrix entries. Then the local elements are mapped back into the global matrix, $A$. This therefore means that for certain global degrees of freedom require multiple reads and writes.
 
-The algorithm for a basic parallel finite element method does not really vary from the sequential version but assembles over a partitioned mesh. Therefore, for an efficient parallel implementation an appropriate mesh partitioning is required. The partitioned mesh should distribute the minimises the inter-process communication costs between the degrees of freedom.
-
-In general, the ``natural'' ordering of the degrees of freedom within \fenics does....
-
- Two of the prominent mesh partitioning software packages are ParMETIS \cite{parmetis} and SCOTCH \cite{scotch}.
+The algorithm for a basic parallel finite element method does not really vary from the sequential version but assembles over a partitioned mesh. Therefore, for an efficient parallel implementation an appropriate mesh partitioning is required. The partitioned mesh should distribute the minimises the inter-process communication costs between the degrees of freedom. \fenics does not do the mesh partitioning by it self, however it does have backends for the two most prominent mesh partitioning software packages {\tt METIS} \cite{metis} and {\tt SCOTCH} \cite{scotch}.
 
 % Parallel finite element methods rely heavily on the
 
@@ -159,7 +155,7 @@ In general, the ``natural'' ordering of the degrees of freedom within \fenics do
 
 In this section we will provide two examples. First, we consider a simple Laplacian where we look at both the assembly and solve times in parallel. Second, we look at the parallel assembly time for the magnetohydrodynamics problem.
 
-The two numerical experiment have been carried out using the finite element software \fenics \cite{wells2012automated} together with {\tt PETSc4PY} package (Python interface for {\tt PETSc} \cite{petsc-user-ref,petsc-web-page}) and the multigrid package {\tt HYPRE} \cite{falgout2002hypre}.%The code is executed on a cluster with up to 12 nodes. Each node has eight 2.6 GHz Intel processors and 16 GB RAM.
+The two numerical experiment have been carried out using the finite element software \fenics \cite{wells2012automated} together with {\tt PETSc4PY} package (Python interface for {\tt PETSc} \cite{petsc-user-ref,petsc-web-page}) and the multigrid package {\tt HYPRE} \cite{falgout2002hypre}. The mesh partitioning software used was {\tt SCOTCH}. %The code is executed on a cluster with up to 12 nodes. Each node has eight 2.6 GHz Intel processors and 16 GB RAM.
 
 \subsection{Laplacian}
 
@@ -172,7 +168,7 @@ For our first example, consider Laplace's equation with non-homogeneous Dirichle
 \end{equation}
 The Laplacian appears in fluid dynamics, electromagnetism and many other applications. Therefore, there has been a significant amount of work that has gone into efficient solvers for this system. It is well known that multigrid (either geometric (GM) or algebraic multigrid (AMG)) yields an optimal, $\mathcal{O}(n)$, solving algorithm.
 
-The timing and solve results are shown in Tables~\ref{tab:Ltime}~and~\ref{tab:Lsolve}, respectively.
+The assembly and solve results are shown in Tables~\ref{tab:Ltime}~and~\ref{tab:Lsolve}, respectively.
 \begin{table}[h!]
     \centering
     \begin{tabular}{|c|ccccc|}
@@ -209,7 +205,7 @@ The timing and solve results are shown in Tables~\ref{tab:Ltime}~and~\ref{tab:Ls
     \caption{Laplacian solve time for different degrees of freedom and MPI processes}
     \label{tab:Lsolve}
 \end{table}
-First, we look at the scalability with respect to the problem size. For the set up considered, the problems increase by a factor of 8 per level. From the tables, we observe that the that as we increase the degrees of freedom then both the assembly and solve time increase by roughly a factor of 8 for a fixed number of MPI processes. This factor is cleaner for the larger problems.
+First, we look at the scalability with respect to the problem size. For the set up considered, the problems increase by a factor of 8 per level. From the tables, we observe that the that as we increase the degrees of freedom then both the assembly and solve time increase by roughly a factor of 8 for a fixed number of MPI processes.
 
 When varying the number of MPI processes the results don't scale quite as well, at least for the solve time. From Table~\ref{tab:Ltime} the times do seem to decrease by a factor of 2 when the number of MPI processes are increased from 1 to 16. However, moving 32 processes does not decrease the time by a factor of 2 from 16. The solve times do not exhibit this behaviour, though the timings do decrease as the number of MPI processes increase.
 
@@ -303,17 +299,6 @@ The Laplacian is a well understood problem, but it forms an integral part of man
 
 Finally, we looked at the move complex MHD model. MHD models electrically conductive fluids in the presents of a electromagnetic field. So far there are very few parallel finite element implementations of these models. The results shown in Section~\ref{sec:MHD} show good scalability with respect to the mesh. We see that it takes roughly the same time to construct a matrix of dimension 8,861,381 on one processor as it does to construct a problem of 70,045,061 on eight processor. This is only the starting point of parallel MHD. The aim is to implement a parallel solve using block based preconditioners similar to \cite{phillips2014block,mythesis} to create a fully parallel and scalable solution method.
 
-% We have looked at a finite element  new block preconditioning techniques for the MHD model \eqref{eq:mhd}--\eqref{eq:bc}. Our aim was to develop indefinite preconditioning approaches that utilizes the Maxwell maximal nullity result in \cite{MaximalNull} and adapt it to the MHD model.
-
-% Using the results in \cite{MaximalNull}, we are able to find exact expressions for both a block Schur complement of the MHD model and its inverse. Using this Schur complement we presented a block triangular preconditioner as well as an approximate inverse preconditioner.
-
-% The preliminary numerical experiments demonstrate the viability and effectiveness of our approach. Plans for future work include further optimizing our code, utilizing inexact solves to reduce the overall computational work, and applying our preconditioners to three-dimensional problems.
-
-% The timing results for the approximate inverse preconditioner are at maximum a factor of two more than the block triangular preconditioner. When considering inexact (AMG, etc.) solves on the preconditioners it could be possible to loosen the solve tolerances for the approximate inverse, more than the block triangular approach which would decrease this time factor. We leave this as an area for future development.
-
-% For the class of approximate inverse preconditioners, it is possible to obtain the nice property that the real part of the eigenvalues for the preconditioned matrix are all positive, in contrast to the case of typical block diagonal/triangular preconditioners. If the preconditioned matrix were symmetrizable by a similarity transformation, then this positivity property may be exploitable by using variations of positive definite solvers. This is left as an area for future work.
-
-% In conculio
 
 
 \bibliographystyle{plain}
